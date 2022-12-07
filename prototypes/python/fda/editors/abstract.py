@@ -23,40 +23,31 @@ class AbstractEditor(Frame, Generic[O, F]):
     def __init__(self, model: ModelObject, objects: list[O], master: Misc=None):
         Frame.__init__(self, master)
 
+        # Remember the model that is being edited
         self.model = model
-
+        # Remember the objects of the model that are mainly edited
         self.objects: list[AbstractObject] = objects
 
         # Container for left sidebar
-
         self.left = Frame(self)
         self.left.pack(side=LEFT, fill=Y)
-
         # Container for horizontal alignment of buttons
-
         self.buttons = Frame(self.left)
         self.buttons.pack()
-
-        # Button for adding tools
-
+        # Button for adding objects
         self.buttonAdd = Button(self.buttons, text='Add', command=self.handleButtonAddClick)
         self.buttonAdd.pack(side=LEFT)
-
-        # Button for removing tools
-
+        # Button for removing objects
         self.buttonRemove = Button(self.buttons, text='Remove', command=self.handleButtonRemoveClick)
         self.buttonRemove.pack(side=LEFT)
-
-        # List of tools
-
-        self.variable = Variable(value=())
-
+        # Names of the objects
+        self.variable = Variable(value=list(map(lambda x: x.name, objects)))
+        # List of object names
         self.listbox = Listbox(self.left, listvariable=self.variable)
         self.listbox.pack(expand=True, fill=Y)
         self.listbox.bind('<<ListboxSelect>>', self.handleListboxSelect)
 
         # Right
-
         self.right: F = self.createForm()
         self.right.pack(expand=True, fill=BOTH)
 
@@ -66,7 +57,7 @@ class AbstractEditor(Frame, Generic[O, F]):
         # Remember the new object
         self.objects.insert(0, object)
         # List and select the new object
-        self.listbox.insert(0, object.getName())
+        self.listbox.insert(0, object.name)
         self.listbox.selection_clear(0, END)
         self.listbox.selection_set(0)
         self.listbox.event_generate("<<ListboxSelect>>")
