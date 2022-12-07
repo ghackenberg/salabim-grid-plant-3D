@@ -11,8 +11,11 @@ class Application(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
 
+        width = self.winfo_screenwidth()
+        height = self.winfo_screenheight()
+
         self.title('Factory Design Automation (FDA) Tool')
-        self.attributes('-zoomed', True)
+        self.geometry(f'{width}x{height}+0+0')
 
         notebook = Notebook(self)
 

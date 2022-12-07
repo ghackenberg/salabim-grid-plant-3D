@@ -1,4 +1,5 @@
 from typing import TypeVar
+from typing import Generic
 from tkinter import Frame
 from tkinter import Misc
 from tkinter import Label
@@ -7,7 +8,7 @@ from ..objects.abstract import AbstractObject
 
 T = TypeVar('T', bound=AbstractObject)
 
-class AbstractForm(Frame):
+class AbstractForm(Frame, Generic[T]):
 
     def __init__(self, master: Misc, default: str):
         Frame.__init__(self, master)
