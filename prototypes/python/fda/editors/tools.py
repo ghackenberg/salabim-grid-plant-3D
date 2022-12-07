@@ -7,6 +7,7 @@ from tkinter import LEFT
 from tkinter import Y
 from tkinter import BOTH
 from tkinter import END
+from ..forms.tool import ToolForm
 
 class ToolsEditor(Frame):
     def __init__(self, master=None):
@@ -38,7 +39,7 @@ class ToolsEditor(Frame):
         def handleButtonRemoveClick():
             if listbox.curselection():
                 listbox.delete(listbox.curselection())
-                label.config(text='Please select a tool type')
+                right.setTool(None)
 
         buttonRemove = Button(buttons, text='Remove', command=handleButtonRemoveClick)
         buttonRemove.pack(side=LEFT)
@@ -48,7 +49,7 @@ class ToolsEditor(Frame):
         def handleListboxSelect(event):
             index = listbox.curselection()
             tool = listbox.get(index)
-            label.config(text=tool)
+            right.setTool(tool)
 
         items = ('Tool Type A', 'Tool Type B', 'Tool Type C')
 
@@ -60,10 +61,5 @@ class ToolsEditor(Frame):
 
         # Right
 
-        right = Frame(self)
-        right.pack(fill=BOTH)
-
-        # Label
-
-        label = Label(right, text='Please select a tool type')
-        label.pack()
+        right = ToolForm(self)
+        right.pack(expand=True, fill=BOTH)
