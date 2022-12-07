@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractForm
-from ..objects.scenario import ScenarioObject
+from ..objects import ScenarioObject
 
 class ScenarioForm(AbstractForm[ScenarioObject]):
 

@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractForm
-from ..objects.tool import ToolObject
+from ..objects import ToolObject
 
 class ToolForm(AbstractForm[ToolObject]):
 

@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractForm
-from ..objects.layout import LayoutObject
+from ..objects import LayoutObject
 
 class LayoutForm(AbstractForm[LayoutObject]):
 

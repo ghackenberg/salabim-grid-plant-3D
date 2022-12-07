@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractForm
-from ..objects.machine import MachineObject
+from ..objects import MachineObject
 
 class MachineForm(AbstractForm[MachineObject]):
 

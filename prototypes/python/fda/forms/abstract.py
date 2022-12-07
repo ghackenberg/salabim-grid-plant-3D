@@ -4,7 +4,7 @@ from tkinter import Frame
 from tkinter import Misc
 from tkinter import Label
 from tkinter import BOTH
-from ..objects.abstract import AbstractObject
+from ..objects import AbstractObject
 
 T = TypeVar('T', bound=AbstractObject)
 

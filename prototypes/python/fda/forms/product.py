@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractForm
-from ..objects.product import ProductObject
+from ..objects import ProductObject
 
 class ProductForm(AbstractForm[ProductObject]):
 

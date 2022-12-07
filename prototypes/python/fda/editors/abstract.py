@@ -11,18 +11,21 @@ from tkinter import LEFT
 from tkinter import Y
 from tkinter import END
 from tkinter import BOTH
-from ..objects.abstract import AbstractObject
-from ..forms.abstract import AbstractForm
+from ..objects import AbstractObject
+from ..objects import ModelObject
+from ..forms import AbstractForm
 
 O = TypeVar('O', bound=AbstractObject)
 F = TypeVar('F', bound=AbstractForm)
 
 class AbstractEditor(Frame, Generic[O, F]):
 
-    def __init__(self, master: Misc=None) -> None:
+    def __init__(self, model: ModelObject, objects: list[O], master: Misc=None):
         Frame.__init__(self, master)
 
-        self.objects: list[AbstractObject] = []
+        self.model = model
+
+        self.objects: list[AbstractObject] = objects
 
         # Container for left sidebar
 

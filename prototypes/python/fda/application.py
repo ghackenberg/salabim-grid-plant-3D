@@ -1,14 +1,15 @@
 from tkinter import Tk
 from tkinter import BOTH
 from tkinter.ttk import Notebook
-from .editors.tools import ToolsEditor
-from .editors.machines import MachinesEditor
-from .editors.products import ProductsEditor
-from .editors.layouts import LayoutsEditor
-from .editors.scenarios import ScenariosEditor
+from .editors import ToolsEditor
+from .editors import MachinesEditor
+from .editors import ProductsEditor
+from .editors import LayoutsEditor
+from .editors import ScenariosEditor
+from .objects import ModelObject
 
 class Application(Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, model: ModelObject, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
 
         width = self.winfo_screenwidth()
@@ -19,11 +20,11 @@ class Application(Tk):
 
         notebook = Notebook(self)
 
-        tools = ToolsEditor(notebook)
-        machines = MachinesEditor(notebook)
-        products = ProductsEditor(notebook)
-        layouts = LayoutsEditor(notebook)
-        scenarios = ScenariosEditor(notebook)
+        tools = ToolsEditor(model, notebook)
+        machines = MachinesEditor(model, notebook)
+        products = ProductsEditor(model, notebook)
+        layouts = LayoutsEditor(model, notebook)
+        scenarios = ScenariosEditor(model, notebook)
 
         notebook.add(tools, text='Tools')
         notebook.add(machines, text='Machines')
