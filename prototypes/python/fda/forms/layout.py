@@ -1,19 +1,8 @@
-from tkinter import Frame
 from tkinter import Misc
-from tkinter import Label
-from tkinter import BOTH
+from .abstract import AbstractForm
 
-class LayoutForm(Frame):
+class LayoutForm(AbstractForm):
 
     def __init__(self, master: Misc=None):
-        Frame.__init__(self, master)
-
-        self.label = Label(self, text='Please select a layout')
-        self.label.pack(expand=True, fill=BOTH)
-    
-    def setLayout(self, layout: str):
-        if layout:
-            self.label.config(text=layout)
-        else:
-            self.label.config(text='Please select a layout')
+        AbstractForm.__init__(self, master, 'Please select a layout')
     

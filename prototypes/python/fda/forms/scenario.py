@@ -1,19 +1,8 @@
-from tkinter import Frame
 from tkinter import Misc
-from tkinter import Label
-from tkinter import BOTH
+from .abstract import AbstractForm
 
-class ScenarioForm(Frame):
+class ScenarioForm(AbstractForm):
 
     def __init__(self, master: Misc=None):
-        Frame.__init__(self, master)
-
-        self.label = Label(self, text='Please select a scenario')
-        self.label.pack(expand=True, fill=BOTH)
-    
-    def setScenario(self, scenario: str):
-        if scenario:
-            self.label.config(text=scenario)
-        else:
-            self.label.config(text='Please select a scenario')
+        AbstractForm.__init__(self, master, 'Please select a scenario')
     

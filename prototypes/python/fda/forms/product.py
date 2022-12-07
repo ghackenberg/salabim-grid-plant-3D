@@ -1,19 +1,8 @@
-from tkinter import Frame
 from tkinter import Misc
-from tkinter import Label
-from tkinter import BOTH
+from .abstract import AbstractForm
 
-class ProductForm(Frame):
+class ProductForm(AbstractForm):
 
     def __init__(self, master: Misc=None):
-        Frame.__init__(self, master)
-
-        self.label = Label(self, text='Please select a product')
-        self.label.pack(expand=True, fill=BOTH)
-    
-    def setProduct(self, product: str):
-        if product:
-            self.label.config(text=product)
-        else:
-            self.label.config(text='Please select a product')
+        AbstractForm.__init__(self, master, 'Please select a product')
     

@@ -1,6 +1,16 @@
-from tkinter import Frame
 from tkinter import Misc
+from .abstract import AbstractEditor
+from ..forms.abstract import AbstractForm
+from ..forms.product import ProductForm
 
-class ProductsEditor(Frame):
+class ProductsEditor(AbstractEditor):
+
     def __init__(self, master: Misc=None):
-        Frame.__init__(self, master)
+        AbstractEditor.__init__(self, master)
+    
+    def createObject(self) -> str:
+        return 'New product type'
+    
+    def createForm(self) -> AbstractForm:
+        return ProductForm(self)
+    

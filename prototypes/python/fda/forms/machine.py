@@ -1,19 +1,8 @@
-from tkinter import Frame
 from tkinter import Misc
-from tkinter import Label
-from tkinter import BOTH
+from .abstract import AbstractForm
 
-class MachineForm(Frame):
+class MachineForm(AbstractForm):
 
     def __init__(self, master: Misc=None):
-        Frame.__init__(self, master)
-
-        self.label = Label(self, text='Please select a machine')
-        self.label.pack(expand=True, fill=BOTH)
-    
-    def setMachine(self, machine: str):
-        if machine:
-            self.label.config(text=machine)
-        else:
-            self.label.config(text='Please select a machine')
+        AbstractForm.__init__(self, master, 'Please select a machine')
     
