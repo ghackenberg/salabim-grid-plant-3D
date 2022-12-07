@@ -1,19 +1,26 @@
 from tkinter import Tk
+from tkinter import BOTH
 from tkinter.ttk import Notebook
-from tabs.tools import *
-from tabs.machines import *
-from tabs.products import *
-from tabs.scenarios import *
+from editors.tools import ToolsEditor
+from editors.machines import MachinesEditor
+from editors.products import ProductsEditor
+from editors.scenarios import ScenariosEditor
 
 root = Tk()
 root.title('Factory Design Automation (FDA) Tool')
 root.attributes('-zoomed', True)
 
 notebook = Notebook(root)
-createToolsTab(notebook)
-createMachinesTab(notebook)
-createProductsTab(notebook)
-createScenariosTab(notebook)
-notebook.pack(expand=1, fill='both')
+
+tools = ToolsEditor(notebook)
+machines = MachinesEditor(notebook)
+products = ProductsEditor(notebook)
+scenarios = ScenariosEditor(notebook)
+
+notebook.add(tools, text='Tools')
+notebook.add(machines, text='Machines')
+notebook.add(products, text='Products')
+notebook.add(scenarios, text='Scenarios')
+notebook.pack(expand=1, fill=BOTH)
 
 root.mainloop()
