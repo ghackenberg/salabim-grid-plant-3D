@@ -1,8 +1,8 @@
 from tkinter import Frame
+from tkinter import Misc
 from tkinter import Button
 from tkinter import Variable
 from tkinter import Listbox
-from tkinter import Label
 from tkinter import LEFT
 from tkinter import Y
 from tkinter import BOTH
@@ -10,7 +10,7 @@ from tkinter import END
 from ..forms.tool import ToolForm
 
 class ToolsEditor(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master: Misc=None):
         Frame.__init__(self, master)
 
         # Container for left sidebar

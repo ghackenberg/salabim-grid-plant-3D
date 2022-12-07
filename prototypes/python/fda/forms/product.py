@@ -1,10 +1,11 @@
 from tkinter import Frame
+from tkinter import Misc
 from tkinter import Label
 from tkinter import BOTH
 
 class ProductForm(Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master: Misc=None):
         Frame.__init__(self, master)
 
         self.label = Label(self, text='Please select a product')
