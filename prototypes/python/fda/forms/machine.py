@@ -16,3 +16,8 @@ class MachineForm(AbstractForm[MachineObject]):
         self.testEntry = Entry(self.formView)
         self.testEntry.grid(row=1, column=1, padx=5, pady=5)
     
+    def setObject(self, object: MachineObject):
+        # Call implementation of base class
+        super().setObject(object)
+        # TODO do other stuff
+    
