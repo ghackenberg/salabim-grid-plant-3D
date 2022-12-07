@@ -4,6 +4,7 @@ from tkinter import Frame
 from tkinter import Misc
 from tkinter import Label
 from tkinter import BOTH
+from ..eventbus import EventBus
 from ..objects import AbstractObject
 
 # The type of object being edited must inherit from abstract object
@@ -11,8 +12,10 @@ T = TypeVar('T', bound=AbstractObject)
 
 class AbstractForm(Frame, Generic[T]):
 
-    def __init__(self, master: Misc, default: str):
+    def __init__(self, master: Misc, eventbus: EventBus, default: str):
         Frame.__init__(self, master)
+        # Remember the event bus to send and receive messages
+        self.eventbus = eventbus
         # Remember default text to show when no object is selected
         self.default = default
         # Remember object, which is currently displayed in the form

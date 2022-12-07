@@ -11,6 +11,7 @@ from tkinter import LEFT
 from tkinter import Y
 from tkinter import END
 from tkinter import BOTH
+from ..eventbus import EventBus
 from ..objects import AbstractObject
 from ..objects import ModelObject
 from ..forms import AbstractForm
@@ -20,8 +21,11 @@ F = TypeVar('F', bound=AbstractForm)
 
 class AbstractEditor(Frame, Generic[O, F]):
 
-    def __init__(self, model: ModelObject, objects: list[O], master: Misc=None):
+    def __init__(self, master: Misc, eventbus: EventBus, model: ModelObject, objects: list[O]):
         Frame.__init__(self, master)
+
+        # Remember the event bus
+        self.eventbus = eventbus
 
         # Remember the model that is being edited
         self.model = model

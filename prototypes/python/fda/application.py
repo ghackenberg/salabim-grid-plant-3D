@@ -1,6 +1,7 @@
 from tkinter import Tk
 from tkinter import BOTH
 from tkinter.ttk import Notebook
+from .eventbus import EventBus
 from .editors import ToolsEditor
 from .editors import MachinesEditor
 from .editors import ProductsEditor
@@ -22,15 +23,18 @@ class Application(Tk):
         # Maximize window on start
         self.geometry(f'{width}x{height}+0+0')
 
+        # Create event bus
+        eventbus = EventBus()
+
         # Create tab view
         notebook = Notebook(self)
 
         # Create tab contents
-        tools = ToolsEditor(model, notebook)
-        machines = MachinesEditor(model, notebook)
-        products = ProductsEditor(model, notebook)
-        layouts = LayoutsEditor(model, notebook)
-        scenarios = ScenariosEditor(model, notebook)
+        tools = ToolsEditor(notebook, eventbus, model)
+        machines = MachinesEditor(notebook, eventbus, model)
+        products = ProductsEditor(notebook, eventbus, model)
+        layouts = LayoutsEditor(notebook, eventbus, model)
+        scenarios = ScenariosEditor(notebook, eventbus, model)
 
         # Add tab contents to tab view
         notebook.add(tools, text='Tools')
