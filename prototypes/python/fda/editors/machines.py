@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractEditor
-from ..forms.abstract import AbstractForm
+from ..objects.machine import MachineObject
 from ..forms.machine import MachineForm
 
 class MachinesEditor(AbstractEditor):
@@ -8,9 +8,9 @@ class MachinesEditor(AbstractEditor):
     def __init__(self, master: Misc=None):
         AbstractEditor.__init__(self, master)
     
-    def createObject(self) -> str:
-        return 'New machine type'
+    def createObject(self) -> MachineObject:
+        return MachineObject(f'New machine type {len(self.objects) + 1}')
     
-    def createForm(self) -> AbstractForm:
+    def createForm(self) -> MachineForm:
         return MachineForm(self)
     

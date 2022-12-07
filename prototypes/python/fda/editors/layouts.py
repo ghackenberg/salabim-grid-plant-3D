@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractEditor
-from ..forms.abstract import AbstractForm
+from ..objects.layout import LayoutObject
 from ..forms.layout import LayoutForm
 
 class LayoutsEditor(AbstractEditor):
@@ -8,9 +8,9 @@ class LayoutsEditor(AbstractEditor):
     def __init__(self, master: Misc=None):
         AbstractEditor.__init__(self, master)
     
-    def createObject(self) -> str:
-        return 'New layout'
+    def createObject(self) -> LayoutObject:
+        return LayoutObject(f'New layout {len(self.objects) + 1}')
     
-    def createForm(self) -> AbstractForm:
+    def createForm(self) -> LayoutForm:
         return LayoutForm(self)
     

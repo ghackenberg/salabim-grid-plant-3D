@@ -1,6 +1,6 @@
 from tkinter import Misc
 from .abstract import AbstractEditor
-from ..forms.abstract import AbstractForm
+from ..objects.product import ProductObject
 from ..forms.product import ProductForm
 
 class ProductsEditor(AbstractEditor):
@@ -8,9 +8,9 @@ class ProductsEditor(AbstractEditor):
     def __init__(self, master: Misc=None):
         AbstractEditor.__init__(self, master)
     
-    def createObject(self) -> str:
-        return 'New product type'
+    def createObject(self) -> ProductObject:
+        return ProductObject(f'New product type {len(self.objects) + 1}')
     
-    def createForm(self) -> AbstractForm:
+    def createForm(self) -> ProductForm:
         return ProductForm(self)
     
