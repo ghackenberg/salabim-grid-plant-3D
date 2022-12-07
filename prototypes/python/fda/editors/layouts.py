@@ -8,7 +8,7 @@ from ..forms import LayoutForm
 class LayoutsEditor(AbstractEditor[LayoutObject, LayoutForm]):
 
     def __init__(self, master: Misc, eventbus: EventBus, model: ModelObject):
-        AbstractEditor.__init__(self, master, eventbus, model, model.layouts)
+        AbstractEditor.__init__(self, master, eventbus, model, model.layouts, 'layout')
     
     def createObject(self):
         return LayoutObject(f'New layout {len(self.objects) + 1}')

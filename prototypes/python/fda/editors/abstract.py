@@ -21,16 +21,20 @@ F = TypeVar('F', bound=AbstractForm)
 
 class AbstractEditor(Frame, Generic[O, F]):
 
-    def __init__(self, master: Misc, eventbus: EventBus, model: ModelObject, objects: list[O]):
+    def __init__(self, master: Misc, eventbus: EventBus, model: ModelObject, objects: list[O], prefix: str):
         Frame.__init__(self, master)
+
+        # Handle object updates
+        eventbus.on(f'{prefix}-update', self.handleObjectUpdate)
 
         # Remember the event bus
         self.eventbus = eventbus
-
         # Remember the model that is being edited
         self.model = model
         # Remember the objects of the model that are mainly edited
-        self.objects: list[AbstractObject] = objects
+        self.objects = objects
+        # Remember event prefix
+        self.prefix = prefix
 
         # Container for left sidebar
         self.left = Frame(self)
@@ -54,6 +58,20 @@ class AbstractEditor(Frame, Generic[O, F]):
         # Right
         self.right: F = self.createForm()
         self.right.pack(expand=True, fill=BOTH)
+    
+    def handleObjectUpdate(self, event: str, object: O):
+        # Remember previous selection
+        selection = self.listbox.curselection()
+        # Determine index of object
+        index = self.objects.index(object)
+        # Dekete old object name
+        self.listbox.delete(index)
+        # Insert new object name
+        self.listbox.insert(index, object.name)
+        # Restore selection (if necessary)
+        if selection and index == selection[0]:
+            self.listbox.selection_clear(0, END)
+            self.listbox.selection_set(index)
 
     def handleButtonAddClick(self):
         # Create the new object
@@ -65,6 +83,8 @@ class AbstractEditor(Frame, Generic[O, F]):
         self.listbox.selection_clear(0, END)
         self.listbox.selection_set(0)
         self.listbox.event_generate("<<ListboxSelect>>")
+        # Emit event
+        self.eventbus.emit(f'{self.prefix}-create', object)
         
     def handleButtonRemoveClick(self):
         # Get selection index
@@ -79,6 +99,8 @@ class AbstractEditor(Frame, Generic[O, F]):
             self.listbox.delete(index[0])
             # Unset the object
             self.right.setObject(None)
+            # Emit event
+            self.eventbus.emit(f'{self.prefix}-delete', object)
         
     def handleListboxSelect(self, event: Event):
         # Get selection index

@@ -25,6 +25,9 @@ class Application(Tk):
 
         # Create event bus
         eventbus = EventBus()
+        eventbus.on('tool-create', lambda event, object: print(event, object.name))
+        eventbus.on('tool-update', lambda event, object: print(event, object.name))
+        eventbus.on('tool-delete', lambda event, object: print(event, object.name))
 
         # Create tab view
         notebook = Notebook(self)
