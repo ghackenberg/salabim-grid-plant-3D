@@ -15,10 +15,11 @@ class Application(Tk):
         # Set window title
         self.title('Factory Design Automation (FDA) Tool')
 
-        # Maximize window on start
+        # Get width and height of screen
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
 
+        # Maximize window on start
         self.geometry(f'{width}x{height}+0+0')
 
         # Create tab view
