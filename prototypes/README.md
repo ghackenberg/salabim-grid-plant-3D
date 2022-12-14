@@ -1,8 +1,6 @@
 # Prototypes
 
-This repository includes three prototypes:
+This repository includes two prototypes both written in Python:
 
-* [Java Prototype](./java)
-* [Python-Chiara Prototype](./python-chiara)
-* [Python-Francesco Prototype](./python-francesco)
-* [Typescript Prototype](./typescript)
+* [Chiara Prototype](./chiara)
+* [Francesco Prototype](./francesco)

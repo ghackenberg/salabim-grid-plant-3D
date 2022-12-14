@@ -6,7 +6,7 @@ In this project we study techniques to automate factory design tasks.
 
 Here are some screenshots of our prototypes:
 
-![Screenshot](./screenshots/python.png)
+![Screenshot](./screenshots/chiara.png)
 
 ## Models
 
@@ -16,13 +16,13 @@ Here are some models explaining our overall idea:
 
 The class model describes the entities of factory design:
 
-![Class Model](./models/class-model.png)
+![Class Model](./models/francesco/class-model.png)
 
 ### Object Model
 
 The object model describes an example factory design:
 
-![Object Model](./models/object-model.png)
+![Object Model](./models/francesco/object-model.png)
 
 ## Folders
 
