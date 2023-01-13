@@ -2,5 +2,5 @@
 
 This repository includes two prototypes both written in Python:
 
-* [Chiara Prototype](./chiara)
-* [Francesco Prototype](./francesco)
+* [Basic Prototype](./basic)
+* [Advanced Prototype](./advanced)
