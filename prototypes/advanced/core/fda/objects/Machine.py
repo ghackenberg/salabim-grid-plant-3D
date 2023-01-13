@@ -1,6 +1,12 @@
 from .MachineType import MachineType
 
 class Machine:
-    def __init__(self, name: str, type: MachineType) -> None:
+    def __init__(self, name: str, machineType: MachineType) -> None:
         self.name = name
-        self.type = type
+        self.machineType = machineType
+
+        machineType.machines.append(self)
+
+        MACHINES.append(self)
+
+MACHINES: list[Machine] = []
