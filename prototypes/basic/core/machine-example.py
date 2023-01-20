@@ -1,71 +1,4 @@
-# Data meta-model
-
-class MachineType:
-    instances = []
-    def __init__(self, name: str, size: int):
-        self.name = name
-        self.size = size
-        self.machineInstances: list[MachineInstance] = []
-        self.operationTypes: list[OperationType] = []
-        MachineType.instances.append(self)
-
-class MachineInstance:
-    instances = []
-    def __init__(self, name: str, position: int, machineType: MachineType):
-        self.name = name
-        self.position = position
-        self.machineType = machineType
-        machineType.machineInstances.append(self)
-        MachineInstance.instances.append(self)
-
-class ToolType:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.operationTypes: list[OperationType] = []
-        ToolType.instances.append(self)
-
-class ObjectType:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.consumesOperationTypes: list[OperationType] = []
-        self.producesOperationTypes: list[OperationType] = []
-        self.orders: list[Order] = []
-        ObjectType.instances.append(self)
-
-class OperationType:
-    instances = []
-    def __init__(self, name: str, duration: int, machineType: MachineType, toolType: ToolType, consumes: ObjectType, produces: ObjectType):
-        self.name = name
-        self.duration = duration
-        self.machineType = machineType
-        self.toolType = toolType
-        self.consumes = consumes
-        self.produces = produces
-        machineType.operationTypes.append(self)
-        toolType.operationTypes.append(self)
-        consumes.consumesOperationTypes.append(self)
-        produces.producesOperationTypes.append(self)
-        OperationType.instances.append(self)
-
-class Scenario:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.orders: list[Order] = []
-        Scenario.instances.append(self)
-
-class Order:
-    instances = []
-    def __init__(self, date: str, amount: int, objectType: ObjectType, scenario: Scenario):
-        self.date = date
-        self.amount = amount
-        self.objectType = objectType
-        self.scenario = scenario
-        objectType.orders.append(self)
-        scenario.orders.append(self)
-        Order.instances.append(self)
+from fda import *
 
 # Data model
 
@@ -108,7 +41,7 @@ print(objectTypeA.name, len(objectTypeA.producesOperationTypes))
 print(objectTypeB.name, len(objectTypeB.producesOperationTypes), objectTypeB.producesOperationTypes[0].name)
 print(objectTypeC.name, len(objectTypeC.producesOperationTypes), objectTypeC.producesOperationTypes[0].name)
 
-with open("jaamsim_model.cfg", "w") as file:
+with open("machine-example.cfg", "w") as file:
     # Simulation
 
     file.write("Simulation RealTime { TRUE }\n")
@@ -134,9 +67,7 @@ with open("jaamsim_model.cfg", "w") as file:
     y = 0
     z = 0
 
-    for instance in ObjectType.instances:
-        objectType: ObjectType = instance
-        
+    for objectType in OBJECT_TYPES:        
         name = objectType.name.replace(' ', '_').replace('.', '_').replace('(', '').replace(')', '')
 
         file.write(f"Define SimEntity {{ {name} }}\n")
@@ -150,9 +81,7 @@ with open("jaamsim_model.cfg", "w") as file:
     y = 0
     z = 0
 
-    for instance in MachineInstance.instances:
-        machineInstance: MachineInstance = instance
-
+    for machineInstance in MACHINE_INSTANCES:
         name = machineInstance.name.replace(' ', '_').replace('.', '_').replace('(', '').replace(')', '')
 
         file.write(f"Define Queue {{ {name}_Queue_Before }}\n")

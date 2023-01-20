@@ -1,71 +1,4 @@
-# Data meta-model
-
-class MachineType:
-    instances = []
-    def __init__(self, name: str, size: int):
-        self.name = name
-        self.size = size
-        self.machineInstances: list[MachineInstance] = []
-        self.operationTypes: list[OperationType] = []
-        MachineType.instances.append(self)
-
-class MachineInstance:
-    instances = []
-    def __init__(self, name: str, position: int, machineType: MachineType):
-        self.name = name
-        self.position = position
-        self.machineType = machineType
-        machineType.machineInstances.append(self)
-        MachineInstance.instances.append(self)
-
-class ToolType:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.operationTypes: list[OperationType] = []
-        ToolType.instances.append(self)
-
-class ObjectType:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.consumesOperationTypes: list[OperationType] = []
-        self.producesOperationTypes: list[OperationType] = []
-        self.orders: list[Order] = []
-        ObjectType.instances.append(self)
-
-class OperationType:
-    instances = []
-    def __init__(self, name: str, duration: int, machineType: MachineType, toolType: ToolType, consumes: ObjectType, produces: ObjectType):
-        self.name = name
-        self.duration = duration
-        self.machineType = machineType
-        self.toolType = toolType
-        self.consumes = consumes
-        self.produces = produces
-        machineType.operationTypes.append(self)
-        toolType.operationTypes.append(self)
-        consumes.consumesOperationTypes.append(self)
-        produces.producesOperationTypes.append(self)
-        OperationType.instances.append(self)
-
-class Scenario:
-    instances = []
-    def __init__(self, name: str):
-        self.name = name
-        self.orders: list[Order] = []
-        Scenario.instances.append(self)
-
-class Order:
-    instances = []
-    def __init__(self, date: str, amount: int, objectType: ObjectType, scenario: Scenario):
-        self.date = date
-        self.amount = amount
-        self.objectType = objectType
-        self.scenario = scenario
-        objectType.orders.append(self)
-        scenario.orders.append(self)
-        Order.instances.append(self)
+from fda import *
 
 # Data model
 
@@ -102,10 +35,9 @@ orderD = Order("4 d", 10, objectTypeB, scenarioA)
 orderE = Order("5 d", 30, objectTypeB, scenarioA)
 orderF = Order("6 d", 45, objectTypeA, scenarioA)
 
-for instance in Scenario.instances:
-    scenario: Scenario = instance
+for scenario in SCENARIOS:
 
-    with open(f"{scenario.name}.cfg", "w") as file:
+    with open(f"order-example {scenario.name}.cfg", "w") as file:
         # Simulation
 
         file.write("Simulation RealTime { TRUE }\n")
@@ -134,8 +66,7 @@ for instance in Scenario.instances:
 
         count = 0
 
-        for instance in scenario.orders:
-            order: Order = instance
+        for order in scenario.orders:
 
             file.write(f"Define SimEntity {{ Order_Prototype_{count} }}\n")
             file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ Type '\"{order.objectType.name}\"' }} }}\n")
