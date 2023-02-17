@@ -1,7 +1,6 @@
 # Prototypes
 
-This repository includes three prototypes:
+This repository includes two prototypes both written in Python:
 
-* [Java Prototype](./java)
-* [Python Prototype](./python)
-* [Typescript Prototype](./typescript)
+* [Basic Prototype](./basic)
+* [Advanced Prototype](./advanced)
