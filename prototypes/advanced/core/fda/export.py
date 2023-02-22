@@ -3,6 +3,26 @@ import matplotlib
 
 from .model import *
 
+def toNetworkXBasic():
+    graph = networkx.Graph()
+
+    for machineType in MACHINE_TYPES:
+        graph.add_node(machineType.name)
+    for toolType in TOOL_TYPES:
+        graph.add_node(toolType.name)
+    for productType in PRODUCT_TYPES:
+        graph.add_node(productType.name)
+    for processStep in PROCESS_STEPS:
+        graph.add_node(processStep.name)
+        graph.add_edge(processStep.name, processStep.machineType.name)
+        graph.add_edge(processStep.name, processStep.toolType.name)
+        graph.add_edge(processStep.name, processStep.consumesProductType.name)
+        graph.add_edge(processStep.name, processStep.producesProductType.name)
+
+    networkx.draw_networkx(graph)
+
+    matplotlib.pyplot.show()
+
 def toNetworkX():
     graph = networkx.Graph()
 
@@ -44,7 +64,6 @@ def toNetworkX():
     networkx.draw_networkx(graph)
 
     matplotlib.pyplot.show()
-
 
 def toGraphML():
     graphml = '<graphml>'
