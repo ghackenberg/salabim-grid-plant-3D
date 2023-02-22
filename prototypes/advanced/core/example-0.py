@@ -17,12 +17,12 @@ productType3 = ProductType('Product Type 3', 14, 15, 15, 6)
 
 
 # Create Process Steps
-processSteps1 = ProcessStep('Process 1', 20, 20, 0.15, machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process 2', 15, 24, 0.20, machineType1, toolType2, productType1, productType3)
+processSteps1 = ProcessStep('Process step 1', 20, 20, 0.15, machineType1, toolType1, productType1, productType2)
+processSteps2 = ProcessStep('Process step 2', 15, 24, 0.20, machineType1, toolType2, productType1, productType3)
 
 
 #Create Customer
-customer1 = Customer('Rossi', 'Roma', 1)
+customer1 = Customer('Customer 1', 'Roma', 1)
 
 
 #Create Scenario
@@ -43,8 +43,8 @@ corridor1 = Corridor(1, 2, layout1)
 
 
 # Create machines
-machine1_1 = Machine('Machine 1.1', machineType1, corridor1)
-machine1_2 = Machine('Machine 1.2', machineType1, corridor1)
+machine1 = Machine('Machine 1', machineType1, corridor1)
+machine2 = Machine('Machine 2', machineType1, corridor1)
 
 
 #Create Simulation
