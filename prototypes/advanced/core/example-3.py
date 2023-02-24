@@ -25,13 +25,8 @@ productType4 = ProductType('Product Type 4', 22, 23, 12, 7)
 processSteps1 = ProcessStep('Process 1', 20, 20, 0.15, machineType1, toolType1, productType1, productType2)
 processSteps2 = ProcessStep('Process 2', 15, 24, 0.20, machineType1, toolType2, productType2, productType3)
 processSteps3 = ProcessStep('Process 3', 10, 24, 0.11, machineType2, toolType3, productType3, productType4)
-processSteps3 = ProcessStep('Process 3', 10, 24, 0.11, machineType3, toolType2, productType2, productType4)
+processSteps3_1 = ProcessStep('Process 3.1', 10, 24, 0.11, machineType3, toolType2, productType2, productType4)
 processSteps4 = ProcessStep('Process 4', 3, 23, 0.1, machineType4, toolType3, productType4, productType1)
-
-
-# Create Customer
-customer1 = Customer('Rossi', 'Roma', 1)
-customer2 = Customer('Alberti', 'Vienna', 2)
 
 
 #Create Scenario
@@ -42,23 +37,23 @@ scenario4 = Scenario('Scenario 4')
 
 
 # Create CustomerOrder
-order1 = Order(1, 200, 11, 20, productType1, customer1, scenario1)
-order2 = Order(2, 400, 25, 30, productType2, customer2, scenario2)
-order3 = Order(3, 500, 11, 20, productType3, customer1, scenario3)
-order4 = Order(4, 100, 25, 30, productType4, customer2, scenario4)
+order1 = Order(1, 200, 11, 20, productType1, scenario1)
+order2 = Order(2, 400, 25, 30, productType2,  scenario2)
+order3 = Order(3, 500, 11, 20, productType3,  scenario3)
+order4 = Order(4, 100, 25, 30, productType4,  scenario4)
 
 
 #Create Layout
-layout1 = Layout('Layout 1', 500, 10, 5, 4)
-layout2 = Layout('Layout 2', 350, 11, 3, 3)
+layout1 = Layout('Layout 1',  10, 5)
+layout2 = Layout('Layout 2',  11, 3)
 
 
 #Create T_Corridor
-corridor1 = Corridor(1, 2, layout1)
-corridor2 = Corridor(2, 1, layout1)
-corridor3 = Corridor(3, 2, layout1)
-corridor4 = Corridor(4, 1, layout2)
-corridor5 = Corridor(5, 2, layout2)
+corridor1 = Corridor(1, 500,  layout1)
+corridor2 = Corridor(2, 350,  layout1)
+corridor3 = Corridor(3, 200,  layout1)
+corridor4 = Corridor(4, 150,  layout2)
+corridor5 = Corridor(5, 150,  layout2)
 
 
 # Create machines
@@ -78,7 +73,7 @@ simulation3 = Simulation(3, layout1, scenario3)
 simulation4 = Simulation(4, layout1, scenario4)
 
 
-toNetworkX()
+toNetworkXMinimal()
 
 
 #for ProcessSteps in ProductType2.producingProcessSteps:

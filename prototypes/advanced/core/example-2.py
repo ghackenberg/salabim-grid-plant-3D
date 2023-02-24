@@ -28,12 +28,6 @@ processSteps3 = ProcessStep('Process 3', 10, 24, 0.11, machineType3, toolType3,p
 processSteps4 = ProcessStep('Process 3', 10, 24, 0.11, machineType4, toolType2,productType2, productType3)
 
 
-# Create Customer
-customer1 = Customer('Rossi', 'Roma', 1)
-customer2 = Customer('Alberti', 'Vienna', 2)
-customer3 = Customer('John', 'London', 3)
-
-
 #Create Scenario
 scenario1 = Scenario('Scenario 1')
 scenario2 = Scenario('Scenario 2')
@@ -41,24 +35,24 @@ scenario3 = Scenario('Scenario 3')
 
 
 # Create CustomerOrder
-order1 = Order(1, 30, 11, 20, productType1, customer1, scenario1)
-order2 = Order(2, 25, 25, 30, productType2, customer1, scenario1)
-order3 = Order(3, 55, 11, 20, productType3, customer2, scenario2)
-order4 = Order(4, 30, 25, 30, productType4, customer3, scenario3)
+order1 = Order(1, 30, 11, 20, productType1,  scenario1)
+order2 = Order(2, 25, 25, 30, productType2,  scenario1)
+order3 = Order(3, 55, 11, 20, productType3,  scenario2)
+order4 = Order(4, 30, 25, 30, productType4,  scenario3)
 
 
 #Create Layout
-layout1 = Layout('Layout 1', 200, 10, 5, 4)
-layout2 = Layout('Layout 2', 300, 11, 3, 3)
-layout3 = Layout('Layout 3', 150, 5, 1, 3)
+layout1 = Layout('Layout 1', 10, 5)
+layout2 = Layout('Layout 2', 11, 3)
+layout3 = Layout('Layout 3', 5, 1)
 
 
 #Create T_Corridor
-corridor1_1 = Corridor(1, 2, layout1)
-corridor1_2 = Corridor(1, 2, layout3)
-corridor2 = Corridor(2, 1, layout1)
-corridor3 = Corridor(3, 3, layout2)
-corridor4 = Corridor(4, 2, layout3)
+corridor1_1 = Corridor(1, 200, layout1)
+corridor1_2 = Corridor(1, 200, layout3)
+corridor2 = Corridor(2, 300, layout1)
+corridor3 = Corridor(3, 150,  layout2)
+corridor4 = Corridor(4, 150, layout3)
 
 
 # Create machines

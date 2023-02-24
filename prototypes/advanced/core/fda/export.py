@@ -19,9 +19,30 @@ def toNetworkXBasic():
         node_color.append("#0000ff")
     for processStep in PROCESS_STEPS:
         graph.add_node(processStep.name)
-        graph.add_edge(processStep.name, processStep.machineType.name)
-        graph.add_edge(processStep.name, processStep.toolType.name)
-        graph.add_edge(processStep.name, processStep.consumesProductType.name)
+        graph.add_edge(processStep.machineType.name, processStep.name)
+        graph.add_edge(processStep.toolType.name, processStep.name)
+        graph.add_edge(processStep.consumesProductType.name, processStep.name)
+        graph.add_edge(processStep.name, processStep.producesProductType.name)
+        node_color.append("#ff00ff")
+
+    networkx.draw_networkx(graph, arrows = True, node_color = node_color)
+
+    matplotlib.pyplot.show()
+
+
+def toNetworkXMinimal():
+    graph = networkx.DiGraph()
+
+    node_color: list[str] = []
+
+
+    for productType in PRODUCT_TYPES:
+        graph.add_node(productType.name)
+        node_color.append("#0000ff")
+    for processStep in PROCESS_STEPS:
+        graph.add_node(processStep.name)
+
+        graph.add_edge(processStep.consumesProductType.name, processStep.name)
         graph.add_edge(processStep.name, processStep.producesProductType.name)
         node_color.append("#ff00ff")
 
