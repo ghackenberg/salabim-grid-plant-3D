@@ -385,12 +385,18 @@ for scenario in SCENARIOS:
             file.write(f"Machine_{count} StateAssignment {{ 'this.obj.FinalState' }}\n")
             file.write(f"Machine_{count} ImmediateThresholdList {{ Machine_Controller_{count} }}\n")
             operationTypes = ''
+            operationStates = ''
+            operationTimes = ''
             for operationType in machineInstance.machineType.operationTypes:
                 if operationTypes:
                     operationTypes = f'{operationTypes}, "{operationType.name}"'
+                    operationStates = f'{operationStates}, "{operationType.name}"="{operationType.produces.name}"'
+                    operationTimes = f'{operationTimes}, "{operationType.name}"={operationType.duration}'
                 else:
                     operationTypes = f'"{operationType.name}"'
-            file.write(f"Machine_{count} AttributeDefinitionList {{ OperationTypes '{{ {operationTypes} }}' }}\n")
+                    operationStates = f'"{operationType.name}"="{operationType.produces.name}"'
+                    operationTimes = f'"{operationType.name}"={operationType.duration}'
+            file.write(f"Machine_{count} AttributeDefinitionList {{ {{ OperationTypes '{{ {operationTypes} }}' }} {{ OperationStates '{{ {operationStates} }}' }} {{ OperationTimes '{{ {operationTimes} }}' }} }}\n")
 
             #Add Connections
             file.write(f"Add_{count} WaitQueue {{ Queue_A_M_{count} }}\n")
