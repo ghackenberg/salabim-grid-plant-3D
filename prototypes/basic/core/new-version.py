@@ -173,7 +173,6 @@ for scenario in SCENARIOS:
         file.write(f"Define Branch {{ Direction_0 }}\n")
         file.write(f"Define EntityConveyor {{ Production_line_0}}\n")
         file.write(f"Define EntityConveyor {{ Production_line_back_0}}\n")
-        file.write(f"Define EntityConveyor {{ Wait_0}}\n")
         file.write(f"Define Queue {{ ContainerQueue_0 }}\n")
         file.write(f"Define AddTo {{ Add_0 }}\n")
         file.write(f"Define EntityConveyor {{ Parallel_2_0 }}\n")
@@ -187,7 +186,6 @@ for scenario in SCENARIOS:
 
         for machineInstance in MACHINE_INSTANCES:
 
-            file.write(f"Define EntityConveyor {{ Wait_{count} }}\n")
             file.write(f"Define EntityConveyor {{ Parallel_2_{count} }}\n")
             file.write(f"Define EntityConveyor {{ Parallel_1_{count} }}\n")
             file.write(f"Define Queue {{ ContainerQueue_{count} }}\n")
@@ -252,8 +250,8 @@ for scenario in SCENARIOS:
 
         # START PARAMETERS - branch
         file.write(f"Direction_0 Position {{ {x - 5} {y + 20} 0 m }}\n")
-        file.write(f"Direction_0 NextComponentList {{ Production_line_back_0 Wait_0 Parallel_1_0 }}\n")
-        file.write(f"Direction_0 Choice {{ 'this.obj.Count == 0 ? 1 : 3' }}\n")
+        file.write(f"Direction_0 NextComponentList {{ Production_line_back_0 Parallel_1_0 }}\n")
+        file.write(f"Direction_0 Choice {{ 'this.obj.Count == 0 ? 1 : 2' }}\n")
         
         # START PARAMETERS - DownLine
         file.write(f"Parallel_2_0 NextComponent {{ Direction_0 }}\n")
@@ -266,12 +264,6 @@ for scenario in SCENARIOS:
         file.write(f"Parallel_1_0 Position {{ {x - 1} {y + 21} 0 m }}\n")
         file.write(f"Parallel_1_0 Points {{ {{ {x - 1} {y + 21} 0 m }} {{ {x + 1} {y + 21} 0  m }} }}\n") 
         file.write(f"Parallel_1_0 TravelTime {{ 35 s }}\n")
-
-        # START PARAMETERS - Wait functions
-        file.write(f"Wait_0 NextComponent {{ Direction_0 }}\n")
-        file.write(f"Wait_0 Position {{ {x - 6} {y + 22} 0 m }}\n")
-        file.write(f"Wait_0 Points {{ {{ {x - 4} {y + 22} 0 m }} {{ {x - 6} {y + 22} 0  m }} }}\n") 
-        file.write(f"Wait_0 TravelTime {{ 35 s }}\n")
 
         # START PARAMETERS - conveyor PL
         file.write(f"Production_line_0 NextComponent {{ Direction_0 }}\n")
@@ -312,8 +304,8 @@ for scenario in SCENARIOS:
 
             #branch
             file.write(f"Direction_{count} Position {{ {x + 5} {y + 20} 0 m }}\n")
-            file.write(f"Direction_{count} NextComponentList {{ Production_line_back_{count} Wait_{count} Parallel_1_{count} Parallel_2_{count - 1} }}\n")
-            file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 4 : 3' }}\n")
+            file.write(f"Direction_{count} NextComponentList {{ Production_line_back_{count} Parallel_1_{count} Parallel_2_{count - 1} }}\n")
+            file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 3 : 2' }}\n")
             
             #DownLine
             file.write(f"Parallel_2_{count} NextComponent {{ Direction_{count} }}\n")
@@ -326,12 +318,6 @@ for scenario in SCENARIOS:
             file.write(f"Parallel_1_{count} Position {{ {x + 9} {y + 21} 0 m }}\n")
             file.write(f"Parallel_1_{count} Points {{ {{ {x + 9} {y + 21} 0 m }} {{ {x + 11} {y + 21} 0  m }} }}\n") 
             file.write(f"Parallel_1_{count} TravelTime {{ 35 s }}\n")
-
-            #Wait functions
-            file.write(f"Wait_{count} NextComponent {{ Direction_{count} }}\n")
-            file.write(f"Wait_{count} Position {{ {x + 4} {y + 22} 0 m }}\n")
-            file.write(f"Wait_{count} Points {{ {{ {x + 6} {y + 22} 0 m }} {{ {x + 4} {y + 22} 0  m }} }}\n") 
-            file.write(f"Wait_{count} TravelTime {{ 35 s }}\n")
 
             #conveyor PL
             file.write(f"Production_line_{count} NextComponent {{ Direction_{count} }}\n")
