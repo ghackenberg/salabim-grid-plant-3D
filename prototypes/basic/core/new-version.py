@@ -305,7 +305,7 @@ for scenario in SCENARIOS:
             #branch
             file.write(f"Direction_{count} Position {{ {x + 5} {y + 20} 0 m }}\n")
             file.write(f"Direction_{count} NextComponentList {{ Production_line_back_{count} Parallel_1_{count} Parallel_2_{count - 1} }}\n")
-            file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 3 : 2' }}\n")
+            file.write(f"Direction_{count} Choice {{ '(this.obj.Count == 0) ? (([Back_Controller_{count}].Open) ? (3) : (1)) : ((this.obj.obj.State == this.obj.obj.FinalState) ? (2) : (1))' }}\n")
             
             #DownLine
             file.write(f"Parallel_2_{count} NextComponent {{ Direction_{count} }}\n")
@@ -346,7 +346,7 @@ for scenario in SCENARIOS:
 
             #Threshold Backward 
             file.write(f"Back_Controller_{count} Position {{ {x + 2} {y + 15} 0 m }}\n")
-            file.write(f"Back_Controller_{count} OpenCondition {{'[Production_line_back_{count}].NumberInProgress == 0'}}\n")
+            file.write(f"Back_Controller_{count} OpenCondition {{ '[Queue_B_M_{count}].QueueLength + [Machine_{count}].NumberInProgress == 0' }}\n")
 
             #Threshold Add
             file.write(f"Add_Controller_{count} Position {{ {x + 9} {y + 12} 0 m }}\n")
@@ -363,6 +363,8 @@ for scenario in SCENARIOS:
             file.write(f"Machine_{count} Position {{ {x + 7} {y + 8} 0 m }}\n")
             file.write(f"Machine_{count} NextComponent {{ Queue_A_M_{count} }}\n")
             file.write(f"Machine_{count} WaitQueue {{ Queue_B_M_{count} }}\n")
+            file.write(f"Machine_{count} ServiceTime {{ 30 s }}\n")
+            file.write(f"Machine_{count} StateAssignment {{ 'this.obj.FinalState' }}\n")
             file.write(f"Machine_{count} ImmediateThresholdList {{ Machine_Controller_{count} }}\n")
             operationTypes = ''
             for operationType in machineInstance.machineType.operationTypes:
