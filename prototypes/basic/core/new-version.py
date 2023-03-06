@@ -193,6 +193,7 @@ for scenario in SCENARIOS:
             file.write(f"Define Branch {{ Direction_{count} }}\n")
             file.write(f"Define EntityConveyor {{ Production_line_{count} }}\n")
             file.write(f"Define AddTo {{ Add_{count} }}\n")
+            file.write(f"Define Assign {{ Choose_Operation_{count} }}\n")
             file.write(f"Define Queue {{ Queue_B_M_{count} }}\n")
             file.write(f"Define Queue {{ Queue_A_M_{count} }}\n")
             file.write(f"Define ExpressionThreshold {{ Machine_Controller_{count} }}\n")
@@ -294,7 +295,7 @@ for scenario in SCENARIOS:
         for machineInstance in MACHINE_INSTANCES:
         
             #ContainerQueue
-            file.write(f"ContainerQueue_{count} Position {{ {x + 4} {y + 14} 0 m }}\n")
+            file.write(f"ContainerQueue_{count} Position {{ {x + 3} {y + 14} 0 m }}\n")
 
             #conveyor back
             file.write(f"Production_line_back_{count} NextComponent {{ ContainerQueue_{count} }}\n")
@@ -316,7 +317,7 @@ for scenario in SCENARIOS:
             file.write(f"   (this.obj.obj.State == this.obj.obj.FinalState) ? (")
             file.write(f"       2")
             file.write(f"   ) : (")
-            file.write(f'       (size(this.obj.obj.StateMachineOperationTypes(this.obj.obj.State)("{machineInstance.name}"))) ? (')
+            file.write(f'       (size(this.obj.obj.StateMachineOperations(this.obj.obj.State)("{machineInstance.name}"))) ? (')
             file.write(f"           1")
             file.write(f"       ) : (")
             file.write(f"           2")
@@ -349,7 +350,7 @@ for scenario in SCENARIOS:
             file.write(f"Add_{count} ContainerQueue {{ ContainerQueue_{count} }}\n")
 
             #Queue before machine
-            file.write(f"Queue_B_M_{count} Position {{ {x + 4} {y + 10} 0 m }}\n")
+            file.write(f"Queue_B_M_{count} Position {{ {x + 3} {y + 8} 0 m }}\n")
 
             #Queue after machine
             file.write(f"Queue_A_M_{count} Position {{ {x + 7} {y + 10} 0 m }}\n")
@@ -359,11 +360,11 @@ for scenario in SCENARIOS:
             file.write(f"Machine_Controller_{count} OpenCondition {{'[Production_line_{count}].NumberInProgress == 0'}}\n")
 
             #Threshold Remove
-            file.write(f"Remove_Controller_{count} Position {{ {x + 2} {y + 12} 0 m }}\n")
+            file.write(f"Remove_Controller_{count} Position {{ {x + 1} {y + 12} 0 m }}\n")
             file.write(f"Remove_Controller_{count} OpenCondition {{'[Queue_A_M_{count}].QueueLength == 0'}}\n")
 
             #Threshold Backward 
-            file.write(f"Back_Controller_{count} Position {{ {x + 2} {y + 15} 0 m }}\n")
+            file.write(f"Back_Controller_{count} Position {{ {x + 1} {y + 15} 0 m }}\n")
             file.write(f"Back_Controller_{count} OpenCondition {{ '[Queue_B_M_{count}].QueueLength + [Machine_{count}].NumberInProgress == 0' }}\n")
 
             #Threshold Add
@@ -371,9 +372,9 @@ for scenario in SCENARIOS:
             file.write(f"Add_Controller_{count} OpenCondition {{'[Queue_A_M_{count}].QueueLength == 1 || [Add_{count}].NumberInProgress == 1'}}\n")
 
             #Remove
-            file.write(f"Remove_{count} Position {{ {x + 4} {y + 12} 0 m }}\n")
+            file.write(f"Remove_{count} Position {{ {x + 3} {y + 12} 0 m }}\n")
             file.write(f"Remove_{count} NextForContainers {{ Production_line_{count} }}\n")
-            file.write(f"Remove_{count} NextComponent {{ Queue_B_M_{count} }}\n")
+            file.write(f"Remove_{count} NextComponent {{ Choose_Operation_{count} }}\n")
             file.write(f"Remove_{count} WaitQueue {{ ContainerQueue_{count} }}\n")
             file.write(f"Remove_{count} ImmediateThresholdList {{ Remove_Controller_{count} }}\n")
 
@@ -381,8 +382,6 @@ for scenario in SCENARIOS:
             file.write(f"Machine_{count} Position {{ {x + 7} {y + 8} 0 m }}\n")
             file.write(f"Machine_{count} NextComponent {{ Queue_A_M_{count} }}\n")
             file.write(f"Machine_{count} WaitQueue {{ Queue_B_M_{count} }}\n")
-            file.write(f"Machine_{count} ServiceTime {{ 30 s }}\n")
-            file.write(f"Machine_{count} StateAssignment {{ 'this.obj.FinalState' }}\n")
             file.write(f"Machine_{count} ImmediateThresholdList {{ Machine_Controller_{count} }}\n")
             operationTypes = ''
             operationStates = ''
@@ -396,7 +395,14 @@ for scenario in SCENARIOS:
                     operationTypes = f'"{operationType.name}"'
                     operationStates = f'"{operationType.name}"="{operationType.produces.name}"'
                     operationTimes = f'"{operationType.name}"={operationType.duration}'
-            file.write(f"Machine_{count} AttributeDefinitionList {{ {{ OperationTypes '{{ {operationTypes} }}' }} {{ OperationStates '{{ {operationStates} }}' }} {{ OperationTimes '{{ {operationTimes} }}' }} }}\n")
+            file.write(f"Machine_{count} AttributeDefinitionList {{ {{ OperationTypes '{{ {operationTypes} }}' }} {{ OperationStates '{{ {operationStates} }}' }} {{ OperationTimes '{{ {operationTimes} }}' }} {{ CurrentOperation '\"\"' }} }}\n")
+            file.write(f"Machine_{count} ServiceTime {{ 'this.OperationTimes(this.CurrentOperation) * 1 [min]' }}\n")
+            file.write(f"Machine_{count} StateAssignment {{ 'this.OperationStates(this.CurrentOperation)' }}\n")
+
+            #Assign
+            file.write(f"Choose_Operation_{count} Position {{ {x + 3} {y + 10} 0 m }}\n")
+            file.write(f"Choose_Operation_{count} NextComponent {{ Queue_B_M_{count} }}\n")
+            file.write(f"Choose_Operation_{count} AttributeAssignmentList {{ {{ '[Machine_{count}].CurrentOperation = this.obj.StateMachineOperations(this.obj.State)(\"{machineInstance.name}\")(1)' }} }}\n")
 
             #Add Connections
             file.write(f"Add_{count} WaitQueue {{ Queue_A_M_{count} }}\n")
@@ -414,12 +420,12 @@ for scenario in SCENARIOS:
         # END PARAMETERS
                     
         # END PARAMETERS - ContainerQueue
-        file.write(f"FinalQueue Position {{ {x + 4} 12 0 m }}\n")
+        file.write(f"FinalQueue Position {{ {x + 3} 12 0 m }}\n")
 
         # END PARAMETERS - conveyor PL
         file.write(f"Final_line NextComponent {{ FinalQueue }}\n")
-        file.write(f"Final_line Position {{ {x + 4} 18 0 m }}\n")
-        file.write(f"Final_line Points {{ {{ {x + 4} 18 0 m }} {{ {x + 4} 15 0  m }} }}\n")
+        file.write(f"Final_line Position {{ {x + 3} 18 0 m }}\n")
+        file.write(f"Final_line Points {{ {{ {x + 3} 18 0 m }} {{ {x + 3} 15 0  m }} }}\n")
         file.write(f"Final_line TravelTime {{ 35 s }}\n")  
 
         # END PARAMETERS - branch
@@ -429,15 +435,15 @@ for scenario in SCENARIOS:
 
         # END PARAMETERS - conveyor back
         file.write(f"Final_line_back NextComponent {{ Direction_{count} }}\n")
-        file.write(f"Final_line_back Position {{ {x + 6} 15 0 m }}\n")
-        file.write(f"Final_line_back Points {{ {{ {x + 6} 15 0 m }} {{ {x + 6} 18 0  m }} }}\n") 
+        file.write(f"Final_line_back Position {{ {x + 7} 15 0 m }}\n")
+        file.write(f"Final_line_back Points {{ {{ {x + 7} 15 0 m }} {{ {x + 7} 18 0  m }} }}\n") 
         file.write(f"Final_line_back TravelTime {{ 35 s }}\n")                   
                 
         # END PARAMETERS - Customer Sink
-        file.write(f"Customer Position {{ {x + 6} 8 0 m }}\n")
+        file.write(f"Customer Position {{ {x + 7} 8 0 m }}\n")
 
         # END PARAMETERS - Remove
-        file.write(f"Last_Remove Position {{ {x + 6} 12 0 m }}\n")
+        file.write(f"Last_Remove Position {{ {x + 7} 12 0 m }}\n")
         file.write(f"Last_Remove NextForContainers {{ Final_line_back}}\n")
         file.write(f"Last_Remove NextComponent {{ Customer }}\n")
         file.write(f"Last_Remove WaitQueue {{ FinalQueue }}\n")
@@ -456,44 +462,44 @@ for scenario in SCENARIOS:
             processes = calculateProcesses(order.objectType)
 
             # Calcualte mapping between states, machines, and operations
-            stateMachineOperationTypes: dict[str, dict[str, list[str]]] = {}
+            stateMachineOperations: dict[str, dict[str, list[str]]] = {}
             for process in processes:
                 for operationType in process:
                     objectTypeName = operationType.consumes.name
-                    if not objectTypeName in stateMachineOperationTypes:
-                        stateMachineOperationTypes[objectTypeName] = {}
+                    if not objectTypeName in stateMachineOperations:
+                        stateMachineOperations[objectTypeName] = {}
                     for machineInstance in operationType.machineType.machineInstances:
-                        if not machineInstance.name in stateMachineOperationTypes[objectTypeName]:
-                            stateMachineOperationTypes[objectTypeName][machineInstance.name] = []
-                        stateMachineOperationTypes[objectTypeName][machineInstance.name].append(operationType.name)
+                        if not machineInstance.name in stateMachineOperations[objectTypeName]:
+                            stateMachineOperations[objectTypeName][machineInstance.name] = []
+                        stateMachineOperations[objectTypeName][machineInstance.name].append(operationType.name)
             
             # Translate data structure to JaamSim scripting language
-            stateMachineOperationTypesExpr = f'{{'
+            stateMachineOperationsExpr = f'{{'
             states = 0
             for objectType in OBJECT_TYPES:
                 separator = ', ' if states else ''
-                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{objectType.name}"={{'
+                stateMachineOperationsExpr = f'{stateMachineOperationsExpr}{separator}"{objectType.name}"={{'
                 machineInstances = 0
                 for machineInstance in MACHINE_INSTANCES:
                     separator = ', ' if machineInstances else ''
-                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{machineInstance.name}"={{'
-                    if objectType.name in stateMachineOperationTypes and machineInstance.name in stateMachineOperationTypes[objectType.name]:
+                    stateMachineOperationsExpr = f'{stateMachineOperationsExpr}{separator}"{machineInstance.name}"={{'
+                    if objectType.name in stateMachineOperations and machineInstance.name in stateMachineOperations[objectType.name]:
                         operationTypes = 0
-                        for operationTypeName in stateMachineOperationTypes[objectType.name][machineInstance.name]:
+                        for operationTypeName in stateMachineOperations[objectType.name][machineInstance.name]:
                             separator = ', ' if operationTypes else ''
-                            stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{operationTypeName}"'
+                            stateMachineOperationsExpr = f'{stateMachineOperationsExpr}{separator}"{operationTypeName}"'
                             operationTypes = operationTypes + 1
-                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
+                    stateMachineOperationsExpr = f'{stateMachineOperationsExpr}}}'
                     machineInstances = machineInstances + 1
-                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
+                stateMachineOperationsExpr = f'{stateMachineOperationsExpr}}}'
                 states = states + 1
-            stateMachineOperationTypesExpr = f"{stateMachineOperationTypesExpr}}}"
+            stateMachineOperationsExpr = f"{stateMachineOperationsExpr}}}"
 
             # Calculate initial state
             source = processes[0][0].consumes
 
             file.write(f"Define SimEntity {{ Order_Prototype_{count} }}\n")
-            file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ FinalState '\"{order.objectType.name}\"' }} {{ StateMachineOperationTypes '{stateMachineOperationTypesExpr}' }} }}\n")
+            file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ FinalState '\"{order.objectType.name}\"' }} {{ StateMachineOperations '{stateMachineOperationsExpr}' }} }}\n")
             #set initial state as raw
             file.write(f"Order_Prototype_{count} InitialState {{ '{source.name}' }}\n")
             file.write(f"Order_Prototype_{count} Position {{ {x - 12} 0 0 m }}\n")
