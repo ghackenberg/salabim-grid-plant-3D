@@ -118,12 +118,12 @@ scenarioA = Scenario("Best Case")
 scenarioB = Scenario("Worst Case")
 scenarioC = Scenario("Average Case")
 
-orderA = Order("1 d", 10, objectTypeC, scenarioA)
-orderB = Order("2 d", 30, objectTypeC, scenarioA)
-orderC = Order("3 d", 45, objectTypeC, scenarioA)
-orderD = Order("4 d", 10, objectTypeB, scenarioA)
-orderE = Order("5 d", 30, objectTypeB, scenarioA)
-orderF = Order("6 d", 45, objectTypeB, scenarioA)
+orderA = Order("0 d", 10, objectTypeC, scenarioA)
+orderB = Order("0 d", 30, objectTypeC, scenarioA)
+orderC = Order("0 d", 45, objectTypeC, scenarioA)
+orderD = Order("0 d", 10, objectTypeB, scenarioA)
+orderE = Order("0 d", 30, objectTypeB, scenarioA)
+orderF = Order("0 d", 45, objectTypeB, scenarioA)
 
 print(calculateChains(objectTypeC))
 print(calculateSources(objectTypeC))
@@ -253,7 +253,7 @@ for scenario in SCENARIOS:
         # START PARAMETERS - branch
         file.write(f"Direction_0 Position {{ {x - 5} {y + 20} 0 m }}\n")
         file.write(f"Direction_0 NextComponentList {{ Production_line_back_0 Wait_0 Parallel_1_0 }}\n")
-        file.write(f"Direction_0 Choice {{ 'this.obj.obj ? 1 : 2' }}\n")
+        file.write(f"Direction_0 Choice {{ 'this.obj.Count == 0 ? 1 : 3' }}\n")
         
         # START PARAMETERS - DownLine
         file.write(f"Parallel_2_0 NextComponent {{ Direction_0 }}\n")
@@ -313,7 +313,7 @@ for scenario in SCENARIOS:
             #branch
             file.write(f"Direction_{count} Position {{ {x + 5} {y + 20} 0 m }}\n")
             file.write(f"Direction_{count} NextComponentList {{ Production_line_back_{count} Wait_{count} Parallel_1_{count} Parallel_2_{count - 1} }}\n")
-            file.write(f"Direction_{count} Choice {{ 'this.obj.obj ? 1 : 2' }}\n")
+            file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 4 : 3' }}\n")
             
             #DownLine
             file.write(f"Parallel_2_{count} NextComponent {{ Direction_{count} }}\n")
@@ -413,7 +413,7 @@ for scenario in SCENARIOS:
         # END PARAMETERS - branch
         file.write(f"Direction_{count} Position {{ {x + 5} 20 0 m }}\n")
         file.write(f"Direction_{count} NextComponentList {{ Final_line Parallel_2_{count - 1} }}\n")
-        file.write(f"Direction_{count} Choice {{ 'this.obj.obj ? 1 : 2' }}\n")
+        file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 2 : 1' }}\n")
 
         # END PARAMETERS - conveyor back
         file.write(f"Final_line_back NextComponent {{ Direction_{count} }}\n")
