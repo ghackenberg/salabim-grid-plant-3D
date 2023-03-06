@@ -21,25 +21,22 @@ processSteps1 = ProcessStep('Process step 1', 20, 20, 0.15, machineType1, toolTy
 processSteps2 = ProcessStep('Process step 2', 15, 24, 0.20, machineType1, toolType2, productType1, productType3)
 
 
-#Create Customer
-customer1 = Customer('Customer 1', 'Roma', 1)
-
 
 #Create Scenario
 scenario1 = Scenario('Scenario 1')
 
 
 #Create CustomerOrder
-order1 = Order(1, 10, 11, 20, productType2, customer1, scenario1)
-order2 = Order(2, 10, 11, 20, productType3, customer1, scenario1)
+order1 = Order(1, 10, 11, 20, productType2,  scenario1)
+order2 = Order(2, 10, 11, 20, productType3,  scenario1)
 
 
 #Create Layout
-layout1= Layout('Layout 1', 200, 10, 5, 4)
+layout1= Layout('Layout 1', 10, 5)
 
 
 #Create T_Corridor
-corridor1 = Corridor(1, 2, layout1)
+corridor1 = Corridor(1, 200, layout1)
 
 
 # Create machines
@@ -51,7 +48,7 @@ machine2 = Machine('Machine 2', machineType1, corridor1)
 simulation1 = Simulation(1, layout1, scenario1)
 
 
-toNetworkX()
+toNetworkXBasic()
 
 
 #for ProcessSteps in ProductType2.producingProcessSteps:

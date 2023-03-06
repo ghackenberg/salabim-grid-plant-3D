@@ -49,18 +49,18 @@ PRODUCT_TYPES: list[ProductType] = []
 
 
 
-class Customer:
-    def __init__(self, name: str, location: str, orderPriority: int) -> None:
+#class Customer:
+    #def __init__(self, name: str, location: str, orderPriority: int) -> None:
         # Remember properties
-        self.name = name
-        self.location = location
-        self.orderPriority = orderPriority
+        #self.name = name
+        #self.location = location
+        #self.orderPriority = orderPriority
         # Remember relations
-        self.orders: list[Order] = []
-        # Remember instance
-        CUSTOMERS.append(self)
+        #self.orders: list[Order] = []
+        ## Remember instance
+        #CUSTOMERS.append(self)
 
-CUSTOMERS: list[Customer] = []
+#CUSTOMERS: list[Customer] = []
 
 
 
@@ -78,18 +78,16 @@ SCENARIOS: list[Scenario] = []    #I consider this list in case the user wants t
 
 
 class Order:
-    def __init__(self, code: int, quantity: int, earliestStartDate: int, latestEndData: int, productType: ProductType, customer: Customer, scenario: Scenario) -> None:
+    def __init__(self, code: int, quantity: int, earliestStartDate: int, latestEndData: int, productType: ProductType, scenario: Scenario) -> None:
         # Remember properties
         self.code = code
         self.quantity = quantity
         self.earliestStartDate = earliestStartDate
         self.latestEndData = latestEndData
         self.productType = productType
-        self.customer = customer
         self.scenario = scenario
         # Remember relations
         productType.orders.append(self)
-        customer.orders.append(self)
         scenario.orders.append(self)
         # Remember instance
         ORDERS.append(self)
@@ -99,13 +97,11 @@ ORDERS: list[Order] = []
 
 
 class Layout:
-    def __init__(self, name: str, storageCapacity: int, storageTimeDeliver: int, storageTimeStore: int, robotsMainCorridor: int) -> None:
+    def __init__(self, name: str, storageTimeDeliver: int, storageTimeStore: int) -> None:
         # Remember properties
         self.name = name
-        self.storageCapacity = storageCapacity
         self.storageTimeDeliver = storageTimeDeliver
         self.storageTimeStore = storageTimeStore
-        self.robotsMainCorridor = robotsMainCorridor
         # Remember relations
         self.corridors: list[Corridor] = []
         # Remember instance
@@ -152,10 +148,10 @@ PROCESS_STEPS: list[ProcessStep] = []
 
 
 class Corridor:
-    def __init__(self, code: int, robots: int, layout: Layout) -> None:
+    def __init__(self, code: int, storageCapacity: int, layout: Layout) -> None:
         # Remember properties
         self.code = code
-        self.robots = robots
+        self.storageCapacity = storageCapacity
         self.layout = layout
         # Remember relations
         layout.corridors.append(self)
