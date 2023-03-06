@@ -305,7 +305,25 @@ for scenario in SCENARIOS:
             #branch
             file.write(f"Direction_{count} Position {{ {x + 5} {y + 20} 0 m }}\n")
             file.write(f"Direction_{count} NextComponentList {{ Production_line_back_{count} Parallel_1_{count} Parallel_2_{count - 1} }}\n")
-            file.write(f"Direction_{count} Choice {{ '(this.obj.Count == 0) ? (([Back_Controller_{count}].Open) ? (3) : (1)) : ((this.obj.obj.State == this.obj.obj.FinalState) ? (2) : (1))' }}\n")
+            file.write(f"Direction_{count} Choice {{ '")
+            file.write(f"(this.obj.Count == 0) ? (")
+            file.write(f"   ([Back_Controller_{count}].Open) ? (")
+            file.write(f"       3")
+            file.write(f"   ) : (")
+            file.write(f"       1")
+            file.write(f"   )")
+            file.write(f") : (")
+            file.write(f"   (this.obj.obj.State == this.obj.obj.FinalState) ? (")
+            file.write(f"       2")
+            file.write(f"   ) : (")
+            file.write(f'       (size(this.obj.obj.StateMachineOperationTypes(this.obj.obj.State)("{machineInstance.name}"))) ? (')
+            file.write(f"           1")
+            file.write(f"       ) : (")
+            file.write(f"           2")
+            file.write(f"       )")
+            file.write(f"   )")
+            file.write(f")")
+            file.write(f"' }}\n")
             
             #DownLine
             file.write(f"Parallel_2_{count} NextComponent {{ Direction_{count} }}\n")
@@ -446,18 +464,19 @@ for scenario in SCENARIOS:
             # Translate data structure to JaamSim scripting language
             stateMachineOperationTypesExpr = f'{{'
             states = 0
-            for state in stateMachineOperationTypes:
+            for objectType in OBJECT_TYPES:
                 separator = ', ' if states else ''
-                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{state}"={{'
+                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{objectType.name}"={{'
                 machineInstances = 0
-                for machineInstanceName in stateMachineOperationTypes[state]:
+                for machineInstance in MACHINE_INSTANCES:
                     separator = ', ' if machineInstances else ''
-                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{machineInstanceName}"={{'
-                    operationTypes = 0
-                    for operationTypeName in stateMachineOperationTypes[state][machineInstanceName]:
-                        separator = ', ' if operationTypes else ''
-                        stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{operationTypeName}"'
-                        operationTypes = operationTypes + 1
+                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{machineInstance.name}"={{'
+                    if objectType.name in stateMachineOperationTypes and machineInstance.name in stateMachineOperationTypes[objectType.name]:
+                        operationTypes = 0
+                        for operationTypeName in stateMachineOperationTypes[objectType.name][machineInstance.name]:
+                            separator = ', ' if operationTypes else ''
+                            stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{operationTypeName}"'
+                            operationTypes = operationTypes + 1
                     stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
                     machineInstances = machineInstances + 1
                 stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
@@ -470,7 +489,7 @@ for scenario in SCENARIOS:
             file.write(f"Define SimEntity {{ Order_Prototype_{count} }}\n")
             file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ FinalState '\"{order.objectType.name}\"' }} {{ StateMachineOperationTypes '{stateMachineOperationTypesExpr}' }} }}\n")
             #set initial state as raw
-            file.write(f"Order_Prototype_{count} InitialState {{ '\"{source.name}\"' }}\n")
+            file.write(f"Order_Prototype_{count} InitialState {{ '{source.name}' }}\n")
             file.write(f"Order_Prototype_{count} Position {{ {x - 12} 0 0 m }}\n")
 
             file.write(f"Define EntityGenerator {{ Order_Generator_{count} }}\n")
