@@ -413,7 +413,7 @@ for scenario in SCENARIOS:
         # END PARAMETERS - branch
         file.write(f"Direction_{count} Position {{ {x + 5} 20 0 m }}\n")
         file.write(f"Direction_{count} NextComponentList {{ Final_line Parallel_2_{count - 1} }}\n")
-        file.write(f"Direction_{count} Choice {{ 'this.obj.Count == 0 ? 2 : 1' }}\n")
+        file.write(f"Direction_{count} Choice {{ '(this.obj.Count == 0) ? (2) : ((this.obj.obj.State == this.obj.obj.FinalState) ? (1) : (2))' }}\n")
 
         # END PARAMETERS - conveyor back
         file.write(f"Final_line_back NextComponent {{ Direction_{count} }}\n")
