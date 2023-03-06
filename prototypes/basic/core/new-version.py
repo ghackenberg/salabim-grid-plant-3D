@@ -71,10 +71,10 @@ ORDERS: list[Order] = []
 
 # Algorithms
 
-def calculateChains(objectType: ObjectType):
+def calculateProcesses(objectType: ObjectType):
     result: list[list[OperationType]] = []
     for operationType in objectType.producesOperationTypes:
-        prefixes = calculateChains(operationType.consumes)
+        prefixes = calculateProcesses(operationType.consumes)
         if not prefixes:
             result.append([operationType])
         else:
@@ -84,7 +84,7 @@ def calculateChains(objectType: ObjectType):
     return result
 
 def calculateSources(objectType: ObjectType):
-    chains = calculateChains(objectType)
+    chains = calculateProcesses(objectType)
     result: list[ObjectType] = []
     for chain in chains:
         if not chain[0].consumes in result:
@@ -104,10 +104,10 @@ objectTypeB = ObjectType("Metal Gear (Raw)")
 objectTypeC = ObjectType("Metal Gear (Finished)")
 
 machineInstanceA = MachineInstance("DMG MORI Work Center X.1", machineTypeA)
-machineInstanceA = MachineInstance("DMG MORI Work Center X.1", machineTypeA)
-machineInstanceB = MachineInstance("DMG MORI Work Center Y.2", machineTypeB)
-machineInstanceA = MachineInstance("DMG MORI Work Center X.1", machineTypeA)
-machineInstanceA = MachineInstance("DMG MORI Work Center X.1", machineTypeA)
+machineInstanceA = MachineInstance("DMG MORI Work Center X.2", machineTypeA)
+machineInstanceB = MachineInstance("DMG MORI Work Center Y.1", machineTypeB)
+machineInstanceA = MachineInstance("DMG MORI Work Center X.3", machineTypeA)
+machineInstanceA = MachineInstance("DMG MORI Work Center X.4", machineTypeA)
 machineInstanceB = MachineInstance("DMG MORI Work Center Y.2", machineTypeB)
 
 operationTypeA = OperationType("Produce raw gear from disk", 1, machineTypeA, toolTypeA, objectTypeA, objectTypeB)
@@ -125,7 +125,7 @@ orderD = Order("0 d", 10, objectTypeB, scenarioA)
 orderE = Order("0 d", 30, objectTypeB, scenarioA)
 orderF = Order("0 d", 45, objectTypeB, scenarioA)
 
-print(calculateChains(objectTypeC))
+print(calculateProcesses(objectTypeC))
 print(calculateSources(objectTypeC))
 
 for scenario in SCENARIOS:
@@ -429,12 +429,46 @@ for scenario in SCENARIOS:
 
         for order in scenario.orders:
 
-            sources = calculateSources(order.objectType)
+            processes = calculateProcesses(order.objectType)
 
-            source = sources[0]
+            # Calcualte mapping between states, machines, and operations
+            stateMachineOperationTypes: dict[str, dict[str, list[str]]] = {}
+            for process in processes:
+                for operationType in process:
+                    objectTypeName = operationType.consumes.name
+                    if not objectTypeName in stateMachineOperationTypes:
+                        stateMachineOperationTypes[objectTypeName] = {}
+                    for machineInstance in operationType.machineType.machineInstances:
+                        if not machineInstance.name in stateMachineOperationTypes[objectTypeName]:
+                            stateMachineOperationTypes[objectTypeName][machineInstance.name] = []
+                        stateMachineOperationTypes[objectTypeName][machineInstance.name].append(operationType.name)
+            
+            # Translate data structure to JaamSim scripting language
+            stateMachineOperationTypesExpr = f'{{'
+            states = 0
+            for state in stateMachineOperationTypes:
+                separator = ', ' if states else ''
+                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{state}"={{'
+                machineInstances = 0
+                for machineInstanceName in stateMachineOperationTypes[state]:
+                    separator = ', ' if machineInstances else ''
+                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{machineInstanceName}"={{'
+                    operationTypes = 0
+                    for operationTypeName in stateMachineOperationTypes[state][machineInstanceName]:
+                        separator = ', ' if operationTypes else ''
+                        stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}{separator}"{operationTypeName}"'
+                        operationTypes = operationTypes + 1
+                    stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
+                    machineInstances = machineInstances + 1
+                stateMachineOperationTypesExpr = f'{stateMachineOperationTypesExpr}}}'
+                states = states + 1
+            stateMachineOperationTypesExpr = f"{stateMachineOperationTypesExpr}}}"
+
+            # Calculate initial state
+            source = processes[0][0].consumes
 
             file.write(f"Define SimEntity {{ Order_Prototype_{count} }}\n")
-            file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ FinalState '\"{order.objectType.name}\"' }} }}\n")
+            file.write(f"Order_Prototype_{count} AttributeDefinitionList {{ {{ FinalState '\"{order.objectType.name}\"' }} {{ StateMachineOperationTypes '{stateMachineOperationTypesExpr}' }} }}\n")
             #set initial state as raw
             file.write(f"Order_Prototype_{count} InitialState {{ '\"{source.name}\"' }}\n")
             file.write(f"Order_Prototype_{count} Position {{ {x - 12} 0 0 m }}\n")
