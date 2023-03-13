@@ -49,16 +49,33 @@ def simulate(layout: Layout, scenario: Scenario):
         y = (corridor_num + 0.5 - corridor_count/2)*2
 
         # Robot
+        if machine_left_count != 0:
+            sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=-1, y=y, z=2.5)
+        else:
+            False
+        if machine_right_count != 0:
+            sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=1, y=y, z=2.5)
+        else:
+            False
 
-        sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=-1, y=y, z=2.5)
-        sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=1, y=y, z=2.5)
+            #original code for robot
+            #sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=-1, y=y, z=2.5)
+            #sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="green", x=1, y=y, z=2.5)
 
         # Down (connection robot storage areas in t_corridors)
-
-
-        sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=-1, y=y, z=1.625)
         sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="red", x=0, y=y, z=1.625)
-        sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=1, y=y, z=1.625)
+        if machine_left_count != 0:
+            sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=-1, y=y, z=1.625)
+        else:
+            False
+        if machine_right_count != 0:
+            sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=1, y=y, z=1.625)
+        else:
+            False
+            #original code for down
+            #sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=-1, y=y, z=1.625)
+            #sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="red", x=0, y=y, z=1.625)
+            #sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=1, y=y, z=1.625)
 
         # Storage Area
         sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="orange", x=0, y=y, z=0.5)
@@ -69,9 +86,17 @@ def simulate(layout: Layout, scenario: Scenario):
 
         x_left = - 0.75 - x_len_left / 2
         x_right = + 0.75 + x_len_right / 2
+        if machine_left_count != 0:
+            sim.Animate3dBox(x_len=x_len_left, y_len=0.5, z_len=0.5, color="green", x=x_left, y=y, z=2.5)
+        else:
+            False
+        if machine_right_count != 0:
+            sim.Animate3dBox(x_len=x_len_right, y_len=0.5, z_len=0.5, color="green", x=x_right, y=y, z=2.5)
+        else:
+            False
 
-        sim.Animate3dBox(x_len=x_len_left, y_len=0.5, z_len=0.5, color="green", x=x_left, y=y, z=2.5)
-        sim.Animate3dBox(x_len=x_len_right, y_len=0.5, z_len=0.5, color="green", x=x_right, y=y, z=2.5)
+        #sim.Animate3dBox(x_len=x_len_left, y_len=0.5, z_len=0.5, color="green", x=x_left, y=y, z=2.5)
+        #sim.Animate3dBox(x_len=x_len_right, y_len=0.5, z_len=0.5, color="green", x=x_right, y=y, z=2.5)
 
         # Draw machine instances
         machine_num = 0
