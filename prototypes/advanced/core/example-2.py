@@ -82,7 +82,7 @@ machine4_3 = Machine('Machine 4.3', machineType4, corridor3_1, False)
 
 #toNetworkXMinimal()
 
-simulate(layout1, scenario1)
+simulate(layout3, scenario1)
 #for ProcessSteps in ProductType2.producingProcessSteps:
     #print(ProcessSteps.name + " can produce " + ProductType2.name)
 
