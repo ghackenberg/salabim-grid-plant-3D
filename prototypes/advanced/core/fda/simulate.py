@@ -6,8 +6,12 @@ def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
     env = sim.Environment()
 
-    env.width3d(900)
-    env.height3d(700)
+    env.width(950)
+    env.height(768)
+    env.position((960, 100))
+
+    env.width3d(950)
+    env.height3d(768)
     env.position3d((0, 100))
 
     env.animate(True)
@@ -109,7 +113,8 @@ def simulate(layout: Layout, scenario: Scenario):
             # Down
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=x, y=y, z=1.625)
             # Machine
-            sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="blue", x=x, y=y, z=0.5)
+            sim.Animate3dBox(x_len=0.60, y_len=0.43, z_len=0.40, color="blue", x=x, y=y + 0.08, z=1)
+            sim.Animate3dBox(x_len=0.60, y_len=0.60, z_len=0.60, color="blue", x=x, y=y, z=0.5)
             machine_num = machine_num + 1
 
         machine_num = 0
@@ -118,7 +123,8 @@ def simulate(layout: Layout, scenario: Scenario):
             # Down
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=x, y=y, z=1.625)
             # Machine
-            sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="blue", x=x, y=y, z=0.5)
+            sim.Animate3dBox(x_len=0.60, y_len=0.43, z_len=0.40, color="blue", x=x, y=y +0.08, z=1)
+            sim.Animate3dBox(x_len=0.60, y_len=0.60, z_len=0.60, color="blue", x=x, y=y, z=0.5)
             machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1
