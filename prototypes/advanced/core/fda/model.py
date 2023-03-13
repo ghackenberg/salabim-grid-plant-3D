@@ -111,20 +111,6 @@ LAYOUTS: list[Layout] = []
 
 
 
-class Simulation:
-    def __init__(self, date: int, layout: Layout, scenario: Scenario) -> None:
-        # Remember properties
-        self.date = date
-        self.layout = layout
-        self.scenario = scenario
-        # Remember instance
-        SIMULATIONS.append(self)
-#the simulation class contains the info related to the layout and the scenario to visualize.
-
-SIMULATIONS: list[Simulation] = []  # I consider this list in case the user wants to keep the data of different simulation run
-
-
-
 class ProcessStep:
     def __init__(self, name: str, duration: int, consumedToolLifeUnits: int, defectProbability: float, machineType: MachineType, toolType: ToolType, consumesProductType: ProductType, producesProductType: ProductType) -> None:
         # Remember properties
@@ -148,14 +134,17 @@ PROCESS_STEPS: list[ProcessStep] = []
 
 
 class Corridor:
-    def __init__(self, code: int, storageCapacity: int, layout: Layout) -> None:
+    def __init__(self, code: int, storageCapacity: int, storageTimeDeliver: int, storageTimeStore: int, layout: Layout) -> None:
         # Remember properties
         self.code = code
         self.storageCapacity = storageCapacity
+        self.storageTimeDeliver = storageTimeDeliver
+        self.storageTimeStore = storageTimeStore
         self.layout = layout
         # Remember relations
         layout.corridors.append(self)
-        self.machines: list[Machine] = []
+        self.machinesLeft: list[Machine] = []
+        self.machinesRight: list[Machine] = []
         # Remember instance
         CORRIDORS.append(self)
 
@@ -163,14 +152,17 @@ CORRIDORS: list[Corridor] = []
 
 
 class Machine:
-    def __init__(self, name: str, machineType: MachineType, corridor: Corridor) -> None:
+    def __init__(self, name: str, machineType: MachineType, corridor: Corridor, left: bool) -> None:
         # Remember properties
         self.name = name
         self.machineType = machineType
         self.corridor = corridor
         # Remember relations
         machineType.machines.append(self)  #appending machinetype to the list
-        corridor.machines.append(self)
+        if left:
+            corridor.machinesLeft.append(self)
+        else:
+            corridor.machinesRight.append(self)
         # Remember instance
         MACHINES.append(self)
 

@@ -51,15 +51,15 @@ layout2 = Layout('Layout 2',  11, 3) #Middle Case
 layout3 = Layout('Layout 3',  11, 3) #Worst Case
 
 #Create T_Corridor
-corridor1 = Corridor(1, 500,  layout1)
-corridor2 = Corridor(2, 350,  layout1)
-corridor3 = Corridor(3, 200,  layout1)
-corridor4 = Corridor(4, 150,  layout2)
-corridor5 = Corridor(5, 150,  layout2)
-corridor6 = Corridor(6, 350,  layout3)
-corridor7 = Corridor(7, 120, layout3)
-corridor8 = Corridor(8, 150, layout3)
-corridor9 = Corridor(9, 300, layout3)
+corridor1 = Corridor(1, 500, 2, 3,  layout1)
+corridor2 = Corridor(2, 350, 2, 3,  layout1)
+corridor3 = Corridor(3, 200, 2, 3,  layout1)
+corridor4 = Corridor(4, 150, 2, 3,  layout2)
+corridor5 = Corridor(5, 150, 2, 3,   layout2)
+corridor6 = Corridor(6, 350, 2, 3,  layout3)
+corridor7 = Corridor(7, 120, 2, 3, layout3)
+corridor8 = Corridor(8, 150, 2, 3,  layout3)
+corridor9 = Corridor(9, 300, 2, 3, layout3)
 
 
 # Create machines
@@ -89,16 +89,13 @@ machine4_2 = Machine('Machine 4.2', machineType4, corridor4)
 machine4_3 = Machine('Machine 4.3', machineType4, corridor5)
 machine4_4 = Machine('Machine 4.4', machineType4, corridor9)
 
-#Create Simulation
-simulation1 = Simulation(1, layout1, scenario1)
-simulation2 = Simulation(2, layout2, scenario2)
-simulation3 = Simulation(3, layout3, scenario3)
+
 
 
 
 toNetworkXMinimal()
 
-
+simulate(layout1, scenario1)
 #for ProcessSteps in ProductType2.producingProcessSteps:
    # print(ProcessSteps.name + " can produce " + ProductType2.name)
 
