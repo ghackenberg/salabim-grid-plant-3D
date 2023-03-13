@@ -63,37 +63,37 @@ corridor9 = Corridor(9, 300, 2, 3, layout3)
 
 
 # Create machines
-machine1_1 = Machine('Machine 1.1', machineType1, corridor1)
-machine1_2 = Machine('Machine 1.2', machineType1, corridor1)
-machine1_3 = Machine('Machine 1.3', machineType1, corridor3)
-machine1_4 = Machine('Machine 1.4', machineType1, corridor3)
-machine1_5 = Machine('Machine 1.5', machineType1, corridor4)
-machine1_6 = Machine('Machine 1.6', machineType1, corridor4)
-machine1_7 = Machine('Machine 1.7', machineType1, corridor5)
-machine1_8 = Machine('Machine 1.8', machineType1, corridor5)
-machine1_9 = Machine('Machine 1.9', machineType1, corridor6)
-machine1_10 = Machine('Machine 1.10', machineType1, corridor6)
+machine1_1 = Machine('Machine 1.1', machineType1, corridor1, True)
+machine1_2 = Machine('Machine 1.2', machineType1, corridor1, False)
+machine1_3 = Machine('Machine 1.3', machineType1, corridor3, True)
+machine1_4 = Machine('Machine 1.4', machineType1, corridor3, False)
+machine1_5 = Machine('Machine 1.5', machineType1, corridor4, True)
+machine1_6 = Machine('Machine 1.6', machineType1, corridor4, True)
+machine1_7 = Machine('Machine 1.7', machineType1, corridor5, True)
+machine1_8 = Machine('Machine 1.8', machineType1, corridor5, True)
+machine1_9 = Machine('Machine 1.9', machineType1, corridor6, False)
+machine1_10 = Machine('Machine 1.10', machineType1, corridor6, True)
 
-machine2_1 = Machine('Machine 2.1', machineType2, corridor2)
-machine2_2 = Machine('Machine 2.2', machineType2, corridor4)
-machine2_3 = Machine('Machine 2.3', machineType2, corridor5)
-machine2_4 = Machine('Machine 2.4', machineType2, corridor7)
+machine2_1 = Machine('Machine 2.1', machineType2, corridor2, True)
+machine2_2 = Machine('Machine 2.2', machineType2, corridor4, False)
+machine2_3 = Machine('Machine 2.3', machineType2, corridor5, False)
+machine2_4 = Machine('Machine 2.4', machineType2, corridor7, False)
 
-machine3_1 = Machine('Machine 3.1', machineType3, corridor2)
-machine3_2 = Machine('Machine 3.2', machineType3, corridor4)
-machine3_3 = Machine('Machine 3.3', machineType3, corridor5)
-machine3_4 = Machine('Machine 3.4', machineType3, corridor8)
+machine3_1 = Machine('Machine 3.1', machineType3, corridor2, True)
+machine3_2 = Machine('Machine 3.2', machineType3, corridor4, False)
+machine3_3 = Machine('Machine 3.3', machineType3, corridor5, False)
+machine3_4 = Machine('Machine 3.4', machineType3, corridor8, False)
 
-machine4_1 = Machine('Machine 4.1', machineType4, corridor2)
-machine4_2 = Machine('Machine 4.2', machineType4, corridor4)
-machine4_3 = Machine('Machine 4.3', machineType4, corridor5)
-machine4_4 = Machine('Machine 4.4', machineType4, corridor9)
-
-
+machine4_1 = Machine('Machine 4.1', machineType4, corridor2, False)
+machine4_2 = Machine('Machine 4.2', machineType4, corridor4, True)
+machine4_3 = Machine('Machine 4.3', machineType4, corridor5, True)
+machine4_4 = Machine('Machine 4.4', machineType4, corridor9, True)
 
 
 
-toNetworkXMinimal()
+
+
+#toNetworkXMinimal()
 
 simulate(layout1, scenario1)
 #for ProcessSteps in ProductType2.producingProcessSteps:
