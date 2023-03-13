@@ -3,6 +3,7 @@ import salabim as sim
 from .model import *
 
 def simulate(layout: Layout, scenario: Scenario):
+    #General visualization commands
     env = sim.Environment()
 
     env.width3d(900)
@@ -18,21 +19,22 @@ def simulate(layout: Layout, scenario: Scenario):
 
     sim.Animate3dGrid(x_range=range(-2, 10), y_range=range(-2, 10))
 
+    #Transversal corridors counting
     corridor_count = len(layout.corridors)
 
-    # Draw backbone
+    # Draw backbone (main corridor)
     sim.Animate3dBox(x_len=0.5, y_len=corridor_count * 2 + 1.5, z_len=0.5, color="red", x=0, y=0, z=2.5)
-    # Down
+    # Down (connection robot-machine)
     sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="red", x=0, y=+2 + (corridor_count / 2), z=1.625)
     sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="red", x=0, y=-2 - (corridor_count / 2), z=1.625)
     # Robot
     sim.Animate3dBox(x_len=1, y_len=1, z_len=1, color="red", x=0, y=0, z=2.5)
 
-    # Storage
+    # Storage Areas in the main corridor
     sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="orange", x=0, y=+2 + (corridor_count / 2), z=0.5)
     sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="orange", x=0, y=-2 - (corridor_count / 2), z=0.5)
 
-    # Draw corridor
+    # Draw corridor (Transversal corridors)
     corridor_num = 0
     for corridor in layout.corridors:
         machine_left_count = len(corridor.machinesLeft)
@@ -48,7 +50,7 @@ def simulate(layout: Layout, scenario: Scenario):
         sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="red", x=0, y=y, z=1.625)
         sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=1.25, color="green", x=1, y=y, z=1.625)
 
-        # Storage
+        # Storage Area
         sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="orange", x=0, y=y, z=0.5)
 
         x_len_left = machine_left_count * 2 + 0.5
