@@ -82,13 +82,52 @@ def simulate(layout: Layout, scenario: Scenario):
             corridor_count = len(layout.corridors)  # numbers of t_corridors in a certain layout
             y_stock = 2 + corridor_count / 1.5
 
-            corridor_num = 0
+            while True:
+                corridor_num = 0
+                for corridor in layout.corridors:  # for each corridor in the layout, define the number of machines in left and right corridor
+                    y = (corridor_num + 0.5 - corridor_count / 2) * 2
 
-            for corridor in layout.corridors:  # for each corridor in the layout, define the number of machines in left and right corridor
-                y = (corridor_num + 0.5 - corridor_count / 2) * 2
+                    #Go to the RM inventory
+                    self.next_y = -y_stock
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.y = self.next_y
 
-                #Go to the RM inventory
-                self.next_y = -y_stock
+                    # Move down in the RM inventory
+                    self.next_z = 1.25
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.z = self.next_z
+
+                    # Move up
+                    self.next_z = 2.5
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.z = self.next_z
+
+                    # Move to one WIP inventory
+                    self.next_y = y #I'm defining the next position to reach
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.y = self.next_y #and I'm ansking to maintain it
+
+                    # Move down
+                    self.next_z = 1.25
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.z = self.next_z
+
+                    # Move up
+                    self.next_z = 2.5
+                    self.next_t = self.env.now() + duration
+                    yield self.hold(duration)
+                    self.z = self.next_z
+
+
+                    corridor_num = corridor_num + 1
+
+                # Go to the FP inventory
+                self.next_y = y_stock
                 self.next_t = self.env.now() + duration
                 yield self.hold(duration)
                 self.y = self.next_y
@@ -104,45 +143,6 @@ def simulate(layout: Layout, scenario: Scenario):
                 self.next_t = self.env.now() + duration
                 yield self.hold(duration)
                 self.z = self.next_z
-
-                # Move to one WIP inventory
-                self.next_y = y #I'm defining the next position to reach
-                self.next_t = self.env.now() + duration
-                yield self.hold(duration)
-                self.y = self.next_y #and I'm ansking to maintain it
-
-                # Move down
-                self.next_z = 1.25
-                self.next_t = self.env.now() + duration
-                yield self.hold(duration)
-                self.z = self.next_z
-
-                # Move up
-                self.next_z = 2.5
-                self.next_t = self.env.now() + duration
-                yield self.hold(duration)
-                self.z = self.next_z
-
-
-                corridor_num = corridor_num + 1
-
-            # Go to the FP inventory
-            self.next_y = y_stock
-            self.next_t = self.env.now() + duration
-            yield self.hold(duration)
-            self.y = self.next_y
-
-            # Move down in the RM inventory
-            self.next_z = 1.25
-            self.next_t = self.env.now() + duration
-            yield self.hold(duration)
-            self.z = self.next_z
-
-            # Move up
-            self.next_z = 2.5
-            self.next_t = self.env.now() + duration
-            yield self.hold(duration)
-            self.z = self.next_z
 
 
     #main robot position
@@ -199,40 +199,60 @@ def simulate(layout: Layout, scenario: Scenario):
                     return self.z + (self.next_z - self.z) * (t - self.t) / (self.next_t - self.t)
 
             def process(self):
-                duration = 5
+                duration = 1
 
                 x_len_left = machine_left_count * 2 + 0.38
                 x_left = -0.86 - x_len_left / 2
 
+
                 while True:
-                    # Move Left
+                    machine_num = 0
+                    for machine in corridor.machinesLeft:
+                        x = +3 + machine_num * 2
 
-                    print("Move forward", self.env.now())
-                    self.next_x = 1
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.x = self.next_x
+                        # Move down
+                        print("Move down")
+                        self.next_z = 1.25
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
 
-                    # Move down
-                    print("Move down")
-                    self.next_z = 1.2
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.z = self.next_z
+                        # Move up
+                        print("Move up")
+                        self.next_z = 2.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
 
-                    # Move up
-                    print("Move up")
-                    self.next_z = 2.5
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.z = self.next_z
+                        # Move Left
+                        print("Move forward", self.env.now())
+                        self.next_x = x
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.x = self.next_x
 
-                    # Move Right
-                    print("Move backward")
-                    self.next_x = 0
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.x = self.next_x
+                        # Move down
+                        print("Move down")
+                        self.next_z = 1.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
+
+                        # Move up
+                        print("Move up")
+                        self.next_z = 2.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
+
+                        # Move Right
+                        print("Move backward")
+                        self.next_x = 1
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.x = self.next_x
+
+                        machine_num = machine_num + 1
 
         class TransversalRobot_right(sim.Component):
             def __init__(self, env: sim.Environment, x: float, y: float, z: float):
@@ -266,50 +286,62 @@ def simulate(layout: Layout, scenario: Scenario):
                     return self.z + (self.next_z - self.z) * (t - self.t) / (self.next_t - self.t)
 
             def process(self):
-                duration = 5
-
-                x_len_right = machine_right_count * 2 + 0.38
-                x_right = + 0.86 + x_len_right / 2
+                duration = 1
 
                 while True:
-                    # Move Left
+                    machine_num = 0
+                    for machine in corridor.machinesRight:
+                        x = -3 - machine_num * 2
 
-                    print("Move forward", self.env.now())
-                    self.next_x = 1  ######da risolvere
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.x = self.next_x
+                        # Move down
+                        self.next_z = 1.25
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
 
-                    # Move down
-                    print("Move down")
-                    self.next_z = 1.2
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.z = self.next_z
+                        # Move up
+                        self.next_z = 2.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
 
-                    # Move up
-                    print("Move up")
-                    self.next_z = 2.5
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.z = self.next_z
+                        # Move Right
+                        self.next_x = x
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.x = self.next_x
 
-                    # Move Right
-                    print("Move backward")
-                    self.next_x = 0
-                    self.next_t = self.env.now() + duration
-                    yield self.hold(duration)
-                    self.x = self.next_x
+                        # Move down
+                        print("Move down")
+                        self.next_z = 1.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
+
+                        # Move up
+                        print("Move up")
+                        self.next_z = 2.5
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.z = self.next_z
+
+                        # Move Left
+                        self.next_x = -1
+                        self.next_t = self.env.now() + duration
+                        yield self.hold(duration)
+                        self.x = self.next_x
+
+                        machine_num = machine_num + 1
 
 
 
         #if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
-            transversal_robot = TransversalRobot_left(env, -1, y, 2.5)
+            transversal_robot = TransversalRobot_left(env, +1, y, 2.5)
         else:
             False
         if machine_right_count != 0:
-            transversal_robot = TransversalRobot_right(env, +1, y, 2.5)
+            transversal_robot = TransversalRobot_right(env, -1, y, 2.5)
         else:
             False
 
@@ -318,11 +350,11 @@ def simulate(layout: Layout, scenario: Scenario):
         # Down (connection robot storage areas in t_corridors)
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)
         if machine_left_count != 0:
-            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=-1, y=y, z=1.625)
+            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=+1, y=y, z=1.625)
         else:
             False
         if machine_right_count != 0:
-            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=1, y=y, z=1.625)
+            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=-1, y=y, z=1.625)
         else:
             False
 
@@ -340,8 +372,8 @@ def simulate(layout: Layout, scenario: Scenario):
         x_len_left = machine_left_count * 2 + 0.26
         x_len_right = machine_right_count * 2 + 0.26
 
-        x_left = -0.86 - x_len_left / 2
-        x_right = + 0.86 + x_len_right / 2
+        x_left = +0.86 + x_len_left / 2
+        x_right = - 0.86 - x_len_right / 2
         if machine_left_count != 0:
             sim.Animate3dBox(x_len=x_len_left, y_len=0.25, z_len=0.25, color="green", x=x_left, y=y, z=2.5)
         else:
@@ -351,14 +383,12 @@ def simulate(layout: Layout, scenario: Scenario):
         else:
             False
 
-        #t_robot = TransversalRobot_left(env, x_left, y, 2.5)
-        #t_robot = TransversalRobot_right(env, x_right, y, 2.5)
 
 
         # Draw machine instances
         machine_num = 0
         for machine in corridor.machinesLeft:
-            x = -3 - machine_num * 2
+            x = +3 + machine_num * 2
             # Down
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y, z=1.8)
             # Tool
@@ -371,7 +401,7 @@ def simulate(layout: Layout, scenario: Scenario):
 
         machine_num = 0
         for machine in corridor.machinesRight:
-            x = +3 + machine_num * 2
+            x = -3 - machine_num * 2
             # Down
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y, z=1.8)
             # Tool
