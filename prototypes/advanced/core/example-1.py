@@ -7,7 +7,6 @@ machineType2 = MachineType('Machine type 2', 2)
 machineType3 = MachineType('Machine type 3', 3)
 
 
-
 # Create tool types
 toolType1 = ToolType('Tool type 1', 1, 2, 3, 10)
 toolType2 = ToolType('Tool type 2', 2, 1, 2, 9)
@@ -36,7 +35,6 @@ scenario2 = Scenario('Scenario 2') #Worst Case
 order1 = Order(1, 10, 11, 20, productType1,  scenario1)
 order2 = Order(2, 500, 25, 26, productType2,  scenario2)
 order3 = Order(3, 400, 14, 16, productType2, scenario2)
-
 
 
 #Create Layout
@@ -69,9 +67,5 @@ machine1_3 = Machine('Machine1.3', machineType1, corridor2_2, True)
 machine1_4 = Machine('Machine1.4', machineType1, corridor3_1, True)
 
 
-
-#toNetworkXMinimal()
-
+# Simulate
 simulate(layout1, scenario1)
-#for ProcessSteps in ProductType2.producingProcessSteps:
-    #print(ProcessSteps.name + " can produce " + ProductType2.name)

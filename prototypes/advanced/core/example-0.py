@@ -21,7 +21,6 @@ processSteps1 = ProcessStep('Process step 1', 20, 20, 0.15, machineType1, toolTy
 processSteps2 = ProcessStep('Process step 2', 15, 24, 0.20, machineType1, toolType2, productType1, productType3)
 
 
-
 #Create Scenario
 scenario1 = Scenario('Scenario 1')
 
@@ -43,11 +42,6 @@ corridor1 = Corridor(1, 200, 2, 3, layout1)
 machine1 = Machine('Machine 1', machineType1, corridor1, True)
 machine2 = Machine('Machine 2', machineType1, corridor1, False)
 
+
+# Simulate
 simulate(layout1, scenario1)
-
-#toNetworkXBasic()
-
-
-
-#for ProcessSteps in ProductType2.producingProcessSteps:
-    #print(ProcessSteps.name + " can produce " + ProductType2.name)

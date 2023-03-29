@@ -36,7 +36,6 @@ scenario2 = Scenario('Scenario 2') #Middle Case
 scenario3 = Scenario('Scenario 3') #Worst Case
 
 
-
 # Create CustomerOrder
 order1 = Order(1, 30, 11, 20, productType6, scenario1)
 order1_2 = Order(1, 40, 15, 30, productType2,  scenario1)
@@ -90,17 +89,5 @@ machine4_3 = Machine('Machine 4.3', machineType4, corridor2_2, True)
 machine4_4 = Machine('Machine 4.4', machineType4, corridor3_4, True)
 
 
-
-
-
-#toNetworkXMinimal()
-
+# Simulate
 simulate(layout3, scenario1)
-#for ProcessSteps in ProductType2.producingProcessSteps:
-   # print(ProcessSteps.name + " can produce " + ProductType2.name)
-
-
-
-
-
-

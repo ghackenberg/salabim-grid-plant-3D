@@ -3,6 +3,7 @@ import matplotlib
 
 from .model import *
 
+
 def toNetworkXBasic():
     graph = networkx.DiGraph()
 

@@ -1,7 +1,6 @@
 from fda import *
 
 
-
 # Create machine types
 machineType1 = MachineType('Machine type 1', 1)   # def __init__(self, name: str, code: int) -> None:
 machineType2 = MachineType('Machine type 2', 2)
@@ -59,6 +58,7 @@ corridor3_1 = Corridor(6, 200, 2, 3, layout3)
 corridor3_2 = Corridor(6, 150, 2, 3, layout3)
 corridor3_3 = Corridor(7, 130, 2, 3, layout3)
 
+
 # Create machines
 machine1_1 = Machine('Machine 1.1', machineType1, corridor1_2, True)
 machine1_2 = Machine('Machine 1.2', machineType1, corridor1_3, False)
@@ -79,11 +79,5 @@ machine4_2 = Machine('Machine 4.2', machineType4, corridor2_2, False)
 machine4_3 = Machine('Machine 4.3', machineType4, corridor3_1, False)
 
 
-
-#toNetworkXMinimal()
-
+# Simulate
 simulate(layout3, scenario1)
-#for ProcessSteps in ProductType2.producingProcessSteps:
-    #print(ProcessSteps.name + " can produce " + ProductType2.name)
-
-
