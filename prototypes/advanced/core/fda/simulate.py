@@ -8,6 +8,21 @@ def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
     env = sim.Environment()
 
+    # Create queues per corridor
+    start_store = sim.Store("start")
+    corridor_stores: list[list[sim.Store]] = []
+    for corridor in layout.corridors:
+        store_main = sim.Store(f"{corridor.code} main")
+        store_left = sim.Store(f"{corridor.code} left")
+        store_right = sim.Store(f"{corridor.code} right")
+        corridor_stores.append([store_main, store_left, store_right])
+    end_store = sim.Store("end")
+
+    # Create jobs
+    for order in scenario.orders:
+        for i in range(order.quantity):
+            Job(layout, scenario, order, start_store)
+
     env.width(950)
     env.height(768)
     env.position((960, 100))
@@ -38,7 +53,7 @@ def simulate(layout: Layout, scenario: Scenario):
     sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=-y, z=1.625)
 
     # Robot
-    MainRobot(layout, scenario, env, 0, 2.5)
+    MainRobot(layout, scenario, env, start_store, corridor_stores, end_store, 0, 2.5)
 
     # Storage Areas in the main corridor
     sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="yellow", x=0, y=y, z=0.5)
@@ -56,13 +71,13 @@ def simulate(layout: Layout, scenario: Scenario):
 
         #if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
-            TransversalRobotLeft(layout, corridor, scenario, env, +1, y, 2.5)
+            TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], +1, y, 2.5)
         else:
             False
         
         #if there is no machine in the corridor then we don't need the robot
         if machine_right_count != 0:
-            TransversalRobotRight(layout, corridor, scenario, env, -1, y, 2.5)
+            TransversalRobotRight(layout, corridor, scenario, env, corridor_stores[corridor_num], -1, y, 2.5)
         else:
             False
 

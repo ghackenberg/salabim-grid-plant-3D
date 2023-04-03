@@ -158,6 +158,7 @@ class Machine:
         self.name = name
         self.machineType = machineType
         self.corridor = corridor
+        self.left = left
         # Remember relations
         machineType.machines.append(self)  #appending machinetype to the list
         if left:
