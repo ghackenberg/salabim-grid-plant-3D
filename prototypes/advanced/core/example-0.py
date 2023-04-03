@@ -44,11 +44,14 @@ machine2 = Machine('Machine 2', machineType1, corridor1, False)
 
 
 # Calculate
-print(calculateProcesses(productType2))
-print(calculateProcesses(productType3))
-
-print(calculateSources(productType2))
-print(calculateSources(productType3))
+for productType in PRODUCT_TYPES:
+    processes = calculateProcesses(productType)
+    print(f"How can we produce {productType}")
+    for process in processes:
+        print(f"\t{process[0].consumesProductType} -> {process} -> {productType}")
+        routes = calculateProcessRoutes(process, layout1)
+        for route in routes:
+            print(f"\t\t{route}")
 
 
 # Simulate
