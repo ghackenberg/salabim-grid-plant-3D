@@ -11,6 +11,7 @@ class TransversalRobotLeft(TransversalRobot):
     def process(self):
         duration = 1
 
+        """
         while True:
             machine_num = 0
             for machine in self.corridor.machinesLeft:
@@ -30,3 +31,4 @@ class TransversalRobotLeft(TransversalRobot):
                 yield from self.move_x(1, duration)
 
                 machine_num = machine_num + 1
+        """

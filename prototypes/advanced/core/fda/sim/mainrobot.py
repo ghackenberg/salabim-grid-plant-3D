@@ -1,6 +1,8 @@
 import salabim as sim
+import random
 
 from ..model import *
+from ..calculate import *
 from .robot import *
 
 
@@ -16,6 +18,49 @@ class MainRobot(Robot):
         corridor_count = len(self.layout.corridors)  # numbers of t_corridors in a certain layout
         y_stock = 2 + corridor_count / 1.5
 
+        for order in self.scenario.orders:
+            quantity = order.quantity
+            processes = calculateProcesses(order.productType)
+            for item in range(quantity):
+                # Pick random process
+                process = processes[random.randint(0, len(processes) - 1)]
+                # Calculate routes for that process
+                routes = calculateProcessRoutes(process, self.layout)
+                # Pick random route
+                route = routes[random.randint(0, len(routes) - 1)]
+                # Move to RM inventory
+                yield from self.move_y(-y_stock, duration)
+                # Loop through corridors
+                for machine in route:
+                    # Find corridor number
+                    corridor_num = self.layout.corridors.index(machine.corridor)
+                    # Compute corridor position
+                    y = (corridor_num + 0.5 - corridor_count / 2) * 2
+                    # Is the corridor different than before?
+                    if y != self.y:
+                        # Move down
+                        yield from self.move_z(1.25, duration)
+                        # Move up
+                        yield from self.move_z(2.5, duration)
+                        # Move to WIP inventory
+                        yield from self.move_y(y, duration)
+                        # Move down
+                        yield from self.move_z(1.25, duration)
+                        # Move up
+                        yield from self.move_z(2.5, duration)
+                # Move down
+                yield from self.move_z(1.25, duration)
+                # Move up
+                yield from self.move_z(2.5, duration)
+                # Move to WIP inventory
+                yield from self.move_y(y_stock, duration)
+                # Move down
+                yield from self.move_z(1.25, duration)
+                # Move up
+                yield from self.move_z(2.5, duration)
+
+
+        """
         while True:
             corridor_num = 0
             for corridor in self.layout.corridors:  # for each corridor in the layout, define the number of machines in left and right corridor
@@ -35,3 +80,4 @@ class MainRobot(Robot):
                 yield from self.move_z(2.5, duration)
 
                 corridor_num = corridor_num + 1
+        """

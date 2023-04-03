@@ -43,16 +43,5 @@ machine1 = Machine('Machine 1', machineType1, corridor1, True)
 machine2 = Machine('Machine 2', machineType1, corridor1, False)
 
 
-# Calculate
-for productType in PRODUCT_TYPES:
-    processes = calculateProcesses(productType)
-    print(f"How can we produce {productType}")
-    for process in processes:
-        print(f"\t{process[0].consumesProductType} -> {process} -> {productType}")
-        routes = calculateProcessRoutes(process, layout1)
-        for route in routes:
-            print(f"\t\t{route}")
-
-
 # Simulate
 simulate(layout1, scenario1)
