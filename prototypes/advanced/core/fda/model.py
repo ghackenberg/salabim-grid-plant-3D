@@ -8,6 +8,8 @@ class MachineType:
         self.processSteps: list[ProcessStep] = []
         # Remember instance
         MACHINE_TYPES.append(self) #append the machinetype (itself) in the global list
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 MACHINE_TYPES: list[MachineType] = [] #global list of possible machine types
 
@@ -25,6 +27,8 @@ class ToolType:
         self.processSteps: list[ProcessStep] = []
         # Remember instance
         TOOL_TYPES.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 TOOL_TYPES: list[ToolType] = []
 
@@ -44,23 +48,10 @@ class ProductType:
         self.orders: list[Order] = []
         # Remember instance
         PRODUCT_TYPES.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 PRODUCT_TYPES: list[ProductType] = []
-
-
-
-#class Customer:
-    #def __init__(self, name: str, location: str, orderPriority: int) -> None:
-        # Remember properties
-        #self.name = name
-        #self.location = location
-        #self.orderPriority = orderPriority
-        # Remember relations
-        #self.orders: list[Order] = []
-        ## Remember instance
-        #CUSTOMERS.append(self)
-
-#CUSTOMERS: list[Customer] = []
 
 
 
@@ -72,6 +63,9 @@ class Scenario:
         self.orders: list[Order] = []
         # Remember instance
         SCENARIOS.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
+
 #the scenario class contains the specifications of the customer orders.
 SCENARIOS: list[Scenario] = []    #I consider this list in case the user wants to keep the data of different scenario tested
 
@@ -91,6 +85,9 @@ class Order:
         scenario.orders.append(self)
         # Remember instance
         ORDERS.append(self)
+    def __repr__(self) -> str:
+        return f"{self.code}"
+
 #it is not the customer order that contains the customers, but vice versa
 ORDERS: list[Order] = []
 
@@ -106,6 +103,8 @@ class Layout:
         self.corridors: list[Corridor] = []
         # Remember instance
         LAYOUTS.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 LAYOUTS: list[Layout] = []
 
@@ -129,6 +128,8 @@ class ProcessStep:
         producesProductType.producingProcessSteps.append(self)
         # Remember instance
         PROCESS_STEPS.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 PROCESS_STEPS: list[ProcessStep] = []
 
@@ -165,5 +166,7 @@ class Machine:
             corridor.machinesRight.append(self)
         # Remember instance
         MACHINES.append(self)
+    def __repr__(self) -> str:
+        return f"{self.name}"
 
 MACHINES: list[Machine] = []

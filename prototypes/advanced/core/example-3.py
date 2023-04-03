@@ -89,5 +89,17 @@ machine4_3 = Machine('Machine 4.3', machineType4, corridor2_2, True)
 machine4_4 = Machine('Machine 4.4', machineType4, corridor3_4, True)
 
 
+# Calculate
+print(calculateProcesses(productType2))
+print(calculateProcesses(productType4))
+print(calculateProcesses(productType5))
+print(calculateProcesses(productType6))
+
+print(calculateSources(productType2))
+print(calculateSources(productType4))
+print(calculateSources(productType5))
+print(calculateSources(productType6))
+
+
 # Simulate
 simulate(layout3, scenario1)
