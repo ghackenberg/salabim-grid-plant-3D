@@ -5,10 +5,11 @@ from .robot import *
 
 
 class MainRobot(Robot):
-    def __init__(self, layout: Layout, env: sim.Environment, y: float, z: float):
+    def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, y: float, z: float):
         super().__init__(env, 0, y, z, "red")
 
         self.layout = layout
+        self.scenario = scenario
 
     def process(self) :
         duration = 1

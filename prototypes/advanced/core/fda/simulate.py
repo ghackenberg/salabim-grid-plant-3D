@@ -38,7 +38,7 @@ def simulate(layout: Layout, scenario: Scenario):
     sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=-y, z=1.625)
 
     # Robot
-    MainRobot(layout, env, 0, 2.5)
+    MainRobot(layout, scenario, env, 0, 2.5)
 
     # Storage Areas in the main corridor
     sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="yellow", x=0, y=y, z=0.5)
@@ -56,13 +56,13 @@ def simulate(layout: Layout, scenario: Scenario):
 
         #if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
-            TransversalRobotLeft(corridor, env, +1, y, 2.5)
+            TransversalRobotLeft(layout, corridor, scenario, env, +1, y, 2.5)
         else:
             False
         
         #if there is no machine in the corridor then we don't need the robot
         if machine_right_count != 0:
-            TransversalRobotRight(corridor, env, -1, y, 2.5)
+            TransversalRobotRight(layout, corridor, scenario, env, -1, y, 2.5)
         else:
             False
 

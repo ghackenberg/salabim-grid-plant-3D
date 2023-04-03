@@ -5,8 +5,8 @@ from .traversalrobot import *
 
 
 class TransversalRobotLeft(TransversalRobot):
-    def __init__(self, corridor: Corridor, env: sim.Environment, x: float, y: float, z: float):
-        super().__init__(corridor, env, x, y, z)
+    def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, x: float, y: float, z: float):
+        super().__init__(layout, corridor, scenario, env, x, y, z)
 
     def process(self):
         duration = 1
