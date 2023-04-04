@@ -3,12 +3,11 @@ import salabim as sim
 from .model import *
 from .sim import *
 
-
 def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
     env = sim.Environment()
 
-    # Create queues per corridor
+    # Create stores per corridor
     start_store = sim.Store("start")
     corridor_stores: list[list[sim.Store]] = []
     for corridor in layout.corridors:
@@ -62,6 +61,20 @@ def simulate(layout: Layout, scenario: Scenario):
     # Draw corridor (Transversal corridors)
     corridor_num = 0
     for corridor in layout.corridors: #for each corridor in the layout, define the number of machines in left and right corridor
+        # Create left machine stores
+        machine_stores_left: list[list[sim.Store]] = []
+        for machine in corridor.machinesLeft:
+            store_in = sim.Store(f"{machine.name} in")
+            store_out = sim.Store(f"{machine.name} out")
+            machine_stores_left.append([store_in, store_out])
+        
+        # Create right machine stores
+        machine_stores_right: list[list[sim.Store]] = []
+        for machine in corridor.machinesRight:
+            store_in = sim.Store(f"{machine.name} in")
+            store_out = sim.Store(f"{machine.name} out")
+            machine_stores_right.append([store_in, store_out])
+
         machine_left_count = len(corridor.machinesLeft)
         machine_right_count = len(corridor.machinesRight)
 
@@ -71,13 +84,13 @@ def simulate(layout: Layout, scenario: Scenario):
 
         #if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
-            TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], +1, y, 2.5)
+            TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_left, +1, y, 2.5)
         else:
             False
         
         #if there is no machine in the corridor then we don't need the robot
         if machine_right_count != 0:
-            TransversalRobotRight(layout, corridor, scenario, env, corridor_stores[corridor_num], -1, y, 2.5)
+            TransversalRobotRight(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_right, -1, y, 2.5)
         else:
             False
 
@@ -117,27 +130,15 @@ def simulate(layout: Layout, scenario: Scenario):
         machine_num = 0
         for machine in corridor.machinesLeft:
             x = +3 + machine_num * 2
-            # Down
-            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y, z=1.8)
-            # Tool
-            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x, y=y+0.25, z=1.1)
-            sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
-            # Machine
-            sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08 , z=1)
-            sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.5)
+            stores = machine_stores_left[machine_num]
+            SimMachine(machine, stores[0], stores[1], x, y)
             machine_num = machine_num + 1
 
         machine_num = 0
         for machine in corridor.machinesRight:
             x = -3 - machine_num * 2
-            # Down
-            sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y, z=1.8)
-            # Tool
-            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x, y=y + 0.25, z=1.1)
-            sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
-            # Machine
-            sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y -0.08, z=1)
-            sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.5)
+            stores = machine_stores_right[machine_num]
+            SimMachine(machine, stores[0], stores[1], x, y)
             machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1

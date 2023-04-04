@@ -5,15 +5,15 @@ from .traversalrobot import *
 from .job import *
 
 class TransversalRobotLeft(TransversalRobot):
-    def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, stores: list[sim.Store], x: float, y: float, z: float):
-        super().__init__(layout, corridor, scenario, env, stores, x, y, z)
+    def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, corridor_stores: list[sim.Store], machine_stores: list[list[sim.Store]], x: float, y: float, z: float):
+        super().__init__(layout, corridor, scenario, env, corridor_stores, machine_stores, x, y, z)
 
     def process(self):
         duration = 1
 
         while True:
             # Pick from storage
-            job: Job = yield self.from_store(self.store_left)
+            job: Job = yield self.from_store(self.corridor_store_left)
             # Move down
             yield from self.move_z(1.25, duration)
             # Move up
@@ -21,7 +21,7 @@ class TransversalRobotLeft(TransversalRobot):
             # Move down
             yield from self.move_z(1.25, duration)
             # Place to storage
-            yield self.to_store(self.store_main, job)
+            yield self.to_store(self.corridor_store_main, job)
             # Move up
             yield from self.move_z(2.5, duration)
             
