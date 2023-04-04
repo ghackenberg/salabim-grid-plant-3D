@@ -36,19 +36,25 @@ class Robot(sim.Component):
         else:
             return self.z + (self.next_z - self.z) * (t - self.t) / (self.next_t - self.t)
         
-    def move_x(self, next_x: float, duration: float):
+    def move_x(self, next_x: float, speed: float):
+        duration = abs(next_x - self.x) / speed
+        self.t = self.env.now()
         self.next_x = next_x
         self.next_t = self.env.now() + duration
         yield self.hold(duration)
         self.x = self.next_x
         
-    def move_y(self, next_y: float, duration: float):
+    def move_y(self, next_y: float, speed: float):
+        duration = abs(next_y - self.y) / speed
+        self.t = self.env.now()
         self.next_y = next_y
         self.next_t = self.env.now() + duration
         yield self.hold(duration)
         self.y = self.next_y
         
-    def move_z(self, next_z: float, duration: float):
+    def move_z(self, next_z: float, speed: float):
+        duration = abs(next_z - self.z) / speed
+        self.t = self.env.now()
         self.next_z = next_z
         self.next_t = self.env.now() + duration
         yield self.hold(duration)

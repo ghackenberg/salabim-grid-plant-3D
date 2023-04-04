@@ -9,15 +9,15 @@ class TransversalRobotRight(TransversalRobot):
         super().__init__(layout, corridor, scenario, env, corridor_stores, machine_stores, x, y, z)
 
     def process(self):
-        duration = 1
+        speed = 1
 
         while True:
             # Pick from storage
             job: Job = yield self.from_store(self.corridor_store_right)
             # Move down
-            yield from self.move_z(1.25, duration)
+            yield from self.move_z(1.25, speed)
             # Move up
-            yield from self.move_z(2.5, duration)
+            yield from self.move_z(2.5, speed)
 
             # While next machine is in the same corridor and side
             while len(job.machine_sequence) > 0 and job.machine_sequence[0].corridor == self.corridor and not job.machine_sequence[0].left:
@@ -32,26 +32,26 @@ class TransversalRobotRight(TransversalRobot):
                 # Check if we are at the machine
                 if self.x != x:
                     # Move to machine
-                    yield from self.move_x(x, duration)
+                    yield from self.move_x(x, speed)
                 # Move down
-                yield from self.move_z(1.5, duration)
+                yield from self.move_z(1.5, speed)
                 # Hand over
                 yield self.to_store(machine_stores[0], job)
                 # Move up
-                yield from self.move_z(2.5, duration)
+                yield from self.move_z(2.5, speed)
                 # Wait for hand over
                 job: Job = yield self.from_store(machine_stores[1])
                 # Move down
-                yield from self.move_z(1.5, duration)
+                yield from self.move_z(1.5, speed)
                 # Move up
-                yield from self.move_z(2.5, duration)
+                yield from self.move_z(2.5, speed)
 
             # Check if we are not at inventory
             if self.x != -1:
                 # Move back to inventory
-                yield from self.move_x(-1, duration)
+                yield from self.move_x(-1, speed)
             # Move down
-            yield from self.move_z(1.25, duration)
+            yield from self.move_z(1.25, speed)
             # To main robot or to left robot?
             if len(job.machine_sequence) > 0 and job.machine_sequence[0].corridor == self.corridor:
                 # Place to storage
@@ -60,4 +60,4 @@ class TransversalRobotRight(TransversalRobot):
                 # Place to storage
                 yield self.to_store(self.corridor_store_main, job)
             # Move up
-            yield from self.move_z(2.5, duration)
+            yield from self.move_z(2.5, speed)

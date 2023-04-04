@@ -18,7 +18,7 @@ class MainRobot(Robot):
 
     def process(self) :
         # duration of movement between stores
-        duration = 1
+        speed = 1
         # numbers of t_corridors in a certain layout
         corridor_count = len(self.layout.corridors)
         # position of the start and the end store
@@ -26,13 +26,13 @@ class MainRobot(Robot):
 
         while True:
             # Move to RM inventory
-            yield from self.move_y(-y_stock, duration)
+            yield from self.move_y(-y_stock, speed)
             # Move down
-            yield from self.move_z(1.25, duration)
+            yield from self.move_z(1.25, speed)
             # Pick next job
             job: Job = yield self.from_store(self.start_store)
             # Move up
-            yield from self.move_z(2.5, duration)
+            yield from self.move_z(2.5, speed)
             # Check if machines are missing
             while len(job.machine_sequence) > 0:
                 # Get next machine
@@ -44,9 +44,9 @@ class MainRobot(Robot):
                 # Check if we need to move to the corridor
                 if y != self.y:
                     # Move to the corridor
-                    yield from self.move_y(y, duration)
+                    yield from self.move_y(y, speed)
                 # Move down
-                yield from self.move_z(1.25, duration)
+                yield from self.move_z(1.25, speed)
                 # Pass to left or right store
                 if machine.left:
                     # Pass to left store
@@ -55,18 +55,18 @@ class MainRobot(Robot):
                     # Pass to right store
                     yield self.to_store(self.corridor_stores[corridor_num][2], job)
                 # Move up
-                yield from self.move_z(2.5, duration)
+                yield from self.move_z(2.5, speed)
                 # Take from corridor store
                 job: Job = yield self.from_store(self.corridor_stores[corridor_num][0])
                 # Move down
-                yield from self.move_z(1.25, duration)
+                yield from self.move_z(1.25, speed)
                 # Move up
-                yield from self.move_z(2.5, duration)
+                yield from self.move_z(2.5, speed)
             # Move to FP inventory
-            yield from self.move_y(y_stock, duration)
+            yield from self.move_y(y_stock, speed)
             # Move down
-            yield from self.move_z(1.25, duration)
+            yield from self.move_z(1.25, speed)
             # Pass to queue
             yield self.to_store(self.end_store, job)
             # Move up
-            yield from self.move_z(2.5, duration)
+            yield from self.move_z(2.5, speed)
