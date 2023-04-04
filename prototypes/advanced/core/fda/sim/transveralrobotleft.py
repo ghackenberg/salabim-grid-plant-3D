@@ -18,6 +18,9 @@ class TransversalRobotLeft(TransversalRobot):
             yield from self.move_z(1.25, duration)
             # Move up
             yield from self.move_z(2.5, duration)
+
+            # TODO Move to machine -> pass job to machine -> take job from machine -> ...
+
             # Move down
             yield from self.move_z(1.25, duration)
             # Place to storage
