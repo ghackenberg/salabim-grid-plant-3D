@@ -52,7 +52,12 @@ class TransversalRobotLeft(TransversalRobot):
                 yield from self.move_x(1, duration)
             # Move down
             yield from self.move_z(1.25, duration)
-            # Place to storage
-            yield self.to_store(self.corridor_store_main, job)
+            # To main robot or to right robot?
+            if len(job.machine_sequence) > 0 and job.machine_sequence[0].corridor == self.corridor:
+                # Place to storage
+                yield self.to_store(self.corridor_store_right, job)
+            else:
+                # Place to storage
+                yield self.to_store(self.corridor_store_main, job)
             # Move up
             yield from self.move_z(2.5, duration)
