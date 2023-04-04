@@ -33,7 +33,7 @@ class MainRobot(Robot):
             job: Job = yield self.from_store(self.start_store)
             # Move up
             yield from self.move_z(2.5, duration)
-            # Loop through corridors
+            # Check if machines are missing
             while len(job.machine_sequence) > 0:
                 # Get next machine
                 machine = job.machine_sequence[0]
@@ -41,9 +41,9 @@ class MainRobot(Robot):
                 corridor_num = self.layout.corridors.index(machine.corridor)
                 # Compute corridor position
                 y = (corridor_num + 0.5 - corridor_count / 2) * 2
-                # Is the corridor different than before?
+                # Check if we need to move to the corridor
                 if y != self.y:
-                    # Move to WIP inventory
+                    # Move to the corridor
                     yield from self.move_y(y, duration)
                 # Move down
                 yield from self.move_z(1.25, duration)
@@ -56,7 +56,7 @@ class MainRobot(Robot):
                     yield self.to_store(self.corridor_stores[corridor_num][2], job)
                 # Move up
                 yield from self.move_z(2.5, duration)
-                # Take from main store
+                # Take from corridor store
                 job: Job = yield self.from_store(self.corridor_stores[corridor_num][0])
                 # Move down
                 yield from self.move_z(1.25, duration)
