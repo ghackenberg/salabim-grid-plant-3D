@@ -33,6 +33,7 @@ class SimMachine(sim.Component):
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08 , z=1)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.5)
+        # TODO add visualization for all possible tool types and their remaining life units
 
     def process(self):
         while True:
@@ -46,6 +47,7 @@ class SimMachine(sim.Component):
                 if self.mounted_tool != None:
                     # Unmount tool
                     yield self.hold(self.mounted_tool.unmountTime)
+                    # TODO update tool visualization
                 # Mount tool
                 yield self.hold(step.toolType.mountTime)
                 # Update mounted tool
@@ -54,13 +56,16 @@ class SimMachine(sim.Component):
                 if self.remaining_tool_life_units[self.mounted_tool] < step.consumedToolLifeUnits:
                     # Update remaining life units
                     self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
+                # TODO update tool visualization
             elif self.remaining_tool_life_units[self.mounted_tool] < step.consumedToolLifeUnits:
                 # Unmount tool
                 yield self.hold(self.mounted_tool.unmountTime)
+                # TODO update tool visualization
                 # Remount tool
                 yield self.hold(self.mounted_tool.mountTime)
                 # Update life units
                 self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
+                # TODO update tool visualization
             # Perform process step
             yield self.hold(step.duration)
             # Update job state
