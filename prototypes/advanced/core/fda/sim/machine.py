@@ -26,14 +26,15 @@ class SimMachine(sim.Component):
         self.store_out = store_out
 
         # Down
-        sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y, z=1.8)
+        sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
         # Tool
-        sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x, y=y+0.25, z=1.1)
-        sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
+        sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue",  x=x, y=y+0.25, z=1.10)
+        sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y+0.19, z=1.18)
         # Machine
-        sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08 , z=1)
-        sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.5)
+        sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
+        sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.50)
         # TODO add visualization for all possible tool types and their remaining life units
+        # TODO add visualization for progess of process step
 
     def process(self):
         while True:
