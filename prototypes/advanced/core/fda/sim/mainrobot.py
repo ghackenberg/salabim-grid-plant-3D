@@ -1,11 +1,9 @@
 import salabim as sim
-import random
 
 from ..model import *
 from ..calculate import *
 from .robot import *
 from .job import *
-
 
 class MainRobot(Robot):
     def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, start_store: sim.Store, corridor_stores: list[list[sim.Store]], end_store: sim.Store, y: float, z: float):
@@ -19,8 +17,11 @@ class MainRobot(Robot):
         self.end_store = end_store
 
     def process(self) :
+        # duration of movement between stores
         duration = 1
-        corridor_count = len(self.layout.corridors)  # numbers of t_corridors in a certain layout
+        # numbers of t_corridors in a certain layout
+        corridor_count = len(self.layout.corridors)
+        # position of the start and the end store
         y_stock = 2 + corridor_count / 1.5
 
         while True:

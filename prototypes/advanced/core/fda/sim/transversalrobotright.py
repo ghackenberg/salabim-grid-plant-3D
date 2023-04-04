@@ -4,7 +4,6 @@ from ..model import *
 from .traversalrobot import *
 from .job import *
 
-
 class TransversalRobotRight(TransversalRobot):
     def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, stores: list[sim.Store], x: float, y: float, z: float):
         super().__init__(layout, corridor, scenario, env, stores, x, y, z)

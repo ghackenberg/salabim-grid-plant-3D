@@ -1,6 +1,5 @@
 import salabim as sim
 
-
 class Robot(sim.Component):
     def __init__(self, env: sim.Environment, x: float, y: float, z: float, color: str):
         super().__init__()
