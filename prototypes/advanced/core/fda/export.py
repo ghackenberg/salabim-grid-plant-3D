@@ -3,7 +3,6 @@ import matplotlib
 
 from .model import *
 
-
 def toNetworkXBasic():
     graph = networkx.DiGraph()
 
@@ -29,7 +28,6 @@ def toNetworkXBasic():
     networkx.draw_networkx(graph, arrows = True, node_color = node_color)
 
     matplotlib.pyplot.show()
-
 
 def toNetworkXMinimal():
     graph = networkx.DiGraph()

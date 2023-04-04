@@ -15,17 +15,17 @@ class Job(sim.Component):
         self.store = store
 
         # Calculate processes
-        self.steps_options = calculateProcesses(order.productType)
+        process_step_sequences = calculateProcessStepSequences(order.productType)
         # Pick random process
-        self.steps = self.steps_options[random.randint(0, len(self.steps_options) - 1)]
+        self.process_step_sequence = process_step_sequences[random.randint(0, len(process_step_sequences) - 1)]
         
         # Calculate routes for that process
-        self.route_options = calculateProcessRoutes(self.steps, self.layout)
+        machine_sequences = calculateMachineSequencesFromProcessStepSequence(self.process_step_sequence, self.layout)
         # Pick random route
-        self.route = self.route_options[random.randint(0, len(self.route_options) - 1)]
+        self.machine_sequence = machine_sequences[random.randint(0, len(machine_sequences) - 1)]
 
         # Define job state
-        self.state = self.steps[0].consumesProductType
+        self.state = self.process_step_sequence[0].consumesProductType
 
     def process(self):
         # Put into store

@@ -40,24 +40,28 @@ class SimMachine(sim.Component):
             # Take next job from store
             job: Job = yield self.from_store(self.store_in)
             # Retrieve next process step to perform
-            step = job.steps.pop(0)
+            process_step = job.process_step_sequence.pop(0)
+            # Remove own machine from machine sequence
+            machine = job.machine_sequence.pop(0)
+            # Assert that we are the machine to perform the step
+            assert machine == self.machine
             # Check if tool is mounted
-            if step.toolType != self.mounted_tool:
+            if process_step.toolType != self.mounted_tool:
                 # Check if tool is mounted
                 if self.mounted_tool != None:
                     # Unmount tool
                     yield self.hold(self.mounted_tool.unmountTime)
                     # TODO update tool visualization
                 # Mount tool
-                yield self.hold(step.toolType.mountTime)
+                yield self.hold(process_step.toolType.mountTime)
                 # Update mounted tool
-                self.mounted_tool = step.toolType
+                self.mounted_tool = process_step.toolType
                 # Check if previous tool is too old
-                if self.remaining_tool_life_units[self.mounted_tool] < step.consumedToolLifeUnits:
+                if self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                     # Update remaining life units
                     self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
                 # TODO update tool visualization
-            elif self.remaining_tool_life_units[self.mounted_tool] < step.consumedToolLifeUnits:
+            elif self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                 # Unmount tool
                 yield self.hold(self.mounted_tool.unmountTime)
                 # TODO update tool visualization
@@ -67,10 +71,10 @@ class SimMachine(sim.Component):
                 self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
                 # TODO update tool visualization
             # Perform process step
-            yield self.hold(step.duration)
+            yield self.hold(process_step.duration)
             # Update job state
-            job.state = step.producesProductType
+            job.state = process_step.producesProductType
             # Update remaining tool life units
-            self.remaining_tool_life_units[self.mounted_tool] = self.remaining_tool_life_units[self.mounted_tool] - step.consumedToolLifeUnits
+            self.remaining_tool_life_units[self.mounted_tool] = self.remaining_tool_life_units[self.mounted_tool] - process_step.consumedToolLifeUnits
             # Place job back to store
             yield self.to_store(self.store_out, job)

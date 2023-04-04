@@ -34,7 +34,9 @@ class MainRobot(Robot):
             # Move up
             yield from self.move_z(2.5, duration)
             # Loop through corridors
-            for machine in job.route:
+            while len(job.machine_sequence) > 0:
+                # Get next machine
+                machine = job.machine_sequence[0]
                 # Find corridor number
                 corridor_num = self.layout.corridors.index(machine.corridor)
                 # Compute corridor position
@@ -43,19 +45,23 @@ class MainRobot(Robot):
                 if y != self.y:
                     # Move to WIP inventory
                     yield from self.move_y(y, duration)
-                    # Move down
-                    yield from self.move_z(1.25, duration)
-                    # Pass to left or right store
-                    if machine.left:
-                        # Pass to left store
-                        yield self.to_store(self.corridor_stores[corridor_num][1], job)
-                    else:
-                        # Pass to right store
-                        yield self.to_store(self.corridor_stores[corridor_num][2], job)
-                    # Take from main store
-                    job: Job = yield self.from_store(self.corridor_stores[corridor_num][0])
-                    # Move up
-                    yield from self.move_z(2.5, duration)
+                # Move down
+                yield from self.move_z(1.25, duration)
+                # Pass to left or right store
+                if machine.left:
+                    # Pass to left store
+                    yield self.to_store(self.corridor_stores[corridor_num][1], job)
+                else:
+                    # Pass to right store
+                    yield self.to_store(self.corridor_stores[corridor_num][2], job)
+                # Move up
+                yield from self.move_z(2.5, duration)
+                # Take from main store
+                job: Job = yield self.from_store(self.corridor_stores[corridor_num][0])
+                # Move down
+                yield from self.move_z(1.25, duration)
+                # Move up
+                yield from self.move_z(2.5, duration)
             # Move to FP inventory
             yield from self.move_y(y_stock, duration)
             # Move down

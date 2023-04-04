@@ -143,5 +143,4 @@ def simulate(layout: Layout, scenario: Scenario):
 
         corridor_num = corridor_num + 1
 
-
     env.run(sim.inf)
