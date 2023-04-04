@@ -21,11 +21,11 @@ productType4 = ProductType('Product Type 4', 23, 11, 22, 5)
 
 
 # Create Process Steps
-processSteps1 = ProcessStep('Process 1', 20, 20, 0.15, machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process 2', 15, 24, 0.20, machineType2, toolType2, productType4, productType2)
-processSteps3 = ProcessStep('Process 3', 10, 24, 0.11, machineType3, toolType3, productType1, productType4)
-processSteps4 = ProcessStep('Process 4', 10, 24, 0.11, machineType4, toolType3, productType3, productType1)
-processSteps5 = ProcessStep('Process 5', 20, 24, 0.11, machineType3, toolType3, productType3, productType1)
+processSteps1 = ProcessStep('Process 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
+processSteps2 = ProcessStep('Process 2', 1, 24, 0.20, machineType2, toolType2, productType4, productType2)
+processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType3, productType1, productType4)
+processSteps4 = ProcessStep('Process 4', 1, 24, 0.11, machineType4, toolType3, productType3, productType1)
+processSteps5 = ProcessStep('Process 5', 1, 24, 0.11, machineType3, toolType3, productType3, productType1)
 
 
 #Create Scenario
