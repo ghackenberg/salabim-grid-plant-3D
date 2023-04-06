@@ -14,7 +14,7 @@ toolType2 = ToolType('Tool type 2', 2, 1, 2, 9)
 toolType3 = ToolType('Tool type 3', 3, 3, 4, 12)
 
 
-# Create Product Type
+# Create product types
 productType1 = ProductType('Product Type 1', 12, 12, 12, 5)
 productType2 = ProductType('Product Type 2', 12, 24, 11, 10)
 productType3 = ProductType('Product Type 3', 14, 15, 15, 6)
@@ -22,7 +22,8 @@ productType4 = ProductType('Product Type 4', 22, 23, 12, 7)
 productType5 = ProductType('Product Type 5', 22, 23, 12, 7)
 productType6 = ProductType('Product Type 6', 12, 24, 11, 10)
 
-# Create Process Steps
+
+# Create process steps
 processSteps1 = ProcessStep('Process 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
 processSteps1_2 = ProcessStep('Process 1.2', 1, 24, 0.20, machineType1, toolType2, productType3, productType2)
 processSteps2 = ProcessStep('Process 2', 1, 24, 0.11, machineType2, toolType3, productType2, productType4)
@@ -30,13 +31,13 @@ processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType2, p
 processSteps4 = ProcessStep('Process 4', 1, 24, 0.11, machineType4, toolType1, productType2, productType6)
 
 
-#Create Scenario
+# Create scenarios
 scenario1 = Scenario('Scenario 1') #Best Case
 scenario2 = Scenario('Scenario 2') #Middle Case
 scenario3 = Scenario('Scenario 3') #Worst Case
 
 
-# Create CustomerOrder
+# Create orders
 order1 = Order(1, 30, 11, 20, productType6, scenario1)
 order1_2 = Order(1, 40, 15, 30, productType2,  scenario1)
 order2 = Order(2, 400, 25, 30, productType2,  scenario2)
@@ -44,12 +45,13 @@ order3 = Order(3, 500, 15, 20, productType4,  scenario3)
 order4 = Order(4, 300, 25, 30, productType5,  scenario3)
 
 
-#Create Layout
+# Create layouts
 layout1 = Layout('Layout 1',  10, 5) #Best Case
 layout2 = Layout('Layout 2',  11, 3) #Middle Case
 layout3 = Layout('Layout 3',  11, 3) #Worst Case
 
-#Create T_Corridor
+
+# Create corridors
 corridor1_1 = Corridor(1, 500, 2, 3, layout1)
 corridor1_2 = Corridor(2, 350, 2, 3, layout1)
 corridor1_3 = Corridor(3, 200, 2, 3, layout1)

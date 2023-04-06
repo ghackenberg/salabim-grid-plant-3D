@@ -13,37 +13,37 @@ toolType2 = ToolType('Tool type 2', 2, 1, 2, 9)
 toolType3 = ToolType('Tool type 3', 3, 3, 4, 12)
 
 
-# Create Product Type
+# Create product types
 productType1 = ProductType('Product Type 1', 12, 12, 12, 5)
 productType2 = ProductType('Product Type 2', 12, 24, 11, 10)
 productType3 = ProductType('Product Type 3', 14, 15, 15, 6)
 productType4 = ProductType('Product Type 4', 33, 12, 22, 17)
 
 
-# Create Process Steps
+# Create process steps
 processSteps1 = ProcessStep('Process 1', 1, 20, 0.15,machineType1, toolType1, productType1, productType2)
 processSteps2 = ProcessStep('Process 2', 1, 24, 0.20, machineType2, toolType2, productType4, productType1)
 processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType3,productType3, productType4)
 
 
-#Create Scenario
+# Create scenarios
 scenario1 = Scenario('Scenario 1') #Best Case
 scenario2 = Scenario('Scenario 2') #Worst Case
 
 
-#Create CustomerOrder
+# Create orders
 order1 = Order(1, 10, 11, 20, productType1,  scenario1)
 order2 = Order(2, 500, 25, 26, productType2,  scenario2)
 order3 = Order(3, 400, 14, 16, productType2, scenario2)
 
 
-#Create Layout
+# Create layouts
 layout1= Layout('Layout 1', 10, 5) #Best Case
 layout2= Layout('Layout 2', 11, 7)#Middle Case
 layout3= Layout('Layout 3', 11, 3) #Worst Case
 
 
-#Create T_Corridor
+# Create corridors
 corridor1_1 = Corridor(1, 200, 3, 4, layout1)
 corridor1_2 = Corridor(2, 150, 1, 2, layout1)
 corridor2_1 = Corridor(3, 300, 2, 3, layout2)
@@ -51,6 +51,7 @@ corridor2_2 = Corridor(4, 200, 1, 1, layout2)
 corridor3_1 = Corridor(4, 200, 1, 1, layout3)
 corridor3_2 = Corridor(3, 300, 1, 1, layout3)
 corridor3_3 = Corridor(4, 200, 1, 1, layout3)
+
 
 # Create machines
 machine3_1 = Machine('Machine 3.1', machineType3, corridor1_1, True)

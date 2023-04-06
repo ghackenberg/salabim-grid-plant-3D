@@ -35,12 +35,15 @@ layout1= Layout('Layout 1', 10, 5)
 
 
 # Create corridors
-corridor1 = Corridor(1, 200, 2, 3, layout1)
+for i in range(10):
+    Corridor(1, 200, 2, 3, layout1)
 
 
 # Create machines
-machine1 = Machine('Machine 1', machineType1, corridor1, True)
-machine2 = Machine('Machine 2', machineType1, corridor1, False)
+for i in range(10):
+    for j in range(5):
+        Machine('Machine 1', machineType1, CORRIDORS[i], True)
+        Machine('Machine 2', machineType1, CORRIDORS[i], False)
 
 
 # Simulate
