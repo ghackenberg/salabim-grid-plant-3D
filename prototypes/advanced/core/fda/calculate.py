@@ -22,6 +22,7 @@ def calculateMachineSequences(objectType: ProductType, layout: Layout):
         processRoutes = calculateMachineSequencesFromProcessStepSequence(process, layout)
         for processRoute in processRoutes:
             result.append(processRoute)
+
     return result
 
 def calculateProcessStepSequences(objectType: ProductType):
@@ -34,4 +35,5 @@ def calculateProcessStepSequences(objectType: ProductType):
             for prefix in prefixes:
                 prefix.append(operationType)
                 result.append(prefix)
+
     return result

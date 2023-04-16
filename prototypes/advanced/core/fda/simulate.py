@@ -7,21 +7,6 @@ def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
     env = sim.Environment()
 
-    # Create stores per corridor
-    start_store = sim.Store("start")
-    corridor_stores: list[list[sim.Store]] = []
-    for corridor in layout.corridors:
-        store_main = sim.Store(f"{corridor.code} main")
-        store_left = sim.Store(f"{corridor.code} left")
-        store_right = sim.Store(f"{corridor.code} right")
-        corridor_stores.append([store_main, store_left, store_right])
-    end_store = sim.Store("end")
-
-    # Create jobs
-    for order in scenario.orders:
-        for i in range(order.quantity):
-            Job(layout, scenario, order, start_store)
-
     env.width(950)
     env.height(768)
     env.position((960, 100))
@@ -40,14 +25,29 @@ def simulate(layout: Layout, scenario: Scenario):
 
     sim.Animate3dGrid(x_range=range(-10, 10), y_range=range(-10, 10))
 
+    # Create stores per corridor
+    start_store = sim.Store("start")
+    corridor_stores: list[list[sim.Store]] = []
+    for corridor in layout.corridors:
+        store_main = sim.Store(f"{corridor.code} main") #it is the part of the storage that is accessed by the main robot
+        store_left = sim.Store(f"{corridor.code} left") #it is the part of the storage that is accessed by the robot of the left t_corridor
+        store_right = sim.Store(f"{corridor.code} right")
+        corridor_stores.append([store_main, store_left, store_right]) #append the possible corridors' parts in the list of corridords
+    end_store = sim.Store("end")
+
+    # Create jobs
+    for order in scenario.orders: #per each order creates a job
+        for i in range(order.quantity):
+            Job(layout, scenario, order, start_store)
+
     #Transversal corridors counting
-    corridor_count = len(layout.corridors) # numbers of t_corridors in a certain layout
+    corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
     y = 2 + corridor_count / 1.5
 
     # Draw backbone (main corridor)
     sim.Animate3dBox(x_len=0.25, y_len=y*2.06, z_len=0.25, color="red", x=0, y=0, z=2.5)
 
-    # Down (connection to the two storage areas)
+    # Down from main corridor to RM/FP storage areas
     sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)
     sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=-y, z=1.625)
 
@@ -131,7 +131,7 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesLeft:
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
-            SimMachine(machine, stores[0], stores[1], x, y)
+            SimMachine(machine, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
             machine_num = machine_num + 1
 
         machine_num = 0

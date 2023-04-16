@@ -4,7 +4,6 @@ from fda import *
 # Create machine types
 machineType1 = MachineType('Machine type 1', 1)
 machineType2 = MachineType('Machine type 2', 2)
-machineType3 = MachineType('Machine type 3', 3)
 machineType4 = MachineType('Machine type 4', 4)
 
 
@@ -27,7 +26,7 @@ productType6 = ProductType('Product Type 6', 12, 24, 11, 10)
 processSteps1 = ProcessStep('Process 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
 processSteps1_2 = ProcessStep('Process 1.2', 1, 24, 0.20, machineType1, toolType2, productType3, productType2)
 processSteps2 = ProcessStep('Process 2', 1, 24, 0.11, machineType2, toolType3, productType2, productType4)
-processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType2, productType2, productType5)
+processSteps2_2 = ProcessStep('Process 3', 1, 24, 0.11, machineType2, toolType2, productType2, productType5)
 processSteps4 = ProcessStep('Process 4', 1, 24, 0.11, machineType4, toolType1, productType2, productType6)
 
 
@@ -71,23 +70,18 @@ machine1_4 = Machine('Machine 1.4', machineType1, corridor1_3, False)
 machine1_5 = Machine('Machine 1.5', machineType1, corridor2_1, True)
 machine1_6 = Machine('Machine 1.6', machineType1, corridor2_1, True)
 machine1_7 = Machine('Machine 1.7', machineType1, corridor2_2, True)
-machine1_8 = Machine('Machine 1.8', machineType1, corridor2_2, True)
+machine1_8 = Machine('Machine 1.8', machineType1, corridor3_1, True)
 machine1_9 = Machine('Machine 1.9', machineType1, corridor3_1, False)
 machine1_10 = Machine('Machine 1.10', machineType1, corridor3_1, True)
 
 machine2_1 = Machine('Machine 2.1', machineType2, corridor1_2, True)
 machine2_2 = Machine('Machine 2.2', machineType2, corridor2_1, False)
-machine2_3 = Machine('Machine 2.3', machineType2, corridor2_2, False)
+machine2_3 = Machine('Machine 2.3', machineType2, corridor3_2, False)
 machine2_4 = Machine('Machine 2.4', machineType2, corridor3_2, False)
-
-machine3_1 = Machine('Machine 3.1', machineType3, corridor1_2, True)
-machine3_2 = Machine('Machine 3.2', machineType3, corridor2_1, False)
-machine3_3 = Machine('Machine 3.3', machineType3, corridor2_2, False)
-machine3_4 = Machine('Machine 3.4', machineType3, corridor3_3, False)
 
 machine4_1 = Machine('Machine 4.1', machineType4, corridor1_2, False)
 machine4_2 = Machine('Machine 4.2', machineType4, corridor2_1, True)
-machine4_3 = Machine('Machine 4.3', machineType4, corridor2_2, True)
+machine4_3 = Machine('Machine 4.3', machineType4, corridor3_2, True)
 machine4_4 = Machine('Machine 4.4', machineType4, corridor3_4, True)
 
 
