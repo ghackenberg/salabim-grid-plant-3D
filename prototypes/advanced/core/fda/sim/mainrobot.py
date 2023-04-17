@@ -22,7 +22,7 @@ class MainRobot(Robot):
         # numbers of t_corridors in a certain layout
         corridor_count = len(self.layout.corridors)
         # position of the start and the end store
-        y_stock = 2 + corridor_count / 1.5
+        y_stock = 2 + corridor_count / 1.15
 
         while True:
             # Move to RM inventory

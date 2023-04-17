@@ -42,7 +42,7 @@ def simulate(layout: Layout, scenario: Scenario):
 
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
-    y = 2 + corridor_count
+    y = 2 + corridor_count / 1.15
 
     # Draw backbone (main corridor)
     sim.Animate3dBox(x_len=0.25, y_len=y*2.07, z_len=0.25, color="red", x=0, y=0, z=2.5)
