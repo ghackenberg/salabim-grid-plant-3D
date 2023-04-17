@@ -3,6 +3,7 @@ import salabim as sim
 from .model import *
 from .sim import *
 
+
 def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
     env = sim.Environment()
@@ -39,6 +40,9 @@ def simulate(layout: Layout, scenario: Scenario):
     for order in scenario.orders: #per each order creates a job
         for i in range(order.quantity):
             Job(layout, scenario, order, start_store)
+
+    # MachineType_ToolTypeMap
+    print(Tool(PROCESS_STEPS))
 
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
@@ -81,7 +85,6 @@ def simulate(layout: Layout, scenario: Scenario):
         y = (corridor_num + 0.5 - corridor_count/2)*2
 
         # Robot
-
         #if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
             TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_left, +1, y, 2.5)

@@ -8,6 +8,7 @@ class MachineType:
         self.processSteps: list[ProcessStep] = []
         # Remember instance
         MACHINE_TYPES.append(self) #append the machinetype (itself) in the global list
+
     def __repr__(self) -> str:
         return f"{self.name}"
 
@@ -128,6 +129,7 @@ class ProcessStep:
         producesProductType.producingProcessSteps.append(self)
         # Remember instance
         PROCESS_STEPS.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
 

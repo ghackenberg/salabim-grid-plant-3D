@@ -1,7 +1,10 @@
 import salabim as sim
 
+from ..simulate import*
 from ..model import *
 from .job import *
+from .tool import*
+
 
 class SimMachine(sim.Component):
     def __init__(self, machine: Machine, store_in: sim.Store, store_out: sim.Store, x: float, y: float):
@@ -28,13 +31,23 @@ class SimMachine(sim.Component):
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
         # Tool
-        sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue",  x=x, y=y+0.25, z=1.10)
-        sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y+0.19, z=1.18)
+        sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
+        sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
+        m = 0
+        color = ['blue', 'black', 'red', 'yellow', ' green', 'pink', 'indigo', 'chocolate', 'teal', 'darksalmon',
+                 'lavander','darkgoldenrod', 'powderblue', 'thistel', 'gainsboro']
+        #for i in range(len(color)):
+        for toolType in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
+            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color='blue',  x=x+m, y=y + 0.25, z=1.10)
+            m = m + 0.1
+        # TODO understand how to distribute the tools around the center, instead of all on the left
+
+        # TODO add visualization for all possible tool types and their remaining life units
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.50)
-        # TODO add visualization for all possible tool types and their remaining life units
-        # TODO add visualization for progess of process step
+
+        # TODO add visualization for progress of process step
 
     def process(self):
         while True:

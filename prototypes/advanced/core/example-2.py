@@ -25,7 +25,7 @@ processSteps1 = ProcessStep('Process 1', 1, 20, 0.15, machineType1, toolType1, p
 processSteps2 = ProcessStep('Process 2', 1, 24, 0.20, machineType2, toolType2, productType4, productType2)
 processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType3, productType1, productType4)
 processSteps4 = ProcessStep('Process 4', 1, 24, 0.11, machineType4, toolType3, productType3, productType1)
-processSteps4_2 = ProcessStep('Process 5', 1, 24, 0.11, machineType4, toolType2, productType3, productType1)
+processSteps4_2 = ProcessStep('Process 4_2', 1, 24, 0.11, machineType4, toolType2, productType3, productType1)
 
 
 # Create scenarios
@@ -35,11 +35,11 @@ scenario3 = Scenario('Scenario 3') #Worst Case
 
 
 # Create orders
-order1 = Order(1, 30, 11, 30, productType2,  scenario1)
-order1_2 = Order(1, 40, 15, 30, productType2,  scenario1)
-order2 = Order(2, 400, 20, 30, productType2,  scenario2)
-order3 = Order(3, 550, 11, 12, productType4,  scenario3)
-order4 = Order(4, 300, 25, 26, productType1,  scenario3)
+order1 = Order(1, 2, 11, 30, productType2,  scenario1)
+order1_2 = Order(1, 3, 15, 30, productType1,  scenario1)
+order2 = Order(2, 10, 20, 30, productType2,  scenario2)
+order3 = Order(3, 10, 11, 12, productType4,  scenario3)
+order4 = Order(4, 10, 25, 26, productType1,  scenario3)
 
 
 # Create layouts

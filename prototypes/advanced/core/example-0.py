@@ -3,7 +3,7 @@ from fda import *
 
 # Create machine types
 machineType1 = MachineType('Machine type 1', 1)
-
+machineType2 = MachineType('Machine type 1', 1)
 
 # Create tool types
 toolType1 = ToolType('Tool type 1', 1, 2, 3, 10)
@@ -18,7 +18,7 @@ productType3 = ProductType('Product Type 3', 14, 15, 15, 6)
 
 # Create process steps
 processSteps1 = ProcessStep('Process step 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process step 2', 1, 24, 0.20, machineType1, toolType2, productType1, productType3)
+processSteps2 = ProcessStep('Process step 2', 1, 24, 0.20, machineType2, toolType2, productType1, productType3)
 
 
 # Create scenarios
@@ -40,7 +40,7 @@ corridor1 = Corridor(1, 200, 2, 3, layout1)
 
 # Create machines
 machine1 = Machine('Machine 1', machineType1, corridor1, True)
-machine2 = Machine('Machine 2', machineType1, corridor1, False)
+machine2 = Machine('Machine 2', machineType2, corridor1, False)
 
 
 # Simulate
