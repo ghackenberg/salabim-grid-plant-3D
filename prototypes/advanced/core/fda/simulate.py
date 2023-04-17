@@ -23,7 +23,7 @@ def simulate(layout: Layout, scenario: Scenario):
 
     env.view(x_eye=0, y_eye=15, z_eye=5)
 
-    sim.Animate3dGrid(x_range=range(-10, 10), y_range=range(-10, 10))
+    sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
 
     # Create stores per corridor
     start_store = sim.Store("start")
@@ -42,10 +42,10 @@ def simulate(layout: Layout, scenario: Scenario):
 
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
-    y = 2 + corridor_count / 1.5
+    y = 2 + corridor_count
 
     # Draw backbone (main corridor)
-    sim.Animate3dBox(x_len=0.25, y_len=y*2.06, z_len=0.25, color="red", x=0, y=0, z=2.5)
+    sim.Animate3dBox(x_len=0.25, y_len=y*2.07, z_len=0.25, color="red", x=0, y=0, z=2.5)
 
     # Down from main corridor to RM/FP storage areas
     sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)
