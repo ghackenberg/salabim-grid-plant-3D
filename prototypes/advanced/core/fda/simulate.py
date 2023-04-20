@@ -26,6 +26,8 @@ def simulate(layout: Layout, scenario: Scenario):
 
     sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
 
+
+
     # Create stores per corridor
     start_store = sim.Store("start")
     corridor_stores: list[list[sim.Store]] = []
@@ -42,7 +44,8 @@ def simulate(layout: Layout, scenario: Scenario):
             Job(layout, scenario, order, start_store)
 
     # MachineType_ToolTypeMap
-    print(Tool(PROCESS_STEPS))
+    Tool(PROCESS_STEPS)
+
 
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
@@ -145,5 +148,7 @@ def simulate(layout: Layout, scenario: Scenario):
             machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1
+
+
 
     env.run(sim.inf)

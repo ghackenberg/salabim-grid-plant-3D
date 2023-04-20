@@ -3,7 +3,7 @@ import salabim as sim
 from ..simulate import*
 from ..model import *
 from .job import *
-from .tool import*
+from .toollife import *
 
 
 class SimMachine(sim.Component):
@@ -28,21 +28,28 @@ class SimMachine(sim.Component):
         # Remember store out
         self.store_out = store_out
 
+        #Available color
+        color = ['blue', 'black', 'red', 'yellow', ' green', 'pink', 'indigo', 'chocolate', 'teal', 'darksalmon',
+                 'lavander', 'darkgoldenrod', 'powderblue', 'thistel', 'gainsboro']
+
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
+
         # Tool
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         m = 0
-        color = ['blue', 'black', 'red', 'yellow', ' green', 'pink', 'indigo', 'chocolate', 'teal', 'darksalmon',
-                 'lavander','darkgoldenrod', 'powderblue', 'thistel', 'gainsboro']
-        #for i in range(len(color)):
+        z_bar = 0.70
         for toolType in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
             sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color='blue',  x=x+m, y=y + 0.25, z=1.10)
             m = m + 0.1
-        # TODO understand how to distribute the tools around the center, instead of all on the left
+            # Background tool life bar
+            sim.Animate3dBox(x_len=0.459, y_len=0.01, z_len=0.07, color='gray', x=x, y=y + 0.4379, z=z_bar)
+            z_bar = z_bar - 0.08
+            # TODO understand how to distribute the tools around the center /
+            #  (one on the left, one on the right, and then again), instead of all on the left
+            # TODO add visualization tools' remaining life units
 
-        # TODO add visualization for all possible tool types and their remaining life units
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.50)
@@ -71,7 +78,7 @@ class SimMachine(sim.Component):
                 # Update mounted tool
                 self.mounted_tool = process_step.toolType
                 # Check if previous tool is too old
-                if self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
+                if self.remaining_tool_life_units[self.mounted_tool] > process_step.consumedToolLifeUnits:
                     # Update remaining life units
                     self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
                 # TODO update tool visualization
@@ -83,7 +90,6 @@ class SimMachine(sim.Component):
                 yield self.hold(self.mounted_tool.mountTime)
                 # Update life units
                 self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
-                # TODO update tool visualization
             # Perform process step
             yield self.hold(process_step.duration)
             # Update job state
