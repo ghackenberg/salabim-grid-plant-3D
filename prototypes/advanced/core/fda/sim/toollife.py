@@ -7,8 +7,8 @@ from .job import *
 from .remainingtoollife import *
 
 class ToolLife(RemainingToolLife):
-    def __init__(self, env: sim.Environment, x: float, y: float):
-        super().__init__(env, x, y)
+    def __init__(self, env: sim.Environment, x_dimension: float, x: float, y: float):
+        super().__init__(env, x_dimension, x, y)
 
         # Remember remaining life units per tool
         self.remaining_tool_life_units: dict[ToolType, int] = {}
@@ -28,7 +28,7 @@ class ToolLife(RemainingToolLife):
             # Duration of the process
             speed = self.ProcessStep.duration
             # Initial tool's life bar state
-            yield from self.x(value, speed)
+            yield from self.x(self.x, speed)
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
             # Assert that we are the machine to perform the step
@@ -39,19 +39,18 @@ class ToolLife(RemainingToolLife):
             if self.remaining_tool_life_units[self.mounted_tool] > process_step.consumedToolLifeUnits:
                 # Update remaining life units
                 value = self.mounted_tool.totalLifeUnits
-                yield from self.move_x(value, speed)
+                yield from self.move_x(self.x_dimension * 0.3, speed)
             # TODO update tool life bar visualization
             elif self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                 # End of total life unit
-                value = 0
-                yield from self.move_x( value, speed)
+                yield from self.move_x(self.x_dimension * 0.1, speed)
                 # TODO update tool life bar visualization
                 # Update life units
                 value = self.mounted_tool.totalLifeUnits
-                yield from self.move_x(value, speed)
+                yield from self.move_x(self.x_dimension * 0.3, speed)
             # Update remaining tool life units
             value = self.remaining_tool_life_units[self.mounted_tool] - process_step.consumedToolLifeUnits
-            yield from self.move_x(value, speed)
+            yield from self.move_x(self.x_dimension *  0.3, speed)
 
     '''
     def process (self):

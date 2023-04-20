@@ -47,6 +47,7 @@ def simulate(layout: Layout, scenario: Scenario):
     Tool(PROCESS_STEPS)
 
 
+
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
     y = 2 + corridor_count / 1.15
@@ -148,6 +149,9 @@ def simulate(layout: Layout, scenario: Scenario):
             machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1
+
+        # Tool's life bar
+        ToolLife(env, 0.5, x, y)
 
 
 
