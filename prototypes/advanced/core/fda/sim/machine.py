@@ -38,11 +38,9 @@ class SimMachine(sim.Component):
         # Tool
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
-        m = 0
+
         z_bar = 0.70
         for toolType in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
-            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color='blue',  x=x+m, y=y + 0.25, z=1.10)
-            m = m + 0.1
             # Background tool life bar
             sim.Animate3dBox(x_len=0.459, y_len=0.01, z_len=0.07, color='gray', x=x, y=y + 0.4379, z=z_bar)
             z_bar = z_bar - 0.08

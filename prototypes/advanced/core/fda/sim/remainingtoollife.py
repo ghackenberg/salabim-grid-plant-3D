@@ -1,7 +1,7 @@
 import salabim as sim
 
 from ..model import *
-from .tool import *
+from .machinetool import *
 from .job import *
 
 
