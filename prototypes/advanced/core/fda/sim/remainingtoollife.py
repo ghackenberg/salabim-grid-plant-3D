@@ -6,8 +6,8 @@ from .job import *
 
 
 class RemainingToolLife(sim.Component):
-    def __init__(self, env: sim.Environment, x_dimension: float, x: float, y: float):
-        super().__init__(x_dimension)
+    def __init__(self, env: sim.Environment,  x: float, y: float):
+        super().__init__()
         print('ciao')
         self.env = env
 
@@ -21,7 +21,7 @@ class RemainingToolLife(sim.Component):
         z_bar = 0.70
         for toolType in MACHINETYPE_TOOLTYPE_MAP:
             #Remaining tool's life bar
-            sim.Animate3dBox(x_len=x_dimension, y_len=0.5, z_len=0.6, color='green', edge_color='green', x=self.x_func, y=y + 0.4379, z=z_bar)
+            sim.Animate3dBox(x_len=self.x_func, y_len=0.5, z_len=0.6, color='green', edge_color='green', x=x, y=y + 0.4379, z=z_bar)
             z_bar = z_bar - 0.08
 
     def x_func(self, t: float):
