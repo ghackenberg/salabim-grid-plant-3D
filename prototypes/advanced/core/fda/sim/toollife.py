@@ -19,7 +19,6 @@ class ToolLife(RemainingToolLife):
 
 
     def process(self):
-        value = self.remaining_tool_life_units[self.mounted_tool]
         while True:
             # Take next job from store
             job: Job = yield self.from_store(self.store_in)
@@ -36,21 +35,19 @@ class ToolLife(RemainingToolLife):
             # Check which tool is required
             self.mounted_tool = process_step.toolType
             # Check if previous tool is too old
-            if self.remaining_tool_life_units[self.mounted_tool] > process_step.consumedToolLifeUnits:
+            if self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                 # Update remaining life units
-                value = self.mounted_tool.totalLifeUnits
-                yield from self.move_x(self.x_dimension * 0.3, speed)
+                yield from self.move_x(self.x_dimension * 0.7, speed)
             # TODO update tool life bar visualization
             elif self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                 # End of total life unit
                 yield from self.move_x(self.x_dimension * 0.1, speed)
                 # TODO update tool life bar visualization
                 # Update life units
-                value = self.mounted_tool.totalLifeUnits
                 yield from self.move_x(self.x_dimension * 0.3, speed)
             # Update remaining tool life units
-            value = self.remaining_tool_life_units[self.mounted_tool] - process_step.consumedToolLifeUnits
-            yield from self.move_x(self.x_dimension *  0.3, speed)
+            self.remaining_tool_life_units[self.mounted_tool] = self.remaining_tool_life_units[self.mounted_tool] - process_step.consumedToolLifeUnits
+            yield from self.move_x(self.x_dimension * 0.7, speed)
 
     '''
     def process (self):

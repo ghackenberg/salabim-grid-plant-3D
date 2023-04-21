@@ -76,7 +76,7 @@ class SimMachine(sim.Component):
                 # Update mounted tool
                 self.mounted_tool = process_step.toolType
                 # Check if previous tool is too old
-                if self.remaining_tool_life_units[self.mounted_tool] > process_step.consumedToolLifeUnits:
+                if self.remaining_tool_life_units[self.mounted_tool] < process_step.consumedToolLifeUnits:
                     # Update remaining life units
                     self.remaining_tool_life_units[self.mounted_tool] = self.mounted_tool.totalLifeUnits
                 # TODO update tool visualization
