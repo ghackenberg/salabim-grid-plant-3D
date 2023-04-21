@@ -28,7 +28,7 @@ class ToolLife(RemainingToolLife):
             # Duration of the process
             speed = self.ProcessStep.duration
             # Initial tool's life bar state
-            yield from self.x(self.x, speed)
+            yield from self.x(self.x_dimension, speed)
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
             # Assert that we are the machine to perform the step

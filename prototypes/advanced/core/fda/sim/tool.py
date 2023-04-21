@@ -5,7 +5,7 @@ from ..model import *
 from .job import *
 from .toollife import *
 
-class ToolMov():
+class ToolMov(sim.Component):
     def __init__(self, machine: Machine, process: PROCESS_STEPS, env: sim.Environment, x: float):
         super().__init__()
 
