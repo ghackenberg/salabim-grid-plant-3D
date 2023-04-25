@@ -6,8 +6,8 @@ machineType1 = MachineType('Machine type 1', 1)
 machineType2 = MachineType('Machine type 1', 1)
 
 # Create tool types
-toolType1 = ToolType('Tool type 1', 1, 2, 3, 10)
-toolType2 = ToolType('Tool type 2', 2, 1, 2, 9)
+toolType1 = ToolType('Tool type 1', 1, 2, 3, 25)
+toolType2 = ToolType('Tool type 2', 2, 1, 2, 25)
 
 
 # Create product types
@@ -17,8 +17,8 @@ productType3 = ProductType('Product Type 3', 14, 15, 15, 6)
 
 
 # Create process steps
-processSteps1 = ProcessStep('Process step 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process step 2', 1, 24, 0.20, machineType2, toolType2, productType1, productType3)
+processSteps1 = ProcessStep('Process step 1', 1, 10, 0.15, machineType1, toolType1, productType1, productType2)
+processSteps2 = ProcessStep('Process step 2', 1, 10, 0.20, machineType2, toolType2, productType1, productType3)
 
 
 # Create scenarios

@@ -43,8 +43,7 @@ def simulate(layout: Layout, scenario: Scenario):
         for i in range(order.quantity):
             Job(layout, scenario, order, start_store)
 
-    # MachineType_ToolTypeMap
-    Tool(PROCESS_STEPS)
+
 
 
 
@@ -138,20 +137,18 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesLeft:
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
-            SimMachine(machine, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
+            SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
             machine_num = machine_num + 1
 
         machine_num = 0
         for machine in corridor.machinesRight:
             x = -3 - machine_num * 2
             stores = machine_stores_right[machine_num]
-            SimMachine(machine, stores[0], stores[1], x, y)
+            SimMachine(machine, env, stores[0], stores[1], x, y)
             machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1
 
-        # Tool's life bar
-        ToolLife(env, 0.5, x, y)
 
 
 
