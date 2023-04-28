@@ -8,7 +8,7 @@ machineType3 = MachineType('Machine type 3', 3)
 machineType4 = MachineType('Machine type 4', 4)
 
 # Create tool types
-toolType1 = ToolType('Tool type 1', 1, 2, 3, 10)
+toolType1 = ToolType('Tool type 1', 1, 2, 3, 20)
 toolType2 = ToolType('Tool type 2', 2, 1, 2, 9)
 toolType3 = ToolType('Tool type 3', 3, 3, 4, 12)
 
@@ -21,11 +21,11 @@ productType4 = ProductType('Product Type 4', 23, 11, 22, 5)
 
 
 # Create process steps
-processSteps1 = ProcessStep('Process 1', 1, 20, 0.15, machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process 2', 1, 24, 0.20, machineType2, toolType2, productType4, productType2)
-processSteps3 = ProcessStep('Process 3', 1, 24, 0.11, machineType3, toolType3, productType1, productType4)
-processSteps4 = ProcessStep('Process 4', 1, 24, 0.11, machineType4, toolType3, productType3, productType1)
-processSteps4_2 = ProcessStep('Process 4_2', 1, 24, 0.11, machineType4, toolType2, productType3, productType1)
+processSteps1 = ProcessStep('Process 1', 1, 10, 0.15, machineType1, toolType1, productType1, productType2)
+processSteps2 = ProcessStep('Process 2', 1, 4, 0.20, machineType2, toolType2, productType4, productType2)
+processSteps3 = ProcessStep('Process 3', 1, 4, 0.11, machineType3, toolType3, productType1, productType4)
+processSteps4 = ProcessStep('Process 4', 1, 3, 0.11, machineType4, toolType3, productType3, productType1)
+processSteps4_2 = ProcessStep('Process 4_2', 1,5, 0.11, machineType4, toolType2, productType3, productType1)
 
 
 # Create scenarios

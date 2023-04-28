@@ -6,7 +6,7 @@ from .sim import *
 
 def simulate(layout: Layout, scenario: Scenario):
     #General visualization commands
-    env = sim.Environment()
+    env = sim.Environment(time_unit='minutes')
 
     env.width(950)
     env.height(768)
