@@ -43,10 +43,6 @@ def simulate(layout: Layout, scenario: Scenario):
         for i in range(order.quantity):
             Job(layout, scenario, order, start_store)
 
-
-
-
-
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
     y = 2 + corridor_count / 1.15

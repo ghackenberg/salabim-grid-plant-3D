@@ -1,8 +1,8 @@
 import salabim as sim
 import random
 
-from ..model import *
 from ..calculate import *
+from ..model import *
 
 class Job(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, store: sim.Store):

@@ -15,34 +15,6 @@ def calculateMachineSequencesFromProcessStepSequence(process: list[ProcessStep],
     else:
         return [[]]
 
-'''
-def calculateToolSequencesFromProcessStepSequence(process: list[ProcessStep], layout: Layout):
-    if len(process) > 0:
-        result: list[list[ToolType]] = []
-        processStep = process.pop(0)
-        for toolType in processStep.toolType.processSteps:
-            #if toolType.corridor.layout == layout:
-                routes = calculateToolSequencesFromProcessStepSequence(process, layout)
-                for route in routes:
-                    route.insert(0, toolType)
-                    result.append(route)
-        process.insert(0, processStep)
-        #print(result)
-        return result
-    else:
-        return [[]]
-        
-
-def calculateToolSequences(objectType: ProductType, layout: Layout):
-    result: list[list[ToolType]] = []
-    processes = calculateProcessStepSequences(objectType)
-    for process in processes:
-        processRoutes = calculateToolSequencesFromProcessStepSequence(process, layout)
-        for processRoute in processRoutes:
-            result.append(processRoute)
-    return result
-'''
-
 def calculateMachineSequences(objectType: ProductType, layout: Layout):
     result: list[list[Machine]] = []
     processes = calculateProcessStepSequences(objectType)

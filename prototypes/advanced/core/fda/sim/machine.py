@@ -35,26 +35,21 @@ class SimMachine(sim.Component):
         # Remember store out
         self.store_out = store_out
 
-        #Available color
-        color = ['blue', 'black', 'red', 'yellow', ' green', 'pink', 'indigo', 'chocolate', 'teal', 'darksalmon',
-                 'lavander', 'darkgoldenrod', 'powderblue', 'thistel', 'gainsboro']
 
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
 
-        # Tool
+        # Tool Support
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
 
-        z_bar = 0.70
-        for toolType in self.remaining_tool_life_units:
-            # Background tool life bar
-            sim.Animate3dBox(x_len=lambda t: self.x_func(toolType, t), y_len=0.01, z_len=0.07, color=lambda t: self.c_func(toolType, t), x=x, y=y + 0.4379, z=z_bar)
-            z_bar = z_bar - 0.08
-            # TODO understand how to distribute the tools around the center /
-            #  (one on the left, one on the right, and then again), instead of all on the left
-            # TODO add visualization tools' remaining life units
+        # Tool
 
+        # Life Bar visualization
+        z_bar = 0.70
+        for tool_type in self.remaining_tool_life_units:
+            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07, color=lambda t: self.c_func(tool_type, t), x=x, y=y + 0.4379, z=z_bar)
+            z_bar = z_bar - 0.08
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.50)
@@ -93,6 +88,7 @@ class SimMachine(sim.Component):
             job: Job = yield self.from_store(self.store_in)
             # Retrieve next process step to perform
             process_step = job.process_step_sequence.pop(0)
+
             duration = process_step.duration
             consumed_life_units = process_step.consumedToolLifeUnits
             tool_type = process_step.toolType
@@ -100,6 +96,7 @@ class SimMachine(sim.Component):
             mount_time = tool_type.mountTime
             unmount_time = tool_type.unmountTime
             remaining_life_units = self.remaining_tool_life_units[tool_type]
+
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
             # Assert that we are the machine to perform the step
