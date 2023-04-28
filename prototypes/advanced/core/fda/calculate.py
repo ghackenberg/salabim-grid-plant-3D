@@ -24,6 +24,7 @@ def calculateMachineSequences(objectType: ProductType, layout: Layout):
             result.append(processRoute)
     return result
 
+
 def calculateProcessStepSequences(objectType: ProductType):
     result: list[list[ProcessStep]] = []
     for operationType in objectType.producingProcessSteps:

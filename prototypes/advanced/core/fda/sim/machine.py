@@ -1,6 +1,7 @@
 import salabim as sim
 
 from .job import *
+from.statistics import *
 from ..model import *
 
 class SimMachine(sim.Component):
@@ -149,3 +150,4 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_next_t[tool_type] = self.env.now()
             # Place job back to store
             yield self.to_store(self.store_out, job)
+

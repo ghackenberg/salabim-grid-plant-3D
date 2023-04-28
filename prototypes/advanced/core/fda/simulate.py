@@ -5,8 +5,8 @@ from .sim import *
 
 
 def simulate(layout: Layout, scenario: Scenario):
-    #General visualization commands
-    env = sim.Environment(time_unit='minutes')
+    #Visualization settings
+    env = sim.Environment(time_unit='hours')
 
     env.width(950)
     env.height(768)
@@ -25,7 +25,6 @@ def simulate(layout: Layout, scenario: Scenario):
     env.view(x_eye=0, y_eye=15, z_eye=5)
 
     sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
-
 
 
     # Create stores per corridor
