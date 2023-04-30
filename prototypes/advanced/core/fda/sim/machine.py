@@ -1,7 +1,6 @@
 import salabim as sim
 
 from .job import *
-from.statistics import *
 from ..model import *
 
 class SimMachine(sim.Component):
@@ -29,6 +28,13 @@ class SimMachine(sim.Component):
         self.unmouting = False
         self.mounted_tool: ToolType = None
 
+        # Remember current unavailability
+        self.unavailability = 0
+        self.total_availability = 24 #assuming one whole day of avalability menus the unavailability
+        # Remember machine utilization
+        self.effective_machine_utilization = 0
+        self.machine_utilization = 0
+
         self.env = env
 
         # Remember store in
@@ -36,6 +42,8 @@ class SimMachine(sim.Component):
         # Remember store out
         self.store_out = store_out
 
+        # Get statistics
+        print(self.statistic())
 
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
@@ -49,7 +57,7 @@ class SimMachine(sim.Component):
         # Life Bar visualization
         z_bar = 0.70
         for tool_type in self.remaining_tool_life_units:
-            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07, color=lambda t: self.c_func(tool_type, t), x=x, y=y + 0.4379, z=z_bar)
+            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07, color=lambda t: self.c_func(tool_type), x=x, y=y + 0.4379, z=z_bar)
             z_bar = z_bar - 0.08
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
@@ -67,7 +75,7 @@ class SimMachine(sim.Component):
         else:
             return (rtlu + (rtlu_next - rtlu) * (t - rtlu_t) / (rtlu_next_t - rtlu_t)) / tool_type.totalLifeUnits * 0.4
 
-    def c_func(self, tool_type: ToolType, t: float):
+    def c_func(self, tool_type: ToolType):
         rtlu_t = self.remaining_tool_life_units_t[tool_type]
         rtlu_next_t = self.remaining_tool_life_units_next_t[tool_type]
         if tool_type == self.mounted_tool:
@@ -83,6 +91,7 @@ class SimMachine(sim.Component):
         else:
             return "gray"
 
+
     def process(self):
         while True:
             # Take next job from store
@@ -97,6 +106,7 @@ class SimMachine(sim.Component):
             mount_time = tool_type.mountTime
             unmount_time = tool_type.unmountTime
             remaining_life_units = self.remaining_tool_life_units[tool_type]
+
 
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
@@ -134,6 +144,9 @@ class SimMachine(sim.Component):
                 self.mounting = False
                 # Update life units
                 remaining_life_units = total_life_units
+            # Machine unavailability
+            self.unavailability = self.unavailability + mount_time + unmount_time
+            self.total_availability = self.total_availability - self.unavailability
             # Prepare animation
             self.remaining_tool_life_units[tool_type] = remaining_life_units
             self.remaining_tool_life_units_t[tool_type] = self.env.now()
@@ -150,4 +163,29 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_next_t[tool_type] = self.env.now()
             # Place job back to store
             yield self.to_store(self.store_out, job)
+
+    def statistic(self):
+        # Take next job from store
+        job: Job = yield self.from_store(self.store_in)
+
+        processes = job.process_step_sequence
+        machines = job.machine_sequence
+
+        utilization: list[MachineType: list[float]] = []
+        print('aa')
+        for self.machine in machines:
+            print('a')
+            for process in processes:
+                print('b')
+                duration = process.duration
+                if self.machine == process.machineType.machines:
+                    self.effective_machine_utilization = self.effective_machine_utilization + duration
+                    print('c')
+            self.machine_utilization = self.effective_machine_utilization / self.total_availability
+            utilization.append(self.machine_utilization)
+        return utilization
+
+
+
+
 

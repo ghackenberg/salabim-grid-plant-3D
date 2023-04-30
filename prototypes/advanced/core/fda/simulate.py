@@ -134,6 +134,9 @@ def simulate(layout: Layout, scenario: Scenario):
             stores = machine_stores_left[machine_num]
             SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
             machine_num = machine_num + 1
+            # Print machine code over each machine
+            #code = str(machine.machineType.code)
+            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='black')
 
         machine_num = 0
         for machine in corridor.machinesRight:
@@ -141,6 +144,9 @@ def simulate(layout: Layout, scenario: Scenario):
             stores = machine_stores_right[machine_num]
             SimMachine(machine, env, stores[0], stores[1], x, y)
             machine_num = machine_num + 1
+            # Print machine code over each machine
+            #code = str(machine.machineType.code)
+            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')
 
         corridor_num = corridor_num + 1
 

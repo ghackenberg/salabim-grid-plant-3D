@@ -3,7 +3,7 @@ from fda import *
 
 # Create machine types
 machineType1 = MachineType('Machine type 1', 1)
-machineType2 = MachineType('Machine type 1', 1)
+machineType2 = MachineType('Machine type 1', 2)
 
 # Create tool types
 toolType1 = ToolType('Tool type 1', 1, 2, 3, 25)

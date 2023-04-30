@@ -1,19 +1,15 @@
-import salabim as sim
 
-from .machine import *
-from .job import *
-from ..model import *
 
-def Statistics(job: Job):
-    env = sim.Environment(time_unit='hours')
+
+'''
 
     processes = job.process_step_sequence
     machines = job.machine_sequence
     duration = processes.duration
 
 
-    unavailability = processes.toolType.mountTime + processes.toolType.unmountTime
-    total_availability = yield 24 - unavailability
+
+    total_availability = yield 24 - 
 
     #machine_utilization = availability / total_availability
 
@@ -36,15 +32,15 @@ def Statistics(job: Job):
 
 
 
-'''
+
         name = sim.Pdf(('John', 30, 'Peter', 20, 'Mike', 20, 'Andrew', 20, 'Ruud', 5, 'Jan', 5)).sample()
         monitor_names.tally(name)
 
     monitor_names.print_histogram(values=True)
 
+'''
 
-
-
+'''
 class Utilization(sim.Monitor):
     # Total available time per each machine
     machine_total = 480
@@ -61,4 +57,5 @@ utilization = sim.Monitor('utilization')
 utilization.tally(this_duration)
 
 utilization.print_statistics()
+
 '''
