@@ -26,6 +26,8 @@ def simulate(layout: Layout, scenario: Scenario):
 
     sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
 
+    # Tool
+    print(Tool(PROCESS_STEPS))
 
     # Create stores per corridor
     start_store = sim.Store("start")
@@ -133,20 +135,22 @@ def simulate(layout: Layout, scenario: Scenario):
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
             SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
-            machine_num = machine_num + 1
             # Print machine code over each machine
             #code = str(machine.machineType.code)
-            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='black')
+            #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
+
+            machine_num = machine_num + 1
 
         machine_num = 0
         for machine in corridor.machinesRight:
             x = -3 - machine_num * 2
             stores = machine_stores_right[machine_num]
             SimMachine(machine, env, stores[0], stores[1], x, y)
-            machine_num = machine_num + 1
             # Print machine code over each machine
             #code = str(machine.machineType.code)
             #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')
+
+            machine_num = machine_num + 1
 
         corridor_num = corridor_num + 1
 

@@ -1,6 +1,7 @@
 import salabim as sim
 
 from .job import *
+from .tool import *
 from ..model import *
 
 class SimMachine(sim.Component):
@@ -43,16 +44,24 @@ class SimMachine(sim.Component):
         self.store_out = store_out
 
         # Get statistics
-        print(self.statistic())
+        #print(self.statistic())
 
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
 
+
         # Tool Support
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
-
-        # Tool
+        # Tool Visualization
+        m = 0
+        i = 0
+        color = ['blue', 'red', 'black', 'yellow', ' green', 'pink', 'chocolate', 'indigo', 'teal', 'darksalmon',
+                 'lavender', 'darkgoldenrod', 'powderblue', 'thistle', 'gainsayer']
+        for toolType in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
+            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color=color[i], x=x + m, y=y + 0.25, z=1.10)
+            m = m + 0.1
+            i = i + 1
 
         # Life Bar visualization
         z_bar = 0.70
@@ -106,7 +115,6 @@ class SimMachine(sim.Component):
             mount_time = tool_type.mountTime
             unmount_time = tool_type.unmountTime
             remaining_life_units = self.remaining_tool_life_units[tool_type]
-
 
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)

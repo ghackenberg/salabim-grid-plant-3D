@@ -21,8 +21,7 @@ class TransversalRobotRight(TransversalRobot):
 
             # While next machine is in the same corridor and side
             while len(job.machine_sequence) > 0 and job.machine_sequence[0].corridor == self.corridor and not job.machine_sequence[0].left:
-                #while there is a job to process for the machine in the right part of the corridord
-
+                #while there is a job to process in the same corridor where we are(== self.corridor) a destra(not .left):
                 # Get machine
                 machine = job.machine_sequence[0]
                 # Calculate machine index
