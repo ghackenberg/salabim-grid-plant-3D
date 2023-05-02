@@ -2,6 +2,7 @@ import salabim as sim
 
 from .model import *
 from .sim import *
+from .sim import utilization
 
 
 def simulate(layout: Layout, scenario: Scenario):
@@ -27,7 +28,7 @@ def simulate(layout: Layout, scenario: Scenario):
     sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
 
     # Tool
-    print(Tool(PROCESS_STEPS))
+    Tool(PROCESS_STEPS)
 
     # Create stores per corridor
     start_store = sim.Store("start")
@@ -40,9 +41,12 @@ def simulate(layout: Layout, scenario: Scenario):
     end_store = sim.Store("end")
 
     # Create jobs
+    job = []
     for order in scenario.orders: #per each order creates a job
         for i in range(order.quantity):
-            Job(layout, scenario, order, start_store)
+            job_var = Job(layout, scenario, order, start_store)
+            job.append(job_var)
+
 
     #Transversal corridors counting
     corridor_count = len(layout.corridors) #numbers of t_corridors in a certain layout
@@ -134,7 +138,8 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesLeft:
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
-            SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
+            simMachine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
+            print(simMachine.statistic(job))
             # Print machine code over each machine
             #code = str(machine.machineType.code)
             #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
@@ -145,7 +150,9 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesRight:
             x = -3 - machine_num * 2
             stores = machine_stores_right[machine_num]
-            SimMachine(machine, env, stores[0], stores[1], x, y)
+            simMachine = SimMachine(machine, env, stores[0], stores[1], x, y)
+            print(simMachine.statistic(job))
+
             # Print machine code over each machine
             #code = str(machine.machineType.code)
             #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')

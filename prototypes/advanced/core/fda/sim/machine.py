@@ -4,8 +4,10 @@ from .job import *
 from .tool import *
 from ..model import *
 
+
 class SimMachine(sim.Component):
-    def __init__(self, machine: Machine, env: sim.Environment, store_in: sim.Store, store_out: sim.Store, x: float, y: float):
+    def __init__(self, machine: Machine, env: sim.Environment, store_in: sim.Store, store_out: sim.Store, x: float,
+                 y: float):
         super().__init__()
 
         # Remember machine
@@ -23,7 +25,7 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_t[processStep.toolType] = env.now()
             self.remaining_tool_life_units_next[processStep.toolType] = processStep.toolType.totalLifeUnits
             self.remaining_tool_life_units_next_t[processStep.toolType] = env.now()
-        
+
         # Remember currently mounted tool
         self.mounting = False
         self.unmouting = False
@@ -31,9 +33,9 @@ class SimMachine(sim.Component):
 
         # Remember current unavailability
         self.unavailability = 0
-        self.total_availability = 24 #assuming one whole day of avalability menus the unavailability
+        self.total_availability = 24  # assuming one whole day of avalability menus the unavailability
         # Remember machine utilization
-        self.effective_machine_utilization = 0
+        self.effective_machine_utilisation = 0
         self.machine_utilization = 0
 
         self.env = env
@@ -43,12 +45,10 @@ class SimMachine(sim.Component):
         # Remember store out
         self.store_out = store_out
 
-        # Get statistics
-        #print(self.statistic())
+
 
         # Down
-        sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y+0.00, z=1.80)
-
+        sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y + 0.00, z=1.80)
 
         # Tool Support
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
@@ -58,21 +58,23 @@ class SimMachine(sim.Component):
         i = 0
         color = ['blue', 'red', 'black', 'yellow', ' green', 'pink', 'chocolate', 'indigo', 'teal', 'darksalmon',
                  'lavender', 'darkgoldenrod', 'powderblue', 'thistle', 'gainsayer']
-        for toolType in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
+        for tool_type in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
             sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color=color[i], x=x + m, y=y + 0.25, z=1.10)
             m = m + 0.1
             i = i + 1
 
         # Life Bar visualization
         z_bar = 0.70
-        for tool_type in self.remaining_tool_life_units:
-            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07, color=lambda t: self.c_func(tool_type), x=x, y=y + 0.4379, z=z_bar)
+        for self.mounted_tool in self.remaining_tool_life_units:
+            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07,
+                             color=lambda t: self.c_func(tool_type), x=x, y=y + 0.4379, z=z_bar)
             z_bar = z_bar - 0.08
         # Machine
-        sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y-0.08, z=1.00)
-        sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y+0.08, z=0.50)
+        sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y - 0.08, z=1.00)
+        sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y + 0.08, z=0.50)
 
         # TODO add visualization for progress of process step
+
 
     def x_func(self, tool_type: ToolType, t: float):
         rtlu = self.remaining_tool_life_units[tool_type]
@@ -100,6 +102,22 @@ class SimMachine(sim.Component):
         else:
             return "gray"
 
+    def statistic(self, jobs: list[Job]):
+        for job in jobs:
+            processes = job.process_step_sequence
+            machines = job.machine_sequence
+
+            utilisation: list[tuple[str, float]] = []
+
+            for machine in machines:
+                for process in processes:
+                    duration = process.duration
+                    if self.machine == process.machineType.machines:
+                        self.effective_machine_utilisation = self.effective_machine_utilisation + duration
+
+                self.machine_utilization = self.effective_machine_utilisation / self.total_availability
+                utilisation.append(f"{machine.machineType} : {self.machine_utilization}")
+        return utilisation
 
     def process(self):
         while True:
@@ -172,14 +190,14 @@ class SimMachine(sim.Component):
             # Place job back to store
             yield self.to_store(self.store_out, job)
 
-    def statistic(self):
-        # Take next job from store
-        job: Job = yield self.from_store(self.store_in)
-
+'''
+    def statistic(self, job: Job):
+        print("inizio metodo")
+        
         processes = job.process_step_sequence
         machines = job.machine_sequence
 
-        utilization: list[MachineType: list[float]] = []
+        utilisation: list[tuple[str, float]] = []
         print('aa')
         for self.machine in machines:
             print('a')
@@ -187,11 +205,12 @@ class SimMachine(sim.Component):
                 print('b')
                 duration = process.duration
                 if self.machine == process.machineType.machines:
-                    self.effective_machine_utilization = self.effective_machine_utilization + duration
+                    self.effective_machine_utilisation = self.effective_machine_utilisation + duration
                     print('c')
-            self.machine_utilization = self.effective_machine_utilization / self.total_availability
-            utilization.append(self.machine_utilization)
-        return utilization
+            self.machine_utilization = self.effective_machine_utilisation / self.total_availability
+            utilisation.append(f"{self.machine} : {self.machine_utilization}")
+        return utilisation
+        '''
 
 
 
