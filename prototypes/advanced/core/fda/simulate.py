@@ -2,7 +2,6 @@ import salabim as sim
 
 from .model import *
 from .sim import *
-from .sim import utilization
 
 
 def simulate(layout: Layout, scenario: Scenario):
@@ -39,6 +38,7 @@ def simulate(layout: Layout, scenario: Scenario):
         store_right = sim.Store(f"{corridor.code} right")
         corridor_stores.append([store_main, store_left, store_right]) #append the possible corridors' parts in the list of corridords
     end_store = sim.Store("end")
+
 
     # Create jobs
     job = []
@@ -138,8 +138,9 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesLeft:
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
-            simMachine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
-            print(simMachine.statistic(job))
+            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
+            print(sim_machine.statistic(job))
+
             # Print machine code over each machine
             #code = str(machine.machineType.code)
             #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
@@ -150,8 +151,8 @@ def simulate(layout: Layout, scenario: Scenario):
         for machine in corridor.machinesRight:
             x = -3 - machine_num * 2
             stores = machine_stores_right[machine_num]
-            simMachine = SimMachine(machine, env, stores[0], stores[1], x, y)
-            print(simMachine.statistic(job))
+            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y)
+            print(sim_machine.statistic(job))
 
             # Print machine code over each machine
             #code = str(machine.machineType.code)

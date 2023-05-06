@@ -36,7 +36,7 @@ class SimMachine(sim.Component):
         self.total_availability = 24  # assuming one whole day of avalability menus the unavailability
         # Remember machine utilization
         self.effective_machine_utilisation = 0
-        self.machine_utilization = 0
+        self.machine_utilisation = 0
 
         self.env = env
 
@@ -107,17 +107,18 @@ class SimMachine(sim.Component):
             processes = job.process_step_sequence
             machines = job.machine_sequence
 
-            utilisation: list[tuple[str, float]] = []
+            utilisation = []
 
             for machine in machines:
                 for process in processes:
                     duration = process.duration
-                    if self.machine == process.machineType.machines:
+                    if machine == process.machineType.machines:
                         self.effective_machine_utilisation = self.effective_machine_utilisation + duration
 
-                self.machine_utilization = self.effective_machine_utilisation / self.total_availability
-                utilisation.append(f"{machine.machineType} : {self.machine_utilization}")
-        return utilisation
+                self.machine_utilisation = self.effective_machine_utilisation / self.total_availability
+                utilisation.append({self.machine: self.machine_utilisation})
+
+            return utilisation
 
     def process(self):
         while True:
@@ -189,30 +190,4 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_next_t[tool_type] = self.env.now()
             # Place job back to store
             yield self.to_store(self.store_out, job)
-
-'''
-    def statistic(self, job: Job):
-        print("inizio metodo")
-        
-        processes = job.process_step_sequence
-        machines = job.machine_sequence
-
-        utilisation: list[tuple[str, float]] = []
-        print('aa')
-        for self.machine in machines:
-            print('a')
-            for process in processes:
-                print('b')
-                duration = process.duration
-                if self.machine == process.machineType.machines:
-                    self.effective_machine_utilisation = self.effective_machine_utilisation + duration
-                    print('c')
-            self.machine_utilization = self.effective_machine_utilisation / self.total_availability
-            utilisation.append(f"{self.machine} : {self.machine_utilization}")
-        return utilisation
-        '''
-
-
-
-
 
