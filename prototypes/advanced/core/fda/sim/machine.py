@@ -33,9 +33,8 @@ class SimMachine(sim.Component):
 
         # Remember current unavailability
         self.unavailability = 0
-        self.total_availability = 24  # assuming one whole day of avalability menus the unavailability
-        # Remember machine utilization
-        self.effective_machine_utilisation = 0
+        self.total_availability = 24 # assuming one whole day of avalability menus the unavailability
+        # Remember utilisation
         self.machine_utilisation = 0
 
         self.env = env
@@ -102,23 +101,21 @@ class SimMachine(sim.Component):
         else:
             return "gray"
 
-    def statistic(self, jobs: list[Job]):
-        for job in jobs:
-            processes = job.process_step_sequence
-            machines = job.machine_sequence
+    def statistic(self, processes: list[ProcessStep], machines: list[Machine], layout: Layout):
 
-            utilisation = []
+        utilisation = []
+        for machine in machines:
+            if machine.corridor.layout == layout:
+                effective_machine_utilisation = 0
+                machine_utilisation = 0
+                for processStep in processes:
+                    if machine in processStep.machineType.machines:
+                        duration = processStep.duration
+                        effective_machine_utilisation = effective_machine_utilisation + duration
+                        machine_utilisation = effective_machine_utilisation / self.total_availability
+                utilisation.append({self.machine: machine_utilisation})
 
-            for machine in machines:
-                for process in processes:
-                    duration = process.duration
-                    if machine == process.machineType.machines:
-                        self.effective_machine_utilisation = self.effective_machine_utilisation + duration
-
-                self.machine_utilisation = self.effective_machine_utilisation / self.total_availability
-                utilisation.append({self.machine: self.machine_utilisation})
-
-            return utilisation
+                return utilisation
 
     def process(self):
         while True:

@@ -26,8 +26,8 @@ scenario1 = Scenario('Scenario 1')
 
 
 # Create orders
-order1 = Order(1, 10, 11, 20, productType2,  scenario1)
-order2 = Order(2, 10, 11, 20, productType3,  scenario1)
+order1 = Order(1, 5, 11, 20, productType2,  scenario1)
+order2 = Order(2, 5, 11, 20, productType3,  scenario1)
 
 
 # Create layouts
