@@ -10,6 +10,12 @@ class SimMachine(sim.Component):
                  y: float):
         super().__init__()
 
+        self.env = env
+
+        # Remember availability
+        self.unavailability = 0
+        self.total_availability = 24
+
         # Remember machine
         self.machine = machine
 
@@ -31,20 +37,10 @@ class SimMachine(sim.Component):
         self.unmouting = False
         self.mounted_tool: ToolType = None
 
-        # Remember current unavailability
-        self.unavailability = 0
-        self.total_availability = 24 # assuming one whole day of avalability menus the unavailability
-        # Remember utilisation
-        self.machine_utilisation = 0
-
-        self.env = env
-
         # Remember store in
         self.store_in = store_in
         # Remember store out
         self.store_out = store_out
-
-
 
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y + 0.00, z=1.80)
@@ -74,7 +70,6 @@ class SimMachine(sim.Component):
 
         # TODO add visualization for progress of process step
 
-
     def x_func(self, tool_type: ToolType, t: float):
         rtlu = self.remaining_tool_life_units[tool_type]
         rtlu_t = self.remaining_tool_life_units_t[tool_type]
@@ -101,22 +96,6 @@ class SimMachine(sim.Component):
         else:
             return "gray"
 
-    def statistic(self, processes: list[ProcessStep], machines: list[Machine], layout: Layout):
-
-        utilisation = []
-        for machine in machines:
-            if machine.corridor.layout == layout:
-                effective_machine_utilisation = 0
-                machine_utilisation = 0
-                for processStep in processes:
-                    if machine in processStep.machineType.machines:
-                        duration = processStep.duration
-                        effective_machine_utilisation = effective_machine_utilisation + duration
-                        machine_utilisation = effective_machine_utilisation / self.total_availability
-                utilisation.append({self.machine: machine_utilisation})
-
-                return utilisation
-
     def process(self):
         while True:
             # Take next job from store
@@ -131,6 +110,8 @@ class SimMachine(sim.Component):
             mount_time = tool_type.mountTime
             unmount_time = tool_type.unmountTime
             remaining_life_units = self.remaining_tool_life_units[tool_type]
+            unavailability= self.unavailability
+            total_availability = self.total_availability
 
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
@@ -156,6 +137,10 @@ class SimMachine(sim.Component):
                     # Update remaining life units
                     remaining_life_units = total_life_units
                 # TODO update tool visualization
+                # Machine unavailability
+                unavailability = self.unavailability + mount_time + unmount_time
+                # Update availability
+                self.unavailability = unavailability
             elif remaining_life_units < consumed_life_units:
                 self.unmouting = True
                 # Unmount tool
@@ -168,9 +153,14 @@ class SimMachine(sim.Component):
                 self.mounting = False
                 # Update life units
                 remaining_life_units = total_life_units
-            # Machine unavailability
-            self.unavailability = self.unavailability + mount_time + unmount_time
-            self.total_availability = self.total_availability - self.unavailability
+                # Machine unavailability
+                unavailability = self.unavailability + mount_time + unmount_time
+                # Update availability
+                self.unavailability = unavailability
+            # Total availability
+            total_availability = self.total_availability - self.unavailability
+            # Update availability
+            self.total_availability = total_availability
             # Prepare animation
             self.remaining_tool_life_units[tool_type] = remaining_life_units
             self.remaining_tool_life_units_t[tool_type] = self.env.now()
@@ -187,4 +177,3 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_next_t[tool_type] = self.env.now()
             # Place job back to store
             yield self.to_store(self.store_out, job)
-
