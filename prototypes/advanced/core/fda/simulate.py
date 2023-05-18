@@ -140,7 +140,7 @@ def simulate(layout: Layout, scenario: Scenario):
             x = +3 + machine_num * 2
             stores = machine_stores_left[machine_num]
             sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
-            print(statistics.utilisation_values(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
+            print(statistics.utilisation(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
 
             # Print machine code over each machine
             #code = str(machine.machineType.code)
@@ -153,7 +153,7 @@ def simulate(layout: Layout, scenario: Scenario):
             x = -3 - machine_num * 2
             stores = machine_stores_right[machine_num]
             sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y)
-            print(statistics.utilisation_values(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
+            print(statistics.utilisation(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
 
             # Print machine code over each machine
             #code = str(machine.machineType.code)
