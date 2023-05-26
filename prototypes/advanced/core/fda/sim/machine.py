@@ -12,6 +12,9 @@ class SimMachine(sim.Component):
 
         self.env = env
 
+        # Define state
+        self.state = sim.State(f"State of {machine.name}", value='waiting')
+
         # Remember availability
         self.unavailability = 0
         self.total_availability = 24
@@ -60,9 +63,9 @@ class SimMachine(sim.Component):
 
         # Life Bar visualization
         z_bar = 0.70
-        for self.mounted_tool in self.remaining_tool_life_units:
-            sim.Animate3dBox(x_len=lambda t: self.x_func(tool_type, t), y_len=0.01, z_len=0.07,
-                             color=lambda t: self.c_func(tool_type), x=x, y=y + 0.4379, z=z_bar)
+        for tool_type in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
+            sim.Animate3dBox(x_len=(lambda tt: lambda t: self.x_func(tt, t))(tool_type), y_len=0.01, z_len=0.07,
+                             color=(lambda tt: lambda t: self.c_func(tt))(tool_type), x=x, y=y + 0.4379, z=z_bar)
             z_bar = z_bar - 0.08
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y - 0.08, z=1.00)
@@ -121,11 +124,13 @@ class SimMachine(sim.Component):
             if tool_type != self.mounted_tool:
                 # Check if tool is mounted
                 if self.mounted_tool is None:
+                    self.state.set("unmouting")
                     self.unmouting = True
                     # Unmount tool
                     yield self.hold(unmount_time)
                     # TODO update tool visualization
                     self.unmouting = False
+                self.state.set("mounting")
                 self.mounting = True
                 # Update mounted tool
                 self.mounted_tool = tool_type
@@ -142,11 +147,13 @@ class SimMachine(sim.Component):
                 # Update availability
                 self.unavailability = unavailability
             elif remaining_life_units < consumed_life_units:
+                self.state.set("unmounting")
                 self.unmouting = True
                 # Unmount tool
                 yield self.hold(unmount_time)
                 # TODO update tool visualization
                 self.unmouting = False
+                self.state.set("mounting")
                 self.mounting = True
                 # Remount tool
                 yield self.hold(mount_time)
@@ -157,6 +164,7 @@ class SimMachine(sim.Component):
                 unavailability = self.unavailability + mount_time + unmount_time
                 # Update availability
                 self.unavailability = unavailability
+            self.state.set("working")
             # Total availability
             total_availability = self.total_availability - self.unavailability
             # Update availability
@@ -168,6 +176,7 @@ class SimMachine(sim.Component):
             self.remaining_tool_life_units_next_t[tool_type] = self.env.now() + duration
             # Perform process step
             yield self.hold(duration)
+            self.state.set("returning")
             # Update job state
             job.state = process_step.producesProductType
             # Update remaining tool life units

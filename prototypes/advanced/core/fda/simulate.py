@@ -5,8 +5,10 @@ from .sim import *
 from .sim import statistics
 
 
-def simulate(layout: Layout, scenario: Scenario):
-    #Visualization settings
+def simulate(layout: Layout, scenario: Scenario, animate=True):
+    sim_machines: list[SimMachine] = []
+
+    # Visualization settings
     env = sim.Environment(time_unit='hours')
 
     env.width(950)
@@ -17,8 +19,9 @@ def simulate(layout: Layout, scenario: Scenario):
     env.height3d(768)
     env.position3d((0, 100))
 
-    env.animate(True)
-    env.animate3d(True)
+    if animate:
+        env.animate(True)
+        env.animate3d(True)
 
     env.show_camera_position(True)
     env.show_camera_position(over3d=True)
@@ -87,18 +90,52 @@ def simulate(layout: Layout, scenario: Scenario):
         machine_left_count = len(corridor.machinesLeft)
         machine_right_count = len(corridor.machinesRight)
 
+        sim_machines_left: list[SimMachine] = []
+        sim_machines_right: list[SimMachine] = []
+
         y = (corridor_num + 0.5 - corridor_count/2)*2
 
+        # Draw machine instances
+        machine_num = 0
+        for machine in corridor.machinesLeft:
+            x = +3 + machine_num * 2
+            stores = machine_stores_left[machine_num]
+            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
+            sim_machines.append(sim_machine)
+            sim_machines_left.append(sim_machine)
+
+            # Print machine code over each machine
+            #code = str(machine.machineType.code)
+            #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
+
+            machine_num = machine_num + 1
+
+        machine_num = 0
+        for machine in corridor.machinesRight:
+            x = -3 - machine_num * 2
+            stores = machine_stores_right[machine_num]
+            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y)
+            sim_machines.append(sim_machine)
+            sim_machines_right.append(sim_machine)
+
+            # Print machine code over each machine
+            #code = str(machine.machineType.code)
+            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')
+
+            machine_num = machine_num + 1
+
         # Robot
-        #if there is no machine in the corridor then we don't need the robot
+        # if there is no machine in the corridor then we don't need the robot
         if machine_left_count != 0:
-            TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_left, +1, y, 2.5)
+            TransversalRobotLeft(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_left,
+                                 sim_machines_left, +1, y, 2.5)
         else:
             False
-        
-        #if there is no machine in the corridor then we don't need the robot
+
+        # if there is no machine in the corridor then we don't need the robot
         if machine_right_count != 0:
-            TransversalRobotRight(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_right, -1, y, 2.5)
+            TransversalRobotRight(layout, corridor, scenario, env, corridor_stores[corridor_num], machine_stores_right,
+                                  sim_machines_right, -1, y, 2.5)
         else:
             False
 
@@ -117,7 +154,7 @@ def simulate(layout: Layout, scenario: Scenario):
         x_len = 3
         y_len = 1
         z_len = 1
-        sim.Animate3dBox(x_len=x_len, y_len=y_len, z_len=z_len, color= 'orange', x=0, y=y, z=0.5)
+        sim.Animate3dBox(x_len=x_len, y_len=y_len, z_len=z_len, color='orange', x=0, y=y, z=0.5)
 
         # Transversal corridors, left-right
         x_len_left = machine_left_count * 2 + 0.26
@@ -134,36 +171,22 @@ def simulate(layout: Layout, scenario: Scenario):
         else:
             False
 
-        # Draw machine instances
-        machine_num = 0
-        for machine in corridor.machinesLeft:
-            x = +3 + machine_num * 2
-            stores = machine_stores_left[machine_num]
-            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y) #[0]=store_in, [1]=store_out
-            print(statistics.utilisation(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
-
-            # Print machine code over each machine
-            #code = str(machine.machineType.code)
-            #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
-
-            machine_num = machine_num + 1
-
-        machine_num = 0
-        for machine in corridor.machinesRight:
-            x = -3 - machine_num * 2
-            stores = machine_stores_right[machine_num]
-            sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y)
-            print(statistics.utilisation(PROCESS_STEPS, MACHINES, layout, sim_machine.total_availability))
-
-            # Print machine code over each machine
-            #code = str(machine.machineType.code)
-            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')
-
-            machine_num = machine_num + 1
-
         corridor_num = corridor_num + 1
 
+    env.run()
 
-
-
-    env.run(sim.inf)
+    # Print statistics after finishing the simulation run
+    for sim_machine in sim_machines:
+        waiting = sim_machine.state.value.value_duration('waiting')
+        mounting = sim_machine.state.value.value_duration('mounting')
+        unmounting = sim_machine.state.value.value_duration('unmounting')
+        working = sim_machine.state.value.value_duration('working')
+        returning = sim_machine.state.value.value_duration('returning')
+        utilization = working / (waiting + mounting + unmounting + working + returning)
+        print(f"{sim_machine.machine.name}")
+        print(f"- waiting: {waiting}")
+        print(f"- mounting: {mounting}")
+        print(f"- unmounting: {unmounting}")
+        print(f"- working: {working}")
+        print(f"- returning: {returning}")
+        print(f"- utilization: {utilization}")

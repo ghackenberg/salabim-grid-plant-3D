@@ -55,15 +55,15 @@ corridor1_3 = Corridor(3, 150, 2, 3, layout1)
 corridor2_1 = Corridor(4, 150, 2, 3, layout2)
 corridor2_2 = Corridor(5, 150, 2, 3, layout2)
 corridor3_1 = Corridor(6, 200, 2, 3, layout3)
-corridor3_2 = Corridor(6, 150, 2, 3, layout3)
-corridor3_3 = Corridor(7, 130, 2, 3, layout3)
+corridor3_2 = Corridor(7, 150, 2, 3, layout3)
+corridor3_3 = Corridor(8, 130, 2, 3, layout3)
 
 
 # Create machines
 machine1_1 = Machine('Machine 1.1', machineType1, corridor1_2, True)
 machine1_2 = Machine('Machine 1.2', machineType1, corridor1_3, False)
 machine1_3 = Machine('Machine 1.3', machineType1, corridor3_3, True)
-machine1_4 = Machine('Machine 1.1', machineType1, corridor3_2, True)
+machine1_4 = Machine('Machine 1.4', machineType1, corridor3_2, True)
 
 machine2_1 = Machine('Machine 2.1', machineType2, corridor1_1, True)
 machine2_2 = Machine('Machine 2.2', machineType2, corridor3_3, True)
@@ -74,13 +74,13 @@ machine3_2 = Machine('Machine 3.2', machineType3, corridor1_2, False)
 machine3_3 = Machine('Machine 3.3', machineType3, corridor2_1, True)
 machine3_4 = Machine('Machine 3.4', machineType3, corridor3_2, True)
 machine3_5 = Machine('Machine 3.5', machineType3, corridor3_1, False)
-machine3_6 = Machine('Machine 3.3', machineType3, corridor3_1, True)
+machine3_6 = Machine('Machine 3.6', machineType3, corridor3_1, True)
 
 machine4_1 = Machine('Machine 4.1', machineType4, corridor1_1, True)
 machine4_2 = Machine('Machine 4.2', machineType4, corridor2_2, False)
 machine4_3 = Machine('Machine 4.3', machineType4, corridor3_1, False)
-machine4_4 = Machine('Machine 4.2', machineType4, corridor3_2, False)
+machine4_4 = Machine('Machine 4.4', machineType4, corridor3_2, False)
 
 
 # Simulate
-simulate(layout3, scenario1)
+simulate(layout3, scenario1, False)

@@ -2,11 +2,12 @@ import salabim as sim
 
 from ..model import *
 from .traversalrobot import *
+from .machine import *
 from .job import *
 
 class TransversalRobotRight(TransversalRobot):
-    def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, corridor_stores: list[sim.Store], machine_stores: list[list[sim.Store]], x: float, y: float, z: float):
-        super().__init__(layout, corridor, scenario, env, corridor_stores, machine_stores, x, y, z)
+    def __init__(self, layout: Layout, corridor: Corridor, scenario: Scenario, env: sim.Environment, corridor_stores: list[sim.Store], machine_stores: list[list[sim.Store]], machines: list[SimMachine], x: float, y: float, z: float):
+        super().__init__(layout, corridor, scenario, env, corridor_stores, machine_stores, machines, x, y, z)
 
     def process(self):
         speed = 1
@@ -29,7 +30,7 @@ class TransversalRobotRight(TransversalRobot):
                 # Get stores
                 machine_stores = self.machine_stores[machine_num]
                 # Calculate machine position
-                x = -3 + machine_num * 2
+                x = -3 - machine_num * 2
                 # Check if we are at the machine
                 if self.x != x:
                     # Move to machine
@@ -44,6 +45,8 @@ class TransversalRobotRight(TransversalRobot):
                 job: Job = yield self.from_store(machine_stores[1])
                 # Move down
                 yield from self.move_z(1.5, speed)
+                # Update machine state
+                self.machines[machine_num].state.set("waiting")
                 # Move up
                 yield from self.move_z(2.5, speed)
 
