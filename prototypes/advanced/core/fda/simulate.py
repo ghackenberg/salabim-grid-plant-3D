@@ -2,7 +2,6 @@ import salabim as sim
 
 from .model import *
 from .sim import *
-from .sim import statistics
 
 
 def simulate(layout: Layout, scenario: Scenario, animate=True):
@@ -104,10 +103,6 @@ def simulate(layout: Layout, scenario: Scenario, animate=True):
             sim_machines.append(sim_machine)
             sim_machines_left.append(sim_machine)
 
-            # Print machine code over each machine
-            #code = str(machine.machineType.code)
-            #sim.AnimateText(code, x, y+4, font= 'Calibri', fontsize=45, textcolor='pink', text_anchor='c')
-
             machine_num = machine_num + 1
 
         machine_num = 0
@@ -117,10 +112,6 @@ def simulate(layout: Layout, scenario: Scenario, animate=True):
             sim_machine = SimMachine(machine, env, stores[0], stores[1], x, y)
             sim_machines.append(sim_machine)
             sim_machines_right.append(sim_machine)
-
-            # Print machine code over each machine
-            #code = str(machine.machineType.code)
-            #sim.AnimateText(code, x, y+4, fontsize=15, textcolor='orange')
 
             machine_num = machine_num + 1
 
@@ -175,7 +166,7 @@ def simulate(layout: Layout, scenario: Scenario, animate=True):
 
     env.run()
 
-    # Print statistics after finishing the simulation run
+    # Print statistics after finishing the simulation run: Utilization
     for sim_machine in sim_machines:
         waiting = sim_machine.state.value.value_duration('waiting')
         mounting = sim_machine.state.value.value_duration('mounting')

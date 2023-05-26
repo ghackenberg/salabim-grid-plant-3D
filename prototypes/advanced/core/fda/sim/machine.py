@@ -15,10 +15,6 @@ class SimMachine(sim.Component):
         # Define state
         self.state = sim.State(f"State of {machine.name}", value='waiting')
 
-        # Remember availability
-        self.unavailability = 0
-        self.total_availability = 24
-
         # Remember machine
         self.machine = machine
 
@@ -113,8 +109,6 @@ class SimMachine(sim.Component):
             mount_time = tool_type.mountTime
             unmount_time = tool_type.unmountTime
             remaining_life_units = self.remaining_tool_life_units[tool_type]
-            unavailability= self.unavailability
-            total_availability = self.total_availability
 
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
@@ -141,17 +135,11 @@ class SimMachine(sim.Component):
                 if remaining_life_units < consumed_life_units:
                     # Update remaining life units
                     remaining_life_units = total_life_units
-                # TODO update tool visualization
-                # Machine unavailability
-                unavailability = self.unavailability + mount_time + unmount_time
-                # Update availability
-                self.unavailability = unavailability
             elif remaining_life_units < consumed_life_units:
                 self.state.set("unmounting")
                 self.unmouting = True
                 # Unmount tool
                 yield self.hold(unmount_time)
-                # TODO update tool visualization
                 self.unmouting = False
                 self.state.set("mounting")
                 self.mounting = True
@@ -160,15 +148,7 @@ class SimMachine(sim.Component):
                 self.mounting = False
                 # Update life units
                 remaining_life_units = total_life_units
-                # Machine unavailability
-                unavailability = self.unavailability + mount_time + unmount_time
-                # Update availability
-                self.unavailability = unavailability
             self.state.set("working")
-            # Total availability
-            total_availability = self.total_availability - self.unavailability
-            # Update availability
-            self.total_availability = total_availability
             # Prepare animation
             self.remaining_tool_life_units[tool_type] = remaining_life_units
             self.remaining_tool_life_units_t[tool_type] = self.env.now()
