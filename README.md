@@ -7,7 +7,7 @@ We assume that the material flow between the work stations of the factory is han
 
 ## Screenshots
 
-Here are some screenshots of our software tool.
+Here are some screenshots of our software tool:
 
 ### 🖼️ 3D animation
 
@@ -127,18 +127,24 @@ Here are some models explaining our overall idea:
 
 ### 📈 Class model
 
-The class model describes the entities of factory design:
+The class model describes the core entities, which are implemented in our factory design software.
+The entities include product types, which represent everything from raw material to end product.
+Then, the entities include tool and machine types as well as available manufacturing operations.
+On top you define layouts and scenarios.
 
 ![Class model](./models/class-model.png)
 
 ### 📈 Object model
 
-The object model describes an example factory design:
+The object model describes a sample use case.
+The use case is concerned with producing metal gears from raw metal disks.
+The use case includes milling and grinding as possible operations.
+Furthermore, the use case includes two different types machining centers, on which these operations can be executed as well as different order scenarios.
 
-#### Object model 1
+#### First object model
 
 ![Object model 1](./models/object-model-1.png)
 
-#### Object model 2
+#### Second object model
 
 ![Object model 2](./models/object-model-2.png)
