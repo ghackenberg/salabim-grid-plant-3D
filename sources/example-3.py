@@ -93,4 +93,4 @@ Machine('Machine 3.4.1', mt3, c3_4, True)
 
 
 # Simulate
-simulate(l3, s1, False)
+simulate(l3, s1)
