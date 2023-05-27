@@ -1,9 +1,9 @@
 # Factory Design Automation
 
-In this project we study techniques to reduce the effort of factory design tasks.
+In this project we study techniques for reducing the effort of modeling and analyzing factory layouts.
 To achieve this goal, we develop an easy-to-use configurator and simulator for a particular class of factories.
-More precisely, we concentrate on flexible manufacturing systems, which can be adapted to a variety of products and processes easily.
-We assume that the material flow between the work stations is handled completely by gantry robots.
+More precisely, we concentrate on flexible manufacturing systems, which can be adapted to a variety of products and processes.
+We assume that the material flow between the work stations of the factory is handled completely by gantry robots.
 
 ## Screenshots
 
