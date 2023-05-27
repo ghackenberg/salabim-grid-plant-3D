@@ -5,8 +5,8 @@ from .robot import *
 from .machine import *
 
 class TransversalRobot(Robot):
-    def __init__(self, corridor: Corridor, machines: list[Machine], env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], x: float, y: float):
-        super().__init__(env, x, y, 2.5, "green")
+    def __init__(self, corridor: Corridor, machines: list[Machine], env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):
+        super().__init__(env, dx, y, 2.5, "green")
 
         self.corridor = corridor
         self.machines = machines
@@ -15,7 +15,7 @@ class TransversalRobot(Robot):
         self.store_out_arm = store_out_arm
         self.store_out_main = store_out_main
 
-        self.dx = x
+        self.dx = dx
 
         self.sim_machines = sim_machines
 

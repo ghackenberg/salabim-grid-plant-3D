@@ -7,7 +7,7 @@ class SimOrder(sim.Component):
         super().__init__()
 
         self.order = order
-
+        
         self.sim_jobs: list[SimJob] = []
         for i in range(order.quantity):
             sim_job = SimJob(layout, scenario, order, i, env, store_start)

@@ -7,8 +7,7 @@ class SimScenario(sim.Component):
         super().__init__()
 
         self.scenario = scenario
-
-        # ORDERS
+        
         self.sim_orders: list[SimOrder] = []
         for order in scenario.orders:
             sim_order = SimOrder(layout, scenario, order, env, store_start)

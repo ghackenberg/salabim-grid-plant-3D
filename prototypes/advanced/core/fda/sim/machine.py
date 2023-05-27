@@ -8,13 +8,11 @@ class SimMachine(sim.Component):
     def __init__(self, machine: Machine, env: sim.Environment, x: float, y: float):
         super().__init__()
 
-        # MACHINE
         self.machine = machine
 
-        # ENVIRONMENT
         self.env = env
 
-        # Define state
+        # Track state
         self.state = sim.State(f"State of {machine.name}", value='waiting')
 
         # Remember currently mounted tool
@@ -36,24 +34,24 @@ class SimMachine(sim.Component):
             self.remaining_life_units_next[tool_type] = tool_type.total_life_units
             self.remaining_life_units_next_t[tool_type] = env.now()
 
-        # Stores
+        # Job stores
         self.store_in = sim.Store(f"{machine.name} in")
         self.store_out = sim.Store(f"{machine.name} out")
 
-        # Down
+        # Vertical box
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y + 0.00, z=1.80)
 
-        # Tool Support
+        # Tool support
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         
-        # Tool Visualization
+        # Tool bars
         m = 0
         for tool_type in self.tool_types:
             sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x + m, y=y + 0.25, z=1.10)
             m = m + 0.1
 
-        # Life Bar visualization
+        # Life bars
         z = 0.70
         for tool_type in self.tool_types:
             x_len = (lambda tt: lambda t: self.x_func(tt, t))(tool_type)
@@ -64,8 +62,6 @@ class SimMachine(sim.Component):
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y - 0.08, z=1.00)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y + 0.08, z=0.50)
-
-        # TODO add visualization for progress of process step
 
     def x_func(self, tool_type: ToolType, t: float):
         rtlu = self.remaining_life_units[tool_type]
