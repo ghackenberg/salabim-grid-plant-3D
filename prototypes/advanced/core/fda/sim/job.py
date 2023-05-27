@@ -4,29 +4,40 @@ import random
 from ..calculate import *
 from ..model import *
 
-class Job(sim.Component):
-    def __init__(self, layout: Layout, scenario: Scenario, order: Order, store: sim.Store):
+class SimJob(sim.Component):
+    def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, env: sim.Environment, store_start: sim.Store):
         super().__init__()
+
+        self.env = env
 
         self.layout = layout
         self.scenario = scenario
         self.order = order
+        self.number = number
 
-        self.store = store
+        self.store_start = store_start
 
         # Calculate processes
-        process_step_sequences = calculateProcessStepSequences(order.productType)
+        operation_sequences = calculateOperationSequences(order.product_type)
         # Pick random process
-        self.process_step_sequence = process_step_sequences[random.randint(0, len(process_step_sequences) - 1)]
+        self.operation_sequence = operation_sequences[random.randint(0, len(operation_sequences) - 1)]
         
         # Calculate routes for that process
-        machine_sequences = calculateMachineSequencesFromProcessStepSequence(self.process_step_sequence, self.layout)
+        machine_sequences = calculateMachineSequencesFromOperationSequence(self.operation_sequence, self.layout)
         # Pick random route
         self.machine_sequence = machine_sequences[random.randint(0, len(machine_sequences) - 1)]
 
         # Define job state
-        self.state = self.process_step_sequence[0].consumesProductType
+        self.state = sim.State(f"Order {order.code} job {number} state", value=self.operation_sequence[0].consumes_product_type.name)
 
     def process(self):
         # Put into store
-        yield self.to_store(self.store, self)
+        yield self.to_store(self.store_start, self)
+    
+    def printStatistics(self):
+        output = ""
+        for value in self.state.value.values():
+            duration = self.state.value.value_duration(value)
+            percentage = duration / self.env.now()
+            output = f"{output}{', ' if output != '' else ''}{value}={'{:.1f}'.format(percentage * 100)}%"
+        print(f"    - Job {self.number} ({output})")

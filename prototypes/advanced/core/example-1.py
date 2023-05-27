@@ -21,9 +21,9 @@ productType4 = ProductType('Product Type 4', 33, 12, 22, 17)
 
 
 # Create process steps
-processSteps1 = ProcessStep('Process 1', 1, 5, 0.15,machineType1, toolType1, productType1, productType2)
-processSteps2 = ProcessStep('Process 2', 1, 4, 0.20, machineType2, toolType2, productType4, productType1)
-processSteps3 = ProcessStep('Process 3', 1, 6, 0.11, machineType3, toolType3,productType3, productType4)
+processSteps1 = Operation('Process 1', 1, 5, 0.15,machineType1, toolType1, productType1, productType2)
+processSteps2 = Operation('Process 2', 1, 4, 0.20, machineType2, toolType2, productType4, productType1)
+processSteps3 = Operation('Process 3', 1, 6, 0.11, machineType3, toolType3,productType3, productType4)
 
 
 # Create scenarios

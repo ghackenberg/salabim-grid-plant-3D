@@ -1,12 +1,12 @@
 from .model import *
 
-def calculateMachineSequencesFromProcessStepSequence(process: list[ProcessStep], layout: Layout):
+def calculateMachineSequencesFromOperationSequence(process: list[Operation], layout: Layout) -> list[list[Machine]]:
     if len(process) > 0:
         result: list[list[Machine]] = []
         processStep = process.pop(0)
-        for machine in processStep.machineType.machines:
+        for machine in processStep.machine_type.machines:
             if machine.corridor.layout == layout:
-                routes = calculateMachineSequencesFromProcessStepSequence(process, layout)
+                routes = calculateMachineSequencesFromOperationSequence(process, layout)
                 for route in routes:
                     route.insert(0, machine)
                     result.append(route)
@@ -17,18 +17,18 @@ def calculateMachineSequencesFromProcessStepSequence(process: list[ProcessStep],
 
 def calculateMachineSequences(objectType: ProductType, layout: Layout):
     result: list[list[Machine]] = []
-    processes = calculateProcessStepSequences(objectType)
+    processes = calculateOperationSequences(objectType)
     for process in processes:
-        processRoutes = calculateMachineSequencesFromProcessStepSequence(process, layout)
+        processRoutes = calculateMachineSequencesFromOperationSequence(process, layout)
         for processRoute in processRoutes:
             result.append(processRoute)
     return result
 
 
-def calculateProcessStepSequences(objectType: ProductType):
-    result: list[list[ProcessStep]] = []
-    for operationType in objectType.producingProcessSteps:
-        prefixes = calculateProcessStepSequences(operationType.consumesProductType)
+def calculateOperationSequences(objectType: ProductType):
+    result: list[list[Operation]] = []
+    for operationType in objectType.producing_operations:
+        prefixes = calculateOperationSequences(operationType.consumes_product_type)
         if not prefixes:
             result.append([operationType])
         else:

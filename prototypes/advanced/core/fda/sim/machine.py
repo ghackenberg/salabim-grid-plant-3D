@@ -1,45 +1,44 @@
 import salabim as sim
 
 from .job import *
-from .tool import *
 from ..model import *
 
 
 class SimMachine(sim.Component):
-    def __init__(self, machine: Machine, env: sim.Environment, store_in: sim.Store, store_out: sim.Store, x: float,
-                 y: float):
+    def __init__(self, machine: Machine, env: sim.Environment, x: float, y: float):
         super().__init__()
 
+        # MACHINE
+        self.machine = machine
+
+        # ENVIRONMENT
         self.env = env
 
         # Define state
         self.state = sim.State(f"State of {machine.name}", value='waiting')
 
-        # Remember machine
-        self.machine = machine
+        # Remember currently mounted tool
+        self.tool_type: ToolType = None
+
+        # Compute all possible tool types
+        self.tool_types = machine.machine_type.computeToolTypes()
 
         # Remember remaining life units per tool
-        self.remaining_tool_life_units: dict[ToolType, int] = {}
-        self.remaining_tool_life_units_t: dict[ToolType, float] = {}
-        self.remaining_tool_life_units_next: dict[ToolType, int] = {}
-        self.remaining_tool_life_units_next_t: dict[ToolType, float] = {}
+        self.remaining_life_units: dict[ToolType, int] = {}
+        self.remaining_life_units_t: dict[ToolType, float] = {}
+        self.remaining_life_units_next: dict[ToolType, int] = {}
+        self.remaining_life_units_next_t: dict[ToolType, float] = {}
         # Iterate over all possible process steps for the given machine type
-        for processStep in machine.machineType.processSteps:
+        for tool_type in self.tool_types:
             # Initialize the remaining life units for the respective tool type
-            self.remaining_tool_life_units[processStep.toolType] = processStep.toolType.totalLifeUnits
-            self.remaining_tool_life_units_t[processStep.toolType] = env.now()
-            self.remaining_tool_life_units_next[processStep.toolType] = processStep.toolType.totalLifeUnits
-            self.remaining_tool_life_units_next_t[processStep.toolType] = env.now()
+            self.remaining_life_units[tool_type] = tool_type.total_life_units
+            self.remaining_life_units_t[tool_type] = env.now()
+            self.remaining_life_units_next[tool_type] = tool_type.total_life_units
+            self.remaining_life_units_next_t[tool_type] = env.now()
 
-        # Remember currently mounted tool
-        self.mounting = False
-        self.unmouting = False
-        self.mounted_tool: ToolType = None
-
-        # Remember store in
-        self.store_in = store_in
-        # Remember store out
-        self.store_out = store_out
+        # Stores
+        self.store_in = sim.Store(f"{machine.name} in")
+        self.store_out = sim.Store(f"{machine.name} out")
 
         # Down
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y + 0.00, z=1.80)
@@ -47,22 +46,21 @@ class SimMachine(sim.Component):
         # Tool Support
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
+        
         # Tool Visualization
         m = 0
-        i = 0
-        color = ['blue', 'red', 'black', 'yellow', ' green', 'pink', 'chocolate', 'indigo', 'teal', 'darksalmon',
-                 'lavender', 'darkgoldenrod', 'powderblue', 'thistle', 'gainsayer']
-        for tool_type in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
-            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color=color[i], x=x + m, y=y + 0.25, z=1.10)
+        for tool_type in self.tool_types:
+            sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x + m, y=y + 0.25, z=1.10)
             m = m + 0.1
-            i = i + 1
 
         # Life Bar visualization
-        z_bar = 0.70
-        for tool_type in MACHINETYPE_TOOLTYPE_MAP[machine.machineType]:
-            sim.Animate3dBox(x_len=(lambda tt: lambda t: self.x_func(tt, t))(tool_type), y_len=0.01, z_len=0.07,
-                             color=(lambda tt: lambda t: self.c_func(tt))(tool_type), x=x, y=y + 0.4379, z=z_bar)
-            z_bar = z_bar - 0.08
+        z = 0.70
+        for tool_type in self.tool_types:
+            x_len = (lambda tt: lambda t: self.x_func(tt, t))(tool_type)
+            color = (lambda tt: lambda t: self.c_func(tt))(tool_type)
+            sim.Animate3dBox(x_len=x_len, y_len=0.01, z_len=0.07, color=color, x=x, y=y + 0.4379, z=z)
+            z = z - 0.08
+        
         # Machine
         sim.Animate3dBox(x_len=0.60, y_len=0.40, z_len=0.40, color="white", x=x, y=y - 0.08, z=1.00)
         sim.Animate3dBox(x_len=0.60, y_len=0.70, z_len=0.60, color="white", x=x, y=y + 0.08, z=0.50)
@@ -70,23 +68,23 @@ class SimMachine(sim.Component):
         # TODO add visualization for progress of process step
 
     def x_func(self, tool_type: ToolType, t: float):
-        rtlu = self.remaining_tool_life_units[tool_type]
-        rtlu_t = self.remaining_tool_life_units_t[tool_type]
-        rtlu_next = self.remaining_tool_life_units_next[tool_type]
-        rtlu_next_t = self.remaining_tool_life_units_next_t[tool_type]
+        rtlu = self.remaining_life_units[tool_type]
+        rtlu_t = self.remaining_life_units_t[tool_type]
+        rtlu_next = self.remaining_life_units_next[tool_type]
+        rtlu_next_t = self.remaining_life_units_next_t[tool_type]
         if rtlu_next_t == rtlu_t:
-            return rtlu / tool_type.totalLifeUnits * 0.4
+            return rtlu / tool_type.total_life_units * 0.4
         else:
-            return (rtlu + (rtlu_next - rtlu) * (t - rtlu_t) / (rtlu_next_t - rtlu_t)) / tool_type.totalLifeUnits * 0.4
+            return (rtlu + (rtlu_next - rtlu) * (t - rtlu_t) / (rtlu_next_t - rtlu_t)) / tool_type.total_life_units * 0.4
 
     def c_func(self, tool_type: ToolType):
-        rtlu_t = self.remaining_tool_life_units_t[tool_type]
-        rtlu_next_t = self.remaining_tool_life_units_next_t[tool_type]
-        if tool_type == self.mounted_tool:
+        rtlu_t = self.remaining_life_units_t[tool_type]
+        rtlu_next_t = self.remaining_life_units_next_t[tool_type]
+        if tool_type == self.tool_type:
             if rtlu_t == rtlu_next_t:
-                if self.unmouting:
+                if self.state.get() == "unmounting":
                     return "orange"
-                elif self.mounting:
+                elif self.state.get() == "mounting":
                     return "yellow"
                 else:
                     return "green"
@@ -98,71 +96,67 @@ class SimMachine(sim.Component):
     def process(self):
         while True:
             # Take next job from store
-            job: Job = yield self.from_store(self.store_in)
+            job: SimJob = yield self.from_store(self.store_in)
             # Retrieve next process step to perform
-            process_step = job.process_step_sequence.pop(0)
-
-            duration = process_step.duration
-            consumed_life_units = process_step.consumedToolLifeUnits
-            tool_type = process_step.toolType
-            total_life_units = tool_type.totalLifeUnits
-            mount_time = tool_type.mountTime
-            unmount_time = tool_type.unmountTime
-            remaining_life_units = self.remaining_tool_life_units[tool_type]
-
+            operation = job.operation_sequence.pop(0)
+            duration = operation.duration
+            tool_type = operation.tool_type
+            total_life_units = tool_type.total_life_units
+            consumed_life_units = operation.consumes_life_units
+            remaining_life_units = self.remaining_life_units[tool_type]
             # Remove own machine from machine sequence
             machine = job.machine_sequence.pop(0)
             # Assert that we are the machine to perform the step
             assert machine == self.machine
             # Check if tool is mounted
-            if tool_type != self.mounted_tool:
+            if tool_type != self.tool_type:
                 # Check if tool is mounted
-                if self.mounted_tool is None:
-                    self.state.set("unmouting")
-                    self.unmouting = True
+                if self.tool_type is not None:
                     # Unmount tool
-                    yield self.hold(unmount_time)
-                    # TODO update tool visualization
-                    self.unmouting = False
-                self.state.set("mounting")
-                self.mounting = True
-                # Update mounted tool
-                self.mounted_tool = tool_type
+                    self.state.set("unmouting")
+                    yield self.hold(self.tool_type.unmount_time)
                 # Mount tool
-                yield self.hold(mount_time)
-                self.mounting = False
+                self.state.set("mounting")
+                self.tool_type = tool_type
+                yield self.hold(self.tool_type.mount_time)
                 # Check if previous tool is too old
                 if remaining_life_units < consumed_life_units:
                     # Update remaining life units
                     remaining_life_units = total_life_units
             elif remaining_life_units < consumed_life_units:
-                self.state.set("unmounting")
-                self.unmouting = True
                 # Unmount tool
-                yield self.hold(unmount_time)
-                self.unmouting = False
-                self.state.set("mounting")
-                self.mounting = True
+                self.state.set("unmounting")
+                yield self.hold(self.tool_type.unmount_time)
                 # Remount tool
-                yield self.hold(mount_time)
-                self.mounting = False
+                self.state.set("mounting")
+                yield self.hold(self.tool_type.mount_time)
                 # Update life units
                 remaining_life_units = total_life_units
             self.state.set("working")
             # Prepare animation
-            self.remaining_tool_life_units[tool_type] = remaining_life_units
-            self.remaining_tool_life_units_t[tool_type] = self.env.now()
-            self.remaining_tool_life_units_next[tool_type] = remaining_life_units - consumed_life_units
-            self.remaining_tool_life_units_next_t[tool_type] = self.env.now() + duration
+            self.remaining_life_units[tool_type] = remaining_life_units
+            self.remaining_life_units_t[tool_type] = self.env.now()
+            self.remaining_life_units_next[tool_type] = remaining_life_units - consumed_life_units
+            self.remaining_life_units_next_t[tool_type] = self.env.now() + duration
             # Perform process step
             yield self.hold(duration)
             self.state.set("returning")
-            # Update job state
-            job.state = process_step.producesProductType
+            job.state.set(operation.produces_product_type.name)
             # Update remaining tool life units
-            self.remaining_tool_life_units[tool_type] = remaining_life_units - consumed_life_units
-            self.remaining_tool_life_units_t[tool_type] = self.env.now()
-            self.remaining_tool_life_units_next[tool_type] = remaining_life_units - consumed_life_units
-            self.remaining_tool_life_units_next_t[tool_type] = self.env.now()
+            self.remaining_life_units[tool_type] = remaining_life_units - consumed_life_units
+            self.remaining_life_units_t[tool_type] = self.env.now()
+            self.remaining_life_units_next[tool_type] = remaining_life_units - consumed_life_units
+            self.remaining_life_units_next_t[tool_type] = self.env.now()
             # Place job back to store
             yield self.to_store(self.store_out, job)
+    
+    def printStatistics(self):
+        waiting = self.state.value.value_duration('waiting')
+        mounting = self.state.value.value_duration('mounting')
+        unmounting = self.state.value.value_duration('unmounting')
+        working = self.state.value.value_duration('working')
+        returning = self.state.value.value_duration('returning')
+
+        utilization = working / (waiting + mounting + unmounting + working + returning)
+
+        print(f"    - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")

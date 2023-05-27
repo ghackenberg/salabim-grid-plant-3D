@@ -4,17 +4,19 @@ from ..model import *
 from ..calculate import *
 from .robot import *
 from .job import *
+from .corridor import *
 
 class MainRobot(Robot):
-    def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, start_store: sim.Store, corridor_stores: list[list[sim.Store]], end_store: sim.Store, y: float, z: float):
+    def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float):
         super().__init__(env, 0, y, z, "red")
 
         self.layout = layout
         self.scenario = scenario
 
-        self.start_store = start_store
-        self.corridor_stores = corridor_stores
-        self.end_store = end_store
+        self.store_start = store_start
+        self.store_end = store_end
+
+        self.sim_corridors = sim_corridors
 
     def process(self) :
         # duration of movement between stores
@@ -30,7 +32,7 @@ class MainRobot(Robot):
             # Move down
             yield from self.move_z(1.25, speed)
             # Pick next job
-            job: Job = yield self.from_store(self.start_store)
+            job: SimJob = yield self.from_store(self.store_start)
             # Move up
             yield from self.move_z(2.5, speed)
             # Check if machines are missing
@@ -39,6 +41,8 @@ class MainRobot(Robot):
                 machine = job.machine_sequence[0]
                 # Find corridor number
                 corridor_num = self.layout.corridors.index(machine.corridor)
+                # Get sim corridor
+                sim_corridor = self.sim_corridors[corridor_num]
                 # Compute corridor position
                 y = (corridor_num + 0.5 - corridor_count / 2) * 2
                 # Check if we need to move to the corridor
@@ -50,14 +54,14 @@ class MainRobot(Robot):
                 # Pass to left or right store
                 if machine.left:
                     # Pass to left store
-                    yield self.to_store(self.corridor_stores[corridor_num][1], job)
+                    yield self.to_store(sim_corridor.store_left, job)
                 else:
                     # Pass to right store
-                    yield self.to_store(self.corridor_stores[corridor_num][2], job)
+                    yield self.to_store(sim_corridor.store_right, job)
                 # Move up
                 yield from self.move_z(2.5, speed)
                 # Take from corridor store
-                job: Job = yield self.from_store(self.corridor_stores[corridor_num][0])
+                job: SimJob = yield self.from_store(sim_corridor.store_main)
                 # Move down
                 yield from self.move_z(1.25, speed)
                 # Move up
@@ -67,6 +71,6 @@ class MainRobot(Robot):
             # Move down
             yield from self.move_z(1.25, speed)
             # Pass to queue
-            yield self.to_store(self.end_store, job)
+            yield self.to_store(self.store_end, job)
             # Move up
             yield from self.move_z(2.5, speed)
