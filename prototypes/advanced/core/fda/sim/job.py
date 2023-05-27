@@ -28,7 +28,9 @@ class SimJob(sim.Component):
         self.machine_sequence = machine_sequences[random.randint(0, len(machine_sequences) - 1)]
 
         # Define job state
-        self.state = sim.State(f"Order {order.code} job {number} state", value=self.operation_sequence[0].consumes_product_type.name)
+        name = f"Order {order.code} job {number} state"
+        value = self.operation_sequence[0].consumes_product_type.name
+        self.state = sim.State(name, value=value)
 
     def process(self):
         # Put into store

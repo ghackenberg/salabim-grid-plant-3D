@@ -10,17 +10,21 @@ class SimCorridor(sim.Component):
         # CORRIDOR
         self.corridor = corridor
 
+        # MACHINES
+        machines_left = corridor.machines_left
+        machines_right = corridor.machines_right
+
         # ENVIRONMENT
         self.env = env
 
         # STORE
-        self.store_main = sim.Store(f"Corridor {corridor.code} main")
-        self.store_left = sim.Store(f"Corridor {corridor.code} left")
-        self.store_right = sim.Store(f"Corridor {corridor.code} right")
+        store_main = sim.Store(f"Corridor {corridor.code} main")
+        store_left = sim.Store(f"Corridor {corridor.code} left")
+        store_right = sim.Store(f"Corridor {corridor.code} right")
 
         # SIM ARMS
-        self.sim_arm_left = SimArm(corridor, corridor.machines_left, "left", env, self.store_left, self.store_right, self.store_main, +1, y)
-        self.sim_arm_right = SimArm(corridor, corridor.machines_right, "right", env, self.store_right, self.store_left, self.store_main, -1, y)
+        self.sim_arm_left = SimArm(corridor, machines_left, "left", env, store_left, store_right, store_main, +1, y)
+        self.sim_arm_right = SimArm(corridor, machines_right, "right", env, store_right, store_left, store_main, -1, y)
 
         # VERTICAL BOX
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)
