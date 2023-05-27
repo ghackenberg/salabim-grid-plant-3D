@@ -14,6 +14,6 @@ class SimOrder(sim.Component):
             self.sim_jobs.append(sim_job)
 
     def printStatistics(self):
-        print(f" - Order {self.order.code}:")
+        print(f" - {self.order.name}:")
         for sim_job in self.sim_jobs:
             sim_job.printStatistics()

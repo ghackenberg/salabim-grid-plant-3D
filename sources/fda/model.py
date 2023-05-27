@@ -1,8 +1,7 @@
 class ToolType:
-    def __init__(self, name: str, code: int, mount_time: int, unmount_time: int, total_life_units: int) -> None:
+    def __init__(self, name: str, mount_time: int, unmount_time: int, total_life_units: int) -> None:
         # Remember properties
         self.name = name
-        self.code = code
         self.mount_time = mount_time
         self.unmount_time = unmount_time
         self.total_life_units = total_life_units
@@ -17,10 +16,9 @@ TOOL_TYPES: list[ToolType] = []
 
 
 class MachineType:
-    def __init__(self, name: str, code: int) -> None:
+    def __init__(self, name: str) -> None:
         # Remember properties
         self.name = name
-        self.code = code
         # Remember relations
         self.machines: list[Machine] = []   #connection with machine class, define
         self.operations: list[Operation] = []
@@ -101,9 +99,9 @@ SCENARIOS: list[Scenario] = []    #I consider this list in case the user wants t
 
 
 class Order:
-    def __init__(self, code: int, quantity: int, earliest_start_time: int, latest_end_time: int, product_type: ProductType, scenario: Scenario) -> None:
+    def __init__(self, name: str, quantity: int, earliest_start_time: int, latest_end_time: int, product_type: ProductType, scenario: Scenario) -> None:
         # Remember properties
-        self.code = code
+        self.name = name
         self.quantity = quantity
         self.earliest_start_time = earliest_start_time
         self.latest_end_time = latest_end_time
@@ -138,12 +136,12 @@ LAYOUTS: list[Layout] = []
 
 
 class Corridor:
-    def __init__(self, code: int, storage_capacity: int, storage_out_time: int, storage_in_type: int, layout: Layout) -> None:
+    def __init__(self, name: str, storage_capacity: int, storage_out_time: int, storage_in_time: int, layout: Layout) -> None:
         # Remember properties
-        self.code = code
+        self.name = name
         self.storage_capacity = storage_capacity
         self.storage_out_time = storage_out_time
-        self.storage_in_time = storage_in_type
+        self.storage_in_time = storage_in_time
         self.layout = layout
         # Remember relations
         layout.corridors.append(self)

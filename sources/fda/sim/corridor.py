@@ -16,9 +16,9 @@ class SimCorridor(sim.Component):
         machines_right = corridor.machines_right
 
         # Corridor stores
-        store_main = sim.Store(f"Corridor {corridor.code} main")
-        store_left = sim.Store(f"Corridor {corridor.code} left")
-        store_right = sim.Store(f"Corridor {corridor.code} right")
+        store_main = sim.Store(f"Store main")
+        store_left = sim.Store(f"Store left")
+        store_right = sim.Store(f"Store right")
 
         self.store_main = store_main
         self.store_left = store_left
@@ -35,7 +35,7 @@ class SimCorridor(sim.Component):
         sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color='orange', x=0, y=y, z=0.5)
     
     def printStatistics(self):
-        print(f" - Corridor {self.corridor.code}:")
+        print(f" - {self.corridor.name}:")
         self.sim_arm_left.printStatistics()
         self.sim_arm_right.printStatistics()
     
