@@ -1,6 +1,9 @@
 # Factory Design Automation
 
-In this project we study techniques to automate factory design tasks.
+In this project we study techniques to reduce the effort of factory design tasks.
+To achieve this goal, we develop an easy-to-use configurator and simulator for a particular class of factories.
+More precisely, we concentrate on flexible manufacturing systems, which can be adapted to a variety of products and processes easily.
+We assume that the material flow between the work stations is handled completely by gantry robots.
 
 ## Screenshots
 
@@ -10,11 +13,17 @@ Here are some screenshots of our prototypes:
 
 We provide a discrete event simulator with 3D visualization capabilities.
 
-![Screenshot](./screenshots/advanced-core.png)
+![Screenshot](./screenshots/advanced-core-salabim.png)
+
+### 🖼️ Visualizer
+
+We also provide a visualization of the possible products and processes.
+
+![Screenshot](./screenshots/advanced-core-networkx.png)
 
 ### 🖼️ Editor
 
-We provide a basic editor for changing your factory layout.
+Finally, we provide a basic editor for changing your factory layout.
 
 ![Screenshot](./screenshots/advanced-editor.png)
 
