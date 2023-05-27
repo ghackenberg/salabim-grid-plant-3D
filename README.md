@@ -56,13 +56,13 @@ Note that simulation experiments can be carried out without the optional softwar
 
 ## Examples
 
-### 👨‍💻 Basic configuration
-
 **Step 1:** Import the Factory Design Automation (FDA) library.
 
 ```python
 from fda import *
 ```
+
+### 👨‍💻 Basic configuration
 
 **Step 2:** Define your product, tool, and machine types.
 
