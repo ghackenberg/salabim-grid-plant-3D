@@ -69,5 +69,5 @@ The object model describes an example factory design:
 You find more information in the following folders:
 
 * [Models](./models)
-* [Prototypes](./prototypes)
+* [Sources](./sources)
 * [Screenshots](./screenshots)
