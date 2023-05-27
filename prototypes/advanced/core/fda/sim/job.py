@@ -3,6 +3,7 @@ import random
 
 from ..calculate import *
 from ..model import *
+from ..util import *
 
 class SimJob(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, env: sim.Environment, store_start: sim.Store):
@@ -28,18 +29,13 @@ class SimJob(sim.Component):
         self.machine_sequence = machine_sequences[random.randint(0, len(machine_sequences) - 1)]
 
         # Track state
-        name = f"Order {order.code} job {number} state"
         value = self.operation_sequence[0].consumes_product_type.name
-        self.state = sim.State(name, value=value)
+        self.state = sim.State("State", value=value)
 
     def process(self):
         # Put into start store
         yield self.to_store(self.store_start, self)
     
     def printStatistics(self):
-        output = ""
-        for value in self.state.value.values():
-            duration = self.state.value.value_duration(value)
-            percentage = duration / self.env.now()
-            output = f"{output}{', ' if output != '' else ''}{value}={'{:.1f}'.format(percentage * 100)}%"
+        output = toString(self.state)
         print(f"    - Job {self.number} ({output})")

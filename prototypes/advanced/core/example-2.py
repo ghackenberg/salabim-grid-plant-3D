@@ -35,8 +35,8 @@ scenario3 = Scenario('Scenario 3') #Worst Case
 
 
 # Create orders
-order1 = Order(1, 100, 11, 30, productType2,  scenario1)
-order1_2 = Order(1, 100, 15, 30, productType1,  scenario1)
+order1 = Order(1, 2, 11, 30, productType2,  scenario1)
+order1_2 = Order(1, 3, 15, 30, productType1,  scenario1)
 order2 = Order(2, 10, 20, 30, productType2,  scenario2)
 order3 = Order(3, 10, 11, 12, productType4,  scenario3)
 order4 = Order(4, 10, 25, 26, productType1,  scenario3)

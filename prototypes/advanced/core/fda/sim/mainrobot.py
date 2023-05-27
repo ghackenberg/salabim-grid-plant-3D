@@ -6,9 +6,9 @@ from .robot import *
 from .job import *
 from .corridor import *
 
-class MainRobot(Robot):
+class SimMainRobot(SimRobot):
     def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float):
-        super().__init__(env, 0, y, z, "red")
+        super().__init__("Main robot", 0, env, 0, y, z, "red")
 
         self.layout = layout
         self.scenario = scenario
@@ -33,6 +33,8 @@ class MainRobot(Robot):
             yield from self.move_z(1.25, speed)
             # Pick next job
             job: SimJob = yield self.from_store(self.store_start)
+            # Update state
+            self.state_load.set("loaded")
             # Move up
             yield from self.move_z(2.5, speed)
             # Check if machines are missing
@@ -58,12 +60,16 @@ class MainRobot(Robot):
                 else:
                     # Pass to right store
                     yield self.to_store(sim_corridor.store_right, job)
+                # Update state
+                self.state_load.set("empty")
                 # Move up
                 yield from self.move_z(2.5, speed)
                 # Take from corridor store
                 job: SimJob = yield self.from_store(sim_corridor.store_main)
                 # Move down
                 yield from self.move_z(1.25, speed)
+                # Update state
+                self.state_load.set("loaded")
                 # Move up
                 yield from self.move_z(2.5, speed)
             # Move to FP inventory
@@ -72,5 +78,7 @@ class MainRobot(Robot):
             yield from self.move_z(1.25, speed)
             # Pass to queue
             yield self.to_store(self.store_end, job)
+            # Update state
+            self.state_load.set("empty")
             # Move up
             yield from self.move_z(2.5, speed)

@@ -4,9 +4,9 @@ from ..model import *
 from .robot import *
 from .machine import *
 
-class TransversalRobot(Robot):
-    def __init__(self, corridor: Corridor, machines: list[Machine], env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):
-        super().__init__(env, dx, y, 2.5, "green")
+class SimArmRobot(SimRobot):
+    def __init__(self, corridor: Corridor, machines: list[Machine],  env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):
+        super().__init__("Arm robot", 2, env, dx, y, 2.5, "green")
 
         self.corridor = corridor
         self.machines = machines
@@ -26,6 +26,8 @@ class TransversalRobot(Robot):
             job: SimJob = yield self.from_store(self.store_in)
             # Move down
             yield from self.move_z(1.25, speed)
+            # Update state
+            self.state_load.set("loaded")
             # Move up
             yield from self.move_z(2.5, speed)
             # While next machine is in the same corridor and side
@@ -46,12 +48,16 @@ class TransversalRobot(Robot):
                 yield from self.move_z(1.5, speed)
                 # Hand over
                 yield self.to_store(sim_machine.store_in, job)
+                # Update state
+                self.state_load.set("empty")
                 # Move up
                 yield from self.move_z(2.5, speed)
                 # Wait for hand over
                 job: SimJob = yield self.from_store(sim_machine.store_out)
                 # Move down
                 yield from self.move_z(1.5, speed)
+                # Upadte state
+                self.state_load.set("loaded")
                 # Update machine state
                 sim_machine.state.set("waiting")
                 # Move up
@@ -69,5 +75,7 @@ class TransversalRobot(Robot):
             else:
                 # Place to storage
                 yield self.to_store(self.store_out_main, job)
+            # Update state
+            self.state_load.set("empty")
             # Move up
             yield from self.move_z(2.5, speed)

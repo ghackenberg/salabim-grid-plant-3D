@@ -7,6 +7,8 @@ class SimLayout(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment):
         super().__init__()
 
+        self.layout = layout
+
         # Grid
         sim.Animate3dGrid(x_range=range(-20, 20), y_range=range(-20, 20))
 
@@ -35,8 +37,10 @@ class SimLayout(sim.Component):
             corridor_num = corridor_num + 1
 
         # Main robot
-        self.main_robot = MainRobot(layout, scenario, env, self.store_start, self.store_end, self.sim_corridors, 0, 2.5)
+        self.sim_main_robot = SimMainRobot(layout, scenario, env, self.store_start, self.store_end, self.sim_corridors, 0, 2.5)
 
     def printStatistics(self):
+        print(f"{self.layout.name}:")
+        self.sim_main_robot.printStatistics()
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()

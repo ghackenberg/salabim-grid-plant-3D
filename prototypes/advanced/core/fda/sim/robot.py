@@ -1,8 +1,11 @@
 import salabim as sim
+from ..util import *
 
-class Robot(sim.Component):
-    def __init__(self, env: sim.Environment, x: float, y: float, z: float, color: str):
-        super().__init__()
+class SimRobot(sim.Component):
+    def __init__(self, name: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
+        super().__init__(name)
+
+        self.indent = indent
 
         self.env = env
 
@@ -15,6 +18,9 @@ class Robot(sim.Component):
         self.next_y = y
         self.next_z = z
         self.next_t = env.now()
+
+        self.state_move = sim.State("Move", value="waiting")
+        self.state_load = sim.State("Load", value="empty")
 
         sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=0.5, color=color, edge_color='white', x=self.x_func, y=self.y_func, z=self.z_func)
 
@@ -41,7 +47,9 @@ class Robot(sim.Component):
         self.t = self.env.now()
         self.next_x = next_x
         self.next_t = self.env.now() + duration
+        self.state_move.set("moving_x")
         yield self.hold(duration)
+        self.state_move.set("waiting")
         self.x = self.next_x
         
     def move_y(self, next_y: float, speed: float):
@@ -49,7 +57,9 @@ class Robot(sim.Component):
         self.t = self.env.now()
         self.next_y = next_y
         self.next_t = self.env.now() + duration
+        self.state_move.set("moving_y")
         yield self.hold(duration)
+        self.state_move.set("waiting")
         self.y = self.next_y
         
     def move_z(self, next_z: float, speed: float):
@@ -57,5 +67,15 @@ class Robot(sim.Component):
         self.t = self.env.now()
         self.next_z = next_z
         self.next_t = self.env.now() + duration
+        self.state_move.set("moving_z")
         yield self.hold(duration)
+        self.state_move.set("waiting")
         self.z = self.next_z
+
+    def printStatistics(self):
+        move_output = toString(self.state_move)
+        load_output = toString(self.state_load)
+        indent = ""
+        for i in range(self.indent):
+            indent = f"{indent}   "
+        print(f"{indent} - {self.name()} ({move_output}) ({load_output})")

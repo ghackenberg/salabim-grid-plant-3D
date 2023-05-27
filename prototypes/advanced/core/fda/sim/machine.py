@@ -13,7 +13,7 @@ class SimMachine(sim.Component):
         self.env = env
 
         # Track state
-        self.state = sim.State(f"State of {machine.name}", value='waiting')
+        self.state = sim.State("State", value='waiting')
 
         # Remember currently mounted tool
         self.tool_type: ToolType = None
@@ -155,4 +155,4 @@ class SimMachine(sim.Component):
 
         utilization = working / (waiting + mounting + unmounting + working + returning)
 
-        print(f"    - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")
+        print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")

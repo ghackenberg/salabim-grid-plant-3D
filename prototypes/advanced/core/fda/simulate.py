@@ -32,5 +32,5 @@ def simulate(layout: Layout, scenario: Scenario, animate=True):
     env.run()
 
     # Print statistics
-    sim_layout.printStatistics()
     sim_scenario.printStatistics()
+    sim_layout.printStatistics()
