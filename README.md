@@ -6,19 +6,29 @@ In this project we study techniques to automate factory design tasks.
 
 Here are some screenshots of our prototypes:
 
+### 🖼️ Simulator
+
+We provide a discrete event simulator with 3D visualization capabilities.
+
+![Screenshot](./screenshots/advanced-core.png)
+
+### 🖼️ Editor
+
+We provide a basic editor for changing your factory layout.
+
 ![Screenshot](./screenshots/advanced-editor.png)
 
 ## Models
 
 Here are some models explaining our overall idea:
 
-### Class Model
+### 📈 Class model
 
 The class model describes the entities of factory design:
 
 ![Class Model](./models/basic/class-model.png)
 
-### Object Model
+### 📈 Object model
 
 The object model describes an example factory design:
 
