@@ -3,6 +3,7 @@ import salabim as sim
 from ..model import *
 from .machine import *
 from .armrobot import *
+from .chart import *
 
 class SimArm(sim.Component):
     def __init__(self, corridor: Corridor, machines: list[Machine], name: str, env: sim.Environment, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float):
@@ -39,6 +40,9 @@ class SimArm(sim.Component):
         # Corridor storage arm vertical box
         if len(machines) != 0:
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=dx, y=y, z=1.625)
+
+        # Print Machine Bar Chart
+        machineBarChart(self.sim_machines)
     
     def printStatistics(self):
         print(f"    - Arm {self.name()}:")
@@ -46,3 +50,4 @@ class SimArm(sim.Component):
             self.sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
+

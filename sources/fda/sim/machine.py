@@ -156,3 +156,4 @@ class SimMachine(sim.Component):
         utilization = working / (waiting + mounting + unmounting + working + returning)
 
         print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")
+
