@@ -45,7 +45,7 @@ class SimMachine(sim.Component):
         sim.Animate3dBox(x_len=0.05, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         sim.Animate3dBox(x_len=0.60, y_len=0.18, z_len=0.05, color="white", x=x, y=y + 0.19, z=1.18)
         
-        # Tool bars
+        # Toolbars
         m = 0
         for tool_type in self.tool_types:
             sim.Animate3dBox(x_len=0.05, y_len=0.05, z_len=0.18, color="blue", x=x + m, y=y + 0.25, z=1.10)

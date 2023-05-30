@@ -28,8 +28,10 @@ class SimArm(sim.Component):
             machine_num = machine_num + 1
 
         # Transversal robot
+        self.sim_arm_robot: list[SimArmRobot] = []
         if len(machines) != 0:
-            self.sim_arm_robot = SimArmRobot(corridor, machines, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
+            sim_arm_robot = SimArmRobot(corridor, machines, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
+            self.sim_arm_robot.append(sim_arm_robot)
 
         # Arm horizontal box
         if len(machines) != 0:
@@ -40,14 +42,15 @@ class SimArm(sim.Component):
         # Corridor storage arm vertical box
         if len(machines) != 0:
             sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="green", x=dx, y=y, z=1.625)
-
-        # Print Machine Bar Chart
-        machineBarChart(self.sim_machines)
     
     def printStatistics(self):
         print(f"    - Arm {self.name()}:")
         if len(self.machines) != 0:
-            self.sim_arm_robot.printStatistics()
+            for sim_arm_robot in self.sim_arm_robot:
+                sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
+        machineBarChart(self.sim_machines)
+        armRobotBarChart(self.sim_arm_robot)
+
 
