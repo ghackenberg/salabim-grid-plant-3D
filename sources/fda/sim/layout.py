@@ -44,3 +44,4 @@ class SimLayout(sim.Component):
         self.sim_main_robot.printStatistics()
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()
+        mainRobotBarChart(self.sim_main_robot)

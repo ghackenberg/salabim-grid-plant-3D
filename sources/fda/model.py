@@ -9,8 +9,10 @@ class ToolType:
         self.operations: list[Operation] = []
         # Remember instance
         TOOL_TYPES.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
+
 
 TOOL_TYPES: list[ToolType] = []
 
@@ -20,14 +22,14 @@ class MachineType:
         # Remember properties
         self.name = name
         # Remember relations
-        self.machines: list[Machine] = []   #connection with machine class, define
+        self.machines: list[Machine] = []  # connection with machine class, define
         self.operations: list[Operation] = []
         # Remember instance
-        MACHINE_TYPES.append(self) #append the machinetype (itself) in the global list
+        MACHINE_TYPES.append(self)  # append the machinetype (itself) in the global list
 
     def __repr__(self) -> str:
         return f"{self.name}"
-    
+
     def computeToolTypes(self) -> list[ToolType]:
         tool_types: list[ToolType] = []
         for process_step in self.operations:
@@ -35,7 +37,8 @@ class MachineType:
                 tool_types.append(process_step.tool_type)
         return tool_types
 
-MACHINE_TYPES: list[MachineType] = [] #global list of possible machine types
+
+MACHINE_TYPES: list[MachineType] = []
 
 
 class ProductType:
@@ -52,14 +55,18 @@ class ProductType:
         self.orders: list[Order] = []
         # Remember instance
         PRODUCT_TYPES.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
+
 
 PRODUCT_TYPES: list[ProductType] = []
 
 
 class Operation:
-    def __init__(self, name: str, duration: int, consumes_life_units: int, defect_probability: float, machine_type: MachineType, tool_type: ToolType, consumes_product_type: ProductType, produces_product_type: ProductType) -> None:
+    def __init__(self, name: str, duration: int, consumes_life_units: int, defect_probability: float,
+                 machine_type: MachineType, tool_type: ToolType, consumes_product_type: ProductType,
+                 produces_product_type: ProductType) -> None:
         # Remember properties
         self.name = name
         self.duration = duration
@@ -80,6 +87,7 @@ class Operation:
     def __repr__(self) -> str:
         return f"{self.name}"
 
+
 OPERATIONS: list[Operation] = []
 
 
@@ -91,15 +99,17 @@ class Scenario:
         self.orders: list[Order] = []
         # Remember instance
         SCENARIOS.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
 
-#the scenario class contains the specifications of the customer orders.
-SCENARIOS: list[Scenario] = []    #I consider this list in case the user wants to keep the data of different scenario tested
+
+SCENARIOS: list[Scenario] = []
 
 
 class Order:
-    def __init__(self, name: str, quantity: int, earliest_start_time: int, latest_end_time: int, product_type: ProductType, scenario: Scenario) -> None:
+    def __init__(self, name: str, quantity: int, earliest_start_time: int, latest_end_time: int,
+                 product_type: ProductType, scenario: Scenario) -> None:
         # Remember properties
         self.name = name
         self.quantity = quantity
@@ -112,10 +122,11 @@ class Order:
         scenario.orders.append(self)
         # Remember instance
         ORDERS.append(self)
+
     def __repr__(self) -> str:
         return f"{self.code}"
 
-#it is not the customer order that contains the customers, but vice versa
+
 ORDERS: list[Order] = []
 
 
@@ -129,14 +140,17 @@ class Layout:
         self.corridors: list[Corridor] = []
         # Remember instance
         LAYOUTS.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
+
 
 LAYOUTS: list[Layout] = []
 
 
 class Corridor:
-    def __init__(self, name: str, storage_capacity: int, storage_out_time: int, storage_in_time: int, layout: Layout) -> None:
+    def __init__(self, name: str, storage_capacity: int, storage_out_time: int, storage_in_time: int,
+                 layout: Layout) -> None:
         # Remember properties
         self.name = name
         self.storage_capacity = storage_capacity
@@ -150,6 +164,7 @@ class Corridor:
         # Remember instance
         CORRIDORS.append(self)
 
+
 CORRIDORS: list[Corridor] = []
 
 
@@ -161,14 +176,16 @@ class Machine:
         self.corridor = corridor
         self.left = left
         # Remember relations
-        machine_type.machines.append(self)  #appending machinetype to the list
+        machine_type.machines.append(self)  # appending machinetype to the list
         if left:
             corridor.machines_left.append(self)
         else:
             corridor.machines_right.append(self)
         # Remember instance
         MACHINES.append(self)
+
     def __repr__(self) -> str:
         return f"{self.name}"
+
 
 MACHINES: list[Machine] = []

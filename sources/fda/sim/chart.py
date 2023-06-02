@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from .machine import *
 from .corridor import *
 from .armrobot import *
+from .mainrobot import *
 
 
 def machineBarChart(sim_machines: list[SimMachine]):
@@ -23,6 +24,9 @@ def machineBarChart(sim_machines: list[SimMachine]):
         for i in range(len(categories)):
             plt.bar([p + i * bar_width for p in position], values[i], width=bar_width, label=categories[i])
 
+        # x Axis
+        plt.xticks([])
+
         # Labels
         plt.xlabel('Machine')
         plt.ylabel('Utilisation (%)')
@@ -32,7 +36,6 @@ def machineBarChart(sim_machines: list[SimMachine]):
         plt.legend()
 
         # Print Graph
-        plt.xticks([p + bar_width * (len(categories) - 1) / 2 for p in position], MACHINES)
         plt.show()
 
         # TO SEE JUST ONE MACHINE PER CHART, THEN SUBSTITUTE MACHINES WITH sim_machines
@@ -55,6 +58,9 @@ def armRobotBarChart(sim_arm_robots: list[SimArmRobot]):
         for i in range(len(categories)):
             plt.bar([p + i * bar_width for p in position], values[i], width=bar_width, label=categories[i])
 
+        # x Axis
+        plt.xticks([])
+
         # Labels
         plt.xlabel('Arm Robot')
         plt.ylabel('Robot State (%)')
@@ -65,3 +71,33 @@ def armRobotBarChart(sim_arm_robots: list[SimArmRobot]):
 
         # Print Graph
         plt.show()
+
+
+def mainRobotBarChart(sim_main_robot: SimMainRobot):
+    loading = sim_main_robot.state_load.value.value_duration('loaded') / 100
+    empty = sim_main_robot.state_load.value.value_duration('empty') / 100
+    moving_y = sim_main_robot.state_move.value.value_duration('moving_y') / 100
+    moving_z = sim_main_robot.state_move.value.value_duration('moving_z') / 100
+
+    categories = ['Loading', 'Empty', 'Moving_y', 'Moving_z']
+    values = [loading, empty, moving_y, moving_z]
+
+    bar_width = 0.15
+
+    # Graph
+    for i in range(len(values)):
+        plt.bar([bar_width], values[i], width=bar_width, label=categories[i])
+
+    # x Axis
+    plt.xticks([])
+
+    # Labels
+    plt.xlabel('Main Robot')
+    plt.ylabel('State (%)')
+    plt.title('Main obot Load and Move State')
+
+    # Legend
+    plt.legend()
+
+    # Print Graph
+    plt.show()
