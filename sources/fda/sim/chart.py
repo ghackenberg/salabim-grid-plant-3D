@@ -87,7 +87,7 @@ def mainRobotBarChart(sim_main_robot: SimMainRobot):
 
     # Graph
     for i in range(len(values)):
-        plt.bar([bar_width], values[i], width=bar_width, label=categories[i])
+        plt.bar(i*bar_width, values[i], width=bar_width, label=categories[i])
 
     # x Axis
     plt.xticks([])
@@ -126,7 +126,7 @@ def orderBarChart(jobs: list[SimJob]):
         # Labels
         plt.xlabel('Job state duration')
         plt.ylabel('State (%)')
-        plt.title('Main obot Load and Move State')
+        plt.title('Order state')
 
         # Legend
         plt.legend()
