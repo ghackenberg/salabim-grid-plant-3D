@@ -1,7 +1,8 @@
 import salabim as sim
-from ..model import *
+
 from .corridor import *
 from .mainrobot import *
+from ..model import *
 
 class SimLayout(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment):

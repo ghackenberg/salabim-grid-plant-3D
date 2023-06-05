@@ -1,7 +1,5 @@
-import salabim as sim
-
-from ..model import *
 from .arm import *
+
 
 class SimCorridor(sim.Component):
     def __init__(self, corridor: Corridor, env: sim.Environment, y: float):

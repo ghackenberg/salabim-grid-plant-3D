@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 
 from .machine import *
-from .corridor import *
 from .armrobot import *
 from .mainrobot import *
+from .order import *
+from .job import *
 
 
 def machineBarChart(sim_machines: list[SimMachine]):
@@ -101,3 +102,34 @@ def mainRobotBarChart(sim_main_robot: SimMainRobot):
 
     # Print Graph
     plt.show()
+
+
+def orderBarChart(jobs: list[SimJob]):
+    for job in jobs:
+        raw = job.state.value.value_duration('raw') / 100
+        intermediate = job.state.value.value_duration('intermediate') / 100
+        finished = job.state.value.value_duration('finished') / 100
+
+        categories = ['Raw', 'Intermediate', 'Finished']
+        values = [raw, intermediate, finished]
+
+        bar_width = 0.15
+
+        # Graph
+        position = range(len(jobs))
+        for i in range(len(categories)):
+            plt.bar([p + i * bar_width for p in position], values[i], width=bar_width, label=categories[i])
+
+        # x Axis
+        plt.xticks([])
+
+        # Labels
+        plt.xlabel('Job state duration')
+        plt.ylabel('State (%)')
+        plt.title('Main obot Load and Move State')
+
+        # Legend
+        plt.legend()
+
+        # Print Graph
+        plt.show()

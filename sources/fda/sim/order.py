@@ -1,6 +1,8 @@
 import salabim as sim
 from ..model import *
 from .job import *
+from .chart import *
+
 
 class SimOrder(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, env: sim.Environment, store_start: sim.Store):
@@ -17,3 +19,4 @@ class SimOrder(sim.Component):
         print(f" - {self.order.name}:")
         for sim_job in self.sim_jobs:
             sim_job.printStatistics()
+        orderBarChart(self.sim_jobs)
