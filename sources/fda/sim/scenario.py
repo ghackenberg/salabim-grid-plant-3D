@@ -1,4 +1,5 @@
 import salabim as sim
+import matplotlib.pyplot as plt
 
 from ..model import Layout, Scenario
 
@@ -21,4 +22,13 @@ class SimScenario(sim.Component):
             sim_order.printStatistics()
     
     def plot(self):
-        pass
+        rows = 1
+        columns = len(self.sim_orders)
+
+        plt.figure(self.scenario.name)
+
+        col = 1
+        for sim_order in self.sim_orders:
+            plt.subplot(rows, columns, col)
+            sim_order.plot()
+            col = col + 1
