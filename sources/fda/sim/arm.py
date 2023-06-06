@@ -50,11 +50,18 @@ class SimArm(sim.Component):
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
     
+    def weight(self):
+        return len(self.sim_machines)
+    
     def utilization(self):
-        avg = 0
-        for sim_machine in self.sim_machines:
-            avg = avg + sim_machine.utilization() / len(self.sim_machines)
-        return avg
+        weight = self.weight()
+        if weight > 0:
+            util = 0
+            for sim_machine in self.sim_machines:
+                util = util + sim_machine.utilization() / weight
+            return util
+        else:
+            return 1
     
     def plot(self):
         pass

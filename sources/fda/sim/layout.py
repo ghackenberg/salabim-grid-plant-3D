@@ -42,6 +42,23 @@ class SimLayout(sim.Component):
 
         # Main robot
         self.sim_main_robot = SimMainRobot(layout, scenario, env, self.store_start, self.store_end, self.sim_corridors, 0, 2.5)
+    
+    def weight(self):
+        weight = 0
+        for sim_corridor in self.sim_corridors:
+            weight = weight + sim_corridor.weight()
+        return weight
+
+    def utilization(self):
+        weight = self.weight()
+        if weight > 0:
+            util = 0
+            for sim_corridor in self.sim_corridors:
+                if sim_corridor.weight() > 0:
+                    util = util + sim_corridor.utilization() * sim_corridor.weight() / weight
+            return util
+        else:
+            return 1
 
     def printStatistics(self):
         print(f"{self.layout.name}:")
