@@ -61,10 +61,9 @@ Note that simulation experiments can be carried out without the optional softwar
     * opencv-python
     * numpy
 * *Chart visualization support*
-  * **MatPlotLib**
+  * **Matplotlib**
 * *Graph visualization support (optional)*
   * NetworkX
-  * Matplotlib
 
 ## Examples
 
