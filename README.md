@@ -60,6 +60,8 @@ Note that simulation experiments can be carried out without the optional softwar
   * *Video production support (optional)*
     * opencv-python
     * numpy
+* *Chart visualization support*
+  * **MatPlotLib**
 * *Graph visualization support (optional)*
   * NetworkX
   * Matplotlib
