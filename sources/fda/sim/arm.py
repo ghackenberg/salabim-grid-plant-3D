@@ -49,72 +49,22 @@ class SimArm(sim.Component):
             self.sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
-        machineBarChart(self.corridor, self.name(), self.sim_machines)
-        armRobotBarChart(self.corridor, self.name(), self.sim_arm_robot)
+        armBarCharts(self.corridor, self.name(), self.sim_arm_robot, self.sim_machines)
 
 
-def machineBarChart(corridor: Corridor, name: str, sim_machines: list[SimMachine]):
-    categories = ['Waiting', 'Mounting', 'Unmounting', 'Working', 'Returning']
-
+def armBarCharts(corridor: Corridor, name: str, sim_arm_robot: SimArmRobot, sim_machines: list[SimMachine]):
+    plt.figure(corridor.name)
+    
+    # Plot machines
+    index = 1
     for sim_machine in sim_machines:
-        waiting = sim_machine.state.value.value_duration('waiting')
-        mounting = sim_machine.state.value.value_duration('mounting')
-        unmounting = sim_machine.state.value.value_duration('unmounting')
-        working = sim_machine.state.value.value_duration('working')
-        returning = sim_machine.state.value.value_duration('returning')
+        plt.subplot(1, len(sim_machines) + 1, index)
+        sim_machine.plot()
+        index = index + 1
 
-        values = [waiting, mounting, unmounting, working, returning]
-
-        bar_width = 0.15
-
-        # Graph
-        position = range(len(sim_machines))
-        for i in range(len(categories)):
-            plt.bar([p + i * bar_width for p in position], values[i], width=bar_width, label=categories[i])
-
-        # x Axis
-        plt.xticks([])
-
-        # Labels
-        plt.xlabel('Machine State')
-        plt.ylabel('State Duration')
-        plt.title(f'{corridor.name} / Arm {name} / {sim_machine.machine.name}')
-
-        # Legend
-        plt.legend()
-
-        # Print Graph
-        plt.show()
-
-
-def armRobotBarChart(corridor: Corridor, name: str, sim_arm_robot: SimArmRobot):
-    categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
-
-    loaded = sim_arm_robot.state_load.value.value_duration('loaded')
-    empty = sim_arm_robot.state_load.value.value_duration('empty')
-    waiting = sim_arm_robot.state_move.value.value_duration('waiting')
-    moving_x = sim_arm_robot.state_move.value.value_duration('moving_x')
-    moving_y = sim_arm_robot.state_move.value.value_duration('moving_y')
-    moving_z = sim_arm_robot.state_move.value.value_duration('moving_z')
-
-    values = [loaded, empty, waiting, moving_x, moving_y, moving_z]
-
-    bar_width = 0.15
-
-    # Graph
-    for i in range(len(categories)):
-        plt.bar(i * bar_width, values[i], width=bar_width, label=categories[i])
-
-    # x Axis
-    plt.xticks([])
-
-    # Labels
-    plt.xlabel('Robot Load and Move State')
-    plt.ylabel('State Duration')
-    plt.title(f'{corridor.name} / Arm {name} / Robot')
-
-    # Legend
-    plt.legend()
+    # Plot arm robot
+    plt.subplot(1, len(sim_machines) + 1, index)
+    sim_arm_robot.plot()
 
     # Print Graph
     plt.show()

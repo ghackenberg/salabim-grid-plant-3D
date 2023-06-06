@@ -1,4 +1,5 @@
 import salabim as sim
+import matplotlib.pyplot as plt
 
 from ..model import Machine, ToolType
 
@@ -157,4 +158,31 @@ class SimMachine(sim.Component):
         utilization = working / (waiting + mounting + unmounting + working + returning)
 
         print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")
+    
+    def plot(self):
+        categories = ['Waiting', 'Mounting', 'Unmounting', 'Working', 'Returning']
 
+        waiting = self.state.value.value_duration('waiting')
+        mounting = self.state.value.value_duration('mounting')
+        unmounting = self.state.value.value_duration('unmounting')
+        working = self.state.value.value_duration('working')
+        returning = self.state.value.value_duration('returning')
+
+        values = [waiting, mounting, unmounting, working, returning]
+
+        bar_width = 0.15
+
+        # Graph
+        for i in range(len(categories)):
+            plt.bar(i * bar_width, values[i], width=bar_width, label=categories[i])
+
+        # x Axis
+        plt.xticks([])
+
+        # Labels
+        plt.xlabel('Machine State')
+        plt.ylabel('State Duration')
+        plt.title(self.machine.name)
+
+        # Legend
+        plt.legend()

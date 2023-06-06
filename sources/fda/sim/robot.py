@@ -1,4 +1,5 @@
 import salabim as sim
+import matplotlib.pyplot as plt
 
 from ..util import toString
 
@@ -80,3 +81,32 @@ class SimRobot(sim.Component):
         for i in range(self.indent):
             indent = f"{indent}   "
         print(f"{indent} - {self.name()} ({move_output}) ({load_output})")
+    
+    def plot(self):        
+        categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
+
+        loaded = self.state_load.value.value_duration('loaded')
+        empty = self.state_load.value.value_duration('empty')
+        waiting = self.state_move.value.value_duration('waiting')
+        moving_x = self.state_move.value.value_duration('moving_x')
+        moving_y = self.state_move.value.value_duration('moving_y')
+        moving_z = self.state_move.value.value_duration('moving_z')
+
+        values = [loaded, empty, waiting, moving_x, moving_y, moving_z]
+
+        bar_width = 0.15
+
+        # Graph
+        for i in range(len(categories)):
+            plt.bar(i * bar_width, values[i], width=bar_width, label=categories[i])
+
+        # x Axis
+        plt.xticks([])
+
+        # Labels
+        plt.xlabel('Robot Load and Move State')
+        plt.ylabel('State Duration')
+        plt.title(self.name())
+
+        # Legend
+        plt.legend()
