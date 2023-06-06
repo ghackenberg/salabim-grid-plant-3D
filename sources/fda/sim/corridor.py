@@ -41,3 +41,6 @@ class SimCorridor(sim.Component):
         self.sim_arm_left.printStatistics()
         self.sim_arm_right.printStatistics()
     
+    def plot(self):
+        pass
+    

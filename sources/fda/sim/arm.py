@@ -49,3 +49,6 @@ class SimArm(sim.Component):
             self.sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
+    
+    def plot(self):
+        pass
