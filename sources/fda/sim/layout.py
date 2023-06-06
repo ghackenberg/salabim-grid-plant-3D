@@ -66,7 +66,32 @@ class SimLayout(sim.Component):
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()
     
-    def plot(self, legend = False):
+    def plot(self):
+        plt.figure('Layout')
+
+        # Draw chart
+        bar_width = 0.15
+
+        # Graph
+        col = 1
+        for sim_corridor in self.sim_corridors:
+            plt.bar(col * bar_width, sim_corridor.utilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
+            col = col + 1
+
+        # x Axis
+        plt.xticks([])
+
+        # Labels
+        plt.xlabel('Corridor')
+        plt.ylabel('Utilization')
+        plt.title(f'{self.layout.name}')
+
+        # Legend
+        plt.legend()
+
+        plt.show()
+
+    def plotFull(self, legend = False):
         plt.figure('Layout')
 
         rows = len(self.sim_corridors) + 1
