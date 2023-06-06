@@ -82,7 +82,7 @@ class SimRobot(sim.Component):
             indent = f"{indent}   "
         print(f"{indent} - {self.name()} ({move_output}) ({load_output})")
     
-    def plot(self):        
+    def plot(self, legend = False):        
         categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
 
         loaded = self.state_load.value.value_duration('loaded')
@@ -109,4 +109,5 @@ class SimRobot(sim.Component):
         plt.title(self.name())
 
         # Legend
-        plt.legend()
+        if legend:
+            plt.legend()

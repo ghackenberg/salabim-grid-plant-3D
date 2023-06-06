@@ -159,7 +159,7 @@ class SimMachine(sim.Component):
 
         print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")
     
-    def plot(self):
+    def plot(self, legend = False):
         categories = ['Waiting', 'Mounting', 'Unmounting', 'Working', 'Returning']
 
         waiting = self.state.value.value_duration('waiting')
@@ -185,4 +185,5 @@ class SimMachine(sim.Component):
         plt.title(self.machine.name)
 
         # Legend
-        plt.legend()
+        if legend:
+            plt.legend()

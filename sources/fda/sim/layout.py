@@ -49,7 +49,7 @@ class SimLayout(sim.Component):
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()
     
-    def plot(self):
+    def plot(self, legend = False):
         plt.figure('Layout')
 
         rows = len(self.sim_corridors) + 1
@@ -69,38 +69,37 @@ class SimLayout(sim.Component):
             columns = right + 1
         else:
             columns = 1
-        
-        print(rows, columns)
 
         # Main robot
         plt.subplot(rows, columns, 1)
-        self.sim_main_robot.plot()
+        self.sim_main_robot.plot(legend)
 
         # Corridors
         row = 1
         for sim_corridor in self.sim_corridors:
-            col = 1
             # Left arm
+            col = 1
             if len(sim_corridor.sim_arm_left.sim_machines) > 0:
                 # Robot
                 plt.subplot(rows, columns, row * columns + col)
-                sim_corridor.sim_arm_left.sim_arm_robot.plot()
+                sim_corridor.sim_arm_left.sim_arm_robot.plot(legend)
                 col = col + 1
                 # Machines
                 for sim_machine in sim_corridor.sim_arm_left.sim_machines:
                     plt.subplot(rows, columns, row * columns + col)
-                    sim_machine.plot()
+                    sim_machine.plot(legend)
                     col = col + 1
             # Right arm
+            col = 1 if left == 0 else left + 2
             if len(sim_corridor.sim_arm_right.sim_machines) > 0:
                 # Robot
                 plt.subplot(rows, columns, row * columns + col)
-                sim_corridor.sim_arm_right.sim_arm_robot.plot()
+                sim_corridor.sim_arm_right.sim_arm_robot.plot(legend)
                 col = col + 1
                 # Machines
                 for sim_machine in sim_corridor.sim_arm_right.sim_machines:
                     plt.subplot(rows, columns, row * columns + col)
-                    sim_machine.plot()
+                    sim_machine.plot(legend)
                     col = col + 1
             row = row + 1
 

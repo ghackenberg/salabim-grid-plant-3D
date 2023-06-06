@@ -21,7 +21,7 @@ class SimScenario(sim.Component):
         for sim_order in self.sim_orders:
             sim_order.printStatistics()
     
-    def plot(self):
+    def plot(self, legend = False):
         rows = 1
         columns = len(self.sim_orders)
 
@@ -30,5 +30,5 @@ class SimScenario(sim.Component):
         col = 1
         for sim_order in self.sim_orders:
             plt.subplot(rows, columns, col)
-            sim_order.plot()
+            sim_order.plot(legend)
             col = col + 1
