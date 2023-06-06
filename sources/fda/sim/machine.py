@@ -148,16 +148,17 @@ class SimMachine(sim.Component):
             # Place job back to store
             yield self.to_store(self.store_out, job)
     
-    def printStatistics(self):
+    def utilization(self):
         waiting = self.state.value.value_duration('waiting')
         mounting = self.state.value.value_duration('mounting')
         unmounting = self.state.value.value_duration('unmounting')
         working = self.state.value.value_duration('working')
         returning = self.state.value.value_duration('returning')
 
-        utilization = working / (waiting + mounting + unmounting + working + returning)
-
-        print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(utilization * 100)}%)")
+        return working / (waiting + mounting + unmounting + working + returning)
+    
+    def printStatistics(self):
+        print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(self.utilization() * 100)}%)")
     
     def plot(self, legend = False):
         categories = ['Waiting', 'Mounting', 'Unmounting', 'Working', 'Returning']

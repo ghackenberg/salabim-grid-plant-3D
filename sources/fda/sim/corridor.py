@@ -41,6 +41,20 @@ class SimCorridor(sim.Component):
         self.sim_arm_left.printStatistics()
         self.sim_arm_right.printStatistics()
     
+    def utilization(self):
+        left_len = len(self.sim_arm_left.sim_machines)
+        right_len = len(self.sim_arm_right.sim_machines)
+        left = self.sim_arm_left.utilization()
+        right = self.sim_arm_right.utilization()
+        if left_len > 0 and right_len > 0:
+            return (left * left_len + right * right_len) / (left_len + right_len)
+        elif left_len > 0:
+            return left
+        elif right_len > 0:
+            return right
+        else:
+            return 1
+    
     def plot(self):
         pass
     

@@ -50,5 +50,11 @@ class SimArm(sim.Component):
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
     
+    def utilization(self):
+        avg = 0
+        for sim_machine in self.sim_machines:
+            avg = avg + sim_machine.utilization() / len(self.sim_machines)
+        return avg
+    
     def plot(self):
         pass
