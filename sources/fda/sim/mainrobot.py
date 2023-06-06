@@ -1,9 +1,10 @@
 import salabim as sim
 
-from .corridor import *
-from .layout import *
-from .robot import *
-from ..model import *
+from ..model import Layout, Scenario
+
+from .corridor import SimCorridor
+from .robot import SimRobot
+from .job import SimJob
 
 
 class SimMainRobot(SimRobot):

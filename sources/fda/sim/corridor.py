@@ -1,4 +1,8 @@
-from .arm import *
+import salabim as sim
+
+from ..model import Corridor
+
+from .arm import SimArm
 
 
 class SimCorridor(sim.Component):

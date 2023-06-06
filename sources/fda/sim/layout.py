@@ -1,8 +1,11 @@
 import salabim as sim
+import matplotlib.pyplot as plt
 
-from .corridor import *
-from .mainrobot import *
-from ..model import *
+from ..model import Layout, Scenario
+
+from .corridor import SimCorridor
+from .mainrobot import SimMainRobot
+
 
 class SimLayout(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment):
@@ -46,3 +49,36 @@ class SimLayout(sim.Component):
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()
         mainRobotBarChart(self.sim_main_robot)
+
+
+def mainRobotBarChart(sim_main_robot: SimMainRobot):
+    categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
+
+    loaded = sim_main_robot.state_load.value.value_duration('loaded')
+    empty = sim_main_robot.state_load.value.value_duration('empty')
+    waiting = sim_main_robot.state_move.value.value_duration('waiting')
+    moving_x = sim_main_robot.state_move.value.value_duration('moving_x')
+    moving_y = sim_main_robot.state_move.value.value_duration('moving_y')
+    moving_z = sim_main_robot.state_move.value.value_duration('moving_z')
+
+    values = [loaded, empty, waiting, moving_x, moving_y, moving_z]
+
+    bar_width = 0.15
+
+    # Graph
+    for i in range(len(values)):
+        plt.bar(i*bar_width, values[i], width=bar_width, label=categories[i])
+
+    # x Axis
+    plt.xticks([])
+
+    # Labels
+    plt.xlabel('Robot Load and Move State')
+    plt.ylabel('State Duration')
+    plt.title('Main Robot')
+
+    # Legend
+    plt.legend()
+
+    # Print Graph
+    plt.show()

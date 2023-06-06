@@ -1,8 +1,10 @@
 import salabim as sim
 
-from ..model import *
-from .robot import *
-from .machine import *
+from ..model import Corridor, Machine
+
+from .robot import SimRobot
+from .machine import SimMachine
+from .job import SimJob
 
 class SimArmRobot(SimRobot):
     def __init__(self, corridor: Corridor, machines: list[Machine],  env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):

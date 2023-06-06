@@ -1,9 +1,11 @@
 import salabim as sim
+import matplotlib.pyplot as plt
 
-from ..model import *
-from .machine import *
-from .armrobot import *
-from .chart import *
+from ..model import Corridor, Machine
+
+from .machine import SimMachine
+from .armrobot import SimArmRobot
+
 
 class SimArm(sim.Component):
     def __init__(self, corridor: Corridor, machines: list[Machine], name: str, env: sim.Environment, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float):
@@ -28,10 +30,8 @@ class SimArm(sim.Component):
             machine_num = machine_num + 1
 
         # Transversal robot
-        self.sim_arm_robot: list[SimArmRobot] = []
         if len(machines) != 0:
-            sim_arm_robot = SimArmRobot(corridor, machines, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
-            self.sim_arm_robot.append(sim_arm_robot)
+            self.sim_arm_robot = SimArmRobot(corridor, machines, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
 
         # Arm horizontal box
         if len(machines) != 0:
@@ -46,11 +46,75 @@ class SimArm(sim.Component):
     def printStatistics(self):
         print(f"    - Arm {self.name()}:")
         if len(self.machines) != 0:
-            for sim_arm_robot in self.sim_arm_robot:
-                sim_arm_robot.printStatistics()
+            self.sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
-        machineBarChart(self.sim_machines)
-        armRobotBarChart(self.sim_arm_robot)
+        machineBarChart(self.corridor, self.name(), self.sim_machines)
+        armRobotBarChart(self.corridor, self.name(), self.sim_arm_robot)
 
 
+def machineBarChart(corridor: Corridor, name: str, sim_machines: list[SimMachine]):
+    categories = ['Waiting', 'Mounting', 'Unmounting', 'Working', 'Returning']
+
+    for sim_machine in sim_machines:
+        waiting = sim_machine.state.value.value_duration('waiting')
+        mounting = sim_machine.state.value.value_duration('mounting')
+        unmounting = sim_machine.state.value.value_duration('unmounting')
+        working = sim_machine.state.value.value_duration('working')
+        returning = sim_machine.state.value.value_duration('returning')
+
+        values = [waiting, mounting, unmounting, working, returning]
+
+        bar_width = 0.15
+
+        # Graph
+        position = range(len(sim_machines))
+        for i in range(len(categories)):
+            plt.bar([p + i * bar_width for p in position], values[i], width=bar_width, label=categories[i])
+
+        # x Axis
+        plt.xticks([])
+
+        # Labels
+        plt.xlabel('Machine State')
+        plt.ylabel('State Duration')
+        plt.title(f'{corridor.name} / Arm {name} / {sim_machine.machine.name}')
+
+        # Legend
+        plt.legend()
+
+        # Print Graph
+        plt.show()
+
+
+def armRobotBarChart(corridor: Corridor, name: str, sim_arm_robot: SimArmRobot):
+    categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
+
+    loaded = sim_arm_robot.state_load.value.value_duration('loaded')
+    empty = sim_arm_robot.state_load.value.value_duration('empty')
+    waiting = sim_arm_robot.state_move.value.value_duration('waiting')
+    moving_x = sim_arm_robot.state_move.value.value_duration('moving_x')
+    moving_y = sim_arm_robot.state_move.value.value_duration('moving_y')
+    moving_z = sim_arm_robot.state_move.value.value_duration('moving_z')
+
+    values = [loaded, empty, waiting, moving_x, moving_y, moving_z]
+
+    bar_width = 0.15
+
+    # Graph
+    for i in range(len(categories)):
+        plt.bar(i * bar_width, values[i], width=bar_width, label=categories[i])
+
+    # x Axis
+    plt.xticks([])
+
+    # Labels
+    plt.xlabel('Robot Load and Move State')
+    plt.ylabel('State Duration')
+    plt.title(f'{corridor.name} / Arm {name} / Robot')
+
+    # Legend
+    plt.legend()
+
+    # Print Graph
+    plt.show()

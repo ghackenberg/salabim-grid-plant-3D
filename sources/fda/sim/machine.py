@@ -1,7 +1,8 @@
 import salabim as sim
 
-from .job import *
-from ..model import *
+from ..model import Machine, ToolType
+
+from .job import SimJob
 
 
 class SimMachine(sim.Component):

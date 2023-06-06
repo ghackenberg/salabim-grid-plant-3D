@@ -1,5 +1,6 @@
 import salabim as sim
-from ..util import *
+
+from ..util import toString
 
 class SimRobot(sim.Component):
     def __init__(self, name: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
