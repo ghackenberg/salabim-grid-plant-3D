@@ -73,7 +73,18 @@ class SimRobot(sim.Component):
         yield self.hold(duration)
         self.state_move.set("waiting")
         self.z = self.next_z
+    
+    def utilization(self):
+        waiting = self.state_move.value.value_duration('waiting')
 
+        moving_x = self.state_move.value.value_duration('moving_x')
+        moving_y = self.state_move.value.value_duration('moving_y')
+        moving_z = self.state_move.value.value_duration('moving_z')
+
+        moving = moving_x + moving_y + moving_z
+
+        return moving / (moving + waiting)
+    
     def printStatistics(self):
         move_output = toString(self.state_move)
         load_output = toString(self.state_load)

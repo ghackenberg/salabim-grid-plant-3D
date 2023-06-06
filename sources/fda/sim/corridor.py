@@ -40,21 +40,38 @@ class SimCorridor(sim.Component):
         print(f" - {self.corridor.name}:")
         self.sim_arm_left.printStatistics()
         self.sim_arm_right.printStatistics()
+
+    def robotCount(self):
+        return self.sim_arm_left.robotCount() + self.sim_arm_right.robotCount()
     
-    def weight(self):
-        return self.sim_arm_left.weight() + self.sim_arm_right.weight()
+    def machineCount(self):
+        return self.sim_arm_left.machineCount() + self.sim_arm_right.machineCount()
     
-    def utilization(self):
-        left_weight = self.sim_arm_left.weight()
-        right_weight = self.sim_arm_right.weight()
-        left_util = self.sim_arm_left.utilization()
-        right_util = self.sim_arm_right.utilization()
-        if left_weight > 0 and right_weight > 0:
-            return (left_util * left_weight + right_util * right_weight) / (left_weight + right_weight)
-        elif left_weight > 0:
-            return left_util
-        elif right_weight > 0:
-            return right_util
+    def robotUtilization(self):
+        left_cnt = self.sim_arm_left.robotCount()
+        right_cnt = self.sim_arm_right.robotCount()
+        left_utl = self.sim_arm_left.robotUtilization()
+        right_utl = self.sim_arm_right.robotUtilization()
+        if left_cnt > 0 and right_cnt > 0:
+            return (left_utl * left_cnt + right_utl * right_cnt) / (left_cnt + right_cnt)
+        elif left_cnt > 0:
+            return left_utl
+        elif right_cnt > 0:
+            return right_utl
+        else:
+            return 1
+
+    def machineUtilization(self):
+        left_cnt = self.sim_arm_left.machineCount()
+        right_cnt = self.sim_arm_right.machineCount()
+        left_utl = self.sim_arm_left.machineUtilization()
+        right_utl = self.sim_arm_right.machineUtilization()
+        if left_cnt > 0 and right_cnt > 0:
+            return (left_utl * left_cnt + right_utl * right_cnt) / (left_cnt + right_cnt)
+        elif left_cnt > 0:
+            return left_utl
+        elif right_cnt > 0:
+            return right_utl
         else:
             return 1
     

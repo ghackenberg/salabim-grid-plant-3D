@@ -50,16 +50,28 @@ class SimArm(sim.Component):
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
     
-    def weight(self):
+    def robotCount(self):
+        if self.machineCount() > 0:
+            return 1
+        else:
+            return 0
+
+    def machineCount(self):
         return len(self.sim_machines)
     
-    def utilization(self):
-        weight = self.weight()
-        if weight > 0:
-            util = 0
+    def robotUtilization(self):
+        if self.machineCount() > 0:
+            return self.sim_arm_robot.utilization()
+        else:
+            return 1
+
+    def machineUtilization(self):
+        cnt = self.machineCount()
+        if cnt > 0:
+            utl = 0
             for sim_machine in self.sim_machines:
-                util = util + sim_machine.utilization() / weight
-            return util
+                utl = utl + sim_machine.utilization() / cnt
+            return utl
         else:
             return 1
     

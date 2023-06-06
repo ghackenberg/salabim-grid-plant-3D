@@ -43,20 +43,34 @@ class SimLayout(sim.Component):
         # Main robot
         self.sim_main_robot = SimMainRobot(layout, scenario, env, self.store_start, self.store_end, self.sim_corridors, 0, 2.5)
     
-    def weight(self):
-        weight = 0
+    def robotCount(self):
+        cnt = 1
         for sim_corridor in self.sim_corridors:
-            weight = weight + sim_corridor.weight()
-        return weight
+            cnt = cnt + sim_corridor.robotCount()
+        return cnt
+    
+    def machineCount(self):
+        cnt = 0
+        for sim_corridor in self.sim_corridors:
+            cnt = cnt + sim_corridor.machineCount()
+        return cnt
+    
+    def robotUtilization(self):
+        cnt = self.robotCount()
+        utl = self.sim_main_robot.utilization() / cnt
+        for sim_corridor in self.sim_corridors:
+            if sim_corridor.robotCount() > 0:
+                utl = utl + sim_corridor.robotUtilization() * sim_corridor.robotCount() / cnt
+        return utl
 
-    def utilization(self):
-        weight = self.weight()
-        if weight > 0:
-            util = 0
+    def machineUtilization(self):
+        cnt = self.machineCount()
+        if cnt > 0:
+            utl = 0
             for sim_corridor in self.sim_corridors:
-                if sim_corridor.weight() > 0:
-                    util = util + sim_corridor.utilization() * sim_corridor.weight() / weight
-            return util
+                if sim_corridor.machineCount() > 0:
+                    utl = utl + sim_corridor.machineUtilization() * sim_corridor.machineCount() / cnt
+            return utl
         else:
             return 1
 
@@ -67,26 +81,44 @@ class SimLayout(sim.Component):
             sim_corridor.printStatistics()
     
     def plot(self):
-        plt.figure('Layout')
+        plt.figure(self.layout.name)
 
         # Draw chart
         bar_width = 0.15
+        
+        # Main robot subplot
+        plt.subplot(1, 3, 1)
+        col = 1
+        plt.bar(col * bar_width, self.sim_main_robot.utilization() * 100, width=bar_width, label='Main robot')
+        col = col + 1
+        plt.xticks([])
+        plt.xlabel('Robot')
+        plt.ylabel('Utilization (in %)')
+        plt.title('Main robot utilization')
+        plt.legend()
 
-        # Graph
+        # Corridor robot submit
+        plt.subplot(1, 3, 2)
         col = 1
         for sim_corridor in self.sim_corridors:
-            plt.bar(col * bar_width, sim_corridor.utilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
+            plt.bar(col * bar_width, sim_corridor.robotUtilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
             col = col + 1
-
-        # x Axis
         plt.xticks([])
-
-        # Labels
         plt.xlabel('Corridor')
-        plt.ylabel('Utilization')
-        plt.title(f'{self.layout.name}')
+        plt.ylabel('Utilization (in %)')
+        plt.title('Corridor robot utilization')
+        plt.legend()
 
-        # Legend
+        # Machines subplot
+        plt.subplot(1, 3, 3)
+        col = 1
+        for sim_corridor in self.sim_corridors:
+            plt.bar(col * bar_width, sim_corridor.machineUtilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
+            col = col + 1
+        plt.xticks([])
+        plt.xlabel('Corridor')
+        plt.ylabel('Utilization (in %)')
+        plt.title('Machine utilization')
         plt.legend()
 
         plt.show()
