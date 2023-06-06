@@ -23,7 +23,17 @@ The goal of Discrete Event Simulation (DES) is to evaluate the performance of yo
 Performance evaluation typically concentrates on the utilization of resources such as workers, machines, and storage areas.
 Our software automatically tracks the most relevant performance characteristics.
 
-![Salabim screenshot](./screenshots/console.png)
+#### Console output
+
+The performance data can be printed to the console.
+
+![Console screenshot](./screenshots/console.png)
+
+#### PyPlot output
+
+The performance data can be visualized using bar charts.
+
+![PyPlot screenshot](./screenshots/pyplot.png)
 
 ### 🖼️ Graph visualization
 
