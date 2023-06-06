@@ -19,3 +19,6 @@ class SimScenario(sim.Component):
         print(f"{self.scenario.name}:")
         for sim_order in self.sim_orders:
             sim_order.printStatistics()
+    
+    def plot(self):
+        pass

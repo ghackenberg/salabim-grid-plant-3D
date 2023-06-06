@@ -49,22 +49,3 @@ class SimArm(sim.Component):
             self.sim_arm_robot.printStatistics()
         for sim_machine in self.sim_machines:
             sim_machine.printStatistics()
-        armBarCharts(self.corridor, self.name(), self.sim_arm_robot, self.sim_machines)
-
-
-def armBarCharts(corridor: Corridor, name: str, sim_arm_robot: SimArmRobot, sim_machines: list[SimMachine]):
-    plt.figure(corridor.name)
-    
-    # Plot machines
-    index = 1
-    for sim_machine in sim_machines:
-        plt.subplot(1, len(sim_machines) + 1, index)
-        sim_machine.plot()
-        index = index + 1
-
-    # Plot arm robot
-    plt.subplot(1, len(sim_machines) + 1, index)
-    sim_arm_robot.plot()
-
-    # Print Graph
-    plt.show()

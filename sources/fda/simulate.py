@@ -38,3 +38,7 @@ def simulate(layout: Layout, scenario: Scenario, animate=False):
     # Print statistics
     sim_scenario.printStatistics()
     sim_layout.printStatistics()
+
+    # Plot
+    sim_scenario.plot()
+    sim_layout.plot()

@@ -48,10 +48,60 @@ class SimLayout(sim.Component):
         self.sim_main_robot.printStatistics()
         for sim_corridor in self.sim_corridors:
             sim_corridor.printStatistics()
-        mainRobotBarChart(self.sim_main_robot)
+    
+    def plot(self):
+        plt.figure('Layout')
 
+        rows = len(self.sim_corridors) + 1
 
-def mainRobotBarChart(sim_main_robot: SimMainRobot):
-    plt.figure('Main Robot')
-    sim_main_robot.plot()
-    plt.show()
+        left = 0
+        right = 0
+
+        for sim_corridor in self.sim_corridors:
+            left = max(left, len(sim_corridor.sim_arm_left.sim_machines))
+            right = max(right, len(sim_corridor.sim_arm_right.sim_machines))
+        
+        if left > 0 and right > 0:
+            columns = left + right + 2
+        elif left > 0:
+            columns = left + 1
+        elif right > 0:
+            columns = right + 1
+        else:
+            columns = 1
+        
+        print(rows, columns)
+
+        # Main robot
+        plt.subplot(rows, columns, 1)
+        self.sim_main_robot.plot()
+
+        # Corridors
+        row = 1
+        for sim_corridor in self.sim_corridors:
+            col = 1
+            # Left arm
+            if len(sim_corridor.sim_arm_left.sim_machines) > 0:
+                # Robot
+                plt.subplot(rows, columns, row * columns + col)
+                sim_corridor.sim_arm_left.sim_arm_robot.plot()
+                col = col + 1
+                # Machines
+                for sim_machine in sim_corridor.sim_arm_left.sim_machines:
+                    plt.subplot(rows, columns, row * columns + col)
+                    sim_machine.plot()
+                    col = col + 1
+            # Right arm
+            if len(sim_corridor.sim_arm_right.sim_machines) > 0:
+                # Robot
+                plt.subplot(rows, columns, row * columns + col)
+                sim_corridor.sim_arm_right.sim_arm_robot.plot()
+                col = col + 1
+                # Machines
+                for sim_machine in sim_corridor.sim_arm_right.sim_machines:
+                    plt.subplot(rows, columns, row * columns + col)
+                    sim_machine.plot()
+                    col = col + 1
+            row = row + 1
+
+        plt.show()
