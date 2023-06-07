@@ -1,7 +1,7 @@
 import networkx
-import matplotlib
+import matplotlib.pyplot as plt
 
-from .model import *
+from .model import MACHINE_TYPES, TOOL_TYPES, PRODUCT_TYPES, OPERATIONS, SCENARIOS, ORDERS, LAYOUTS, CORRIDORS, MACHINES
 
 def toNetworkXBasic():
     graph = networkx.DiGraph()
@@ -27,7 +27,7 @@ def toNetworkXBasic():
 
     networkx.draw_networkx(graph, arrows = True, node_color = node_color)
 
-    matplotlib.pyplot.show()
+    plt.show()
 
 def toNetworkXMinimal():
     graph = networkx.DiGraph()
@@ -47,7 +47,7 @@ def toNetworkXMinimal():
 
     networkx.draw_networkx(graph, arrows = True, node_color = node_color)
 
-    matplotlib.pyplot.show()
+    plt.show()
 
 def toNetworkX():
     graph = networkx.DiGraph()
@@ -93,7 +93,7 @@ def toNetworkX():
 
     networkx.draw_networkx(graph, arrows = True, node_color = node_color)
 
-    matplotlib.pyplot.show()
+    plt.show()
 
 def toGraphML():
     graphml = '<graphml>'
