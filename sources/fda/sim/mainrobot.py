@@ -8,8 +8,8 @@ from .job import SimJob
 
 
 class SimMainRobot(SimRobot):
-    def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float):
-        super().__init__("Main robot", 0, env, 0, y, z, "red")
+    def setup(self, layout: Layout, scenario: Scenario, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float):
+        super().setup("Main robot", 0, 0, y, z, "red")
 
         self.layout = layout
         self.scenario = scenario

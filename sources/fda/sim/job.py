@@ -7,11 +7,7 @@ from ..util import toString
 
 
 class SimJob(sim.Component):
-    def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, env: sim.Environment, store_start: sim.Store):
-        super().__init__(env=env)
-
-        self.env = env
-
+    def setup(self, layout: Layout, scenario: Scenario, order: Order, number: int, store_start: sim.Store):
         self.layout = layout
         self.scenario = scenario
         self.order = order
@@ -31,7 +27,7 @@ class SimJob(sim.Component):
 
         # Track state
         value = self.operation_sequence[0].consumes_product_type.name
-        self.state = sim.State("State", value=value)
+        self.state = sim.State("State", value=value, env=self.env)
 
     def process(self):
         # Debug output

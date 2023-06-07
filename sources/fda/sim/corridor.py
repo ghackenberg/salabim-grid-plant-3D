@@ -6,29 +6,25 @@ from .arm import SimArm
 
 
 class SimCorridor(sim.Component):
-    def __init__(self, corridor: Corridor, env: sim.Environment, y: float):
-        super().__init__(env=env)
-
+    def setup(self, corridor: Corridor, y: float):
         self.corridor = corridor
-
-        self.env = env
 
         # Machines
         machines_left = corridor.machines_left
         machines_right = corridor.machines_right
 
         # Corridor stores
-        store_main = sim.Store(f"Store main")
-        store_left = sim.Store(f"Store left")
-        store_right = sim.Store(f"Store right")
+        store_main = sim.Store(f"Store main", env=self.env)
+        store_left = sim.Store(f"Store left", env=self.env)
+        store_right = sim.Store(f"Store right", env=self.env)
 
         self.store_main = store_main
         self.store_left = store_left
         self.store_right = store_right
 
         # Left and right arms
-        self.sim_arm_left = SimArm(corridor, machines_left, "left", env, store_left, store_right, store_main, +1, y)
-        self.sim_arm_right = SimArm(corridor, machines_right, "right", env, store_right, store_left, store_main, -1, y)
+        self.sim_arm_left = SimArm(corridor=corridor, machines=machines_left, direction="left", store_in=store_left, store_out_1=store_right, store_out_2=store_main, dx=+1, y=y, env=self.env)
+        self.sim_arm_right = SimArm(corridor=corridor, machines=machines_right, direction="right", store_in=store_right, store_out_1=store_left, store_out_2=store_main, dx=-1, y=y, env=self.env)
 
         # Corridor storage vertical box
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)

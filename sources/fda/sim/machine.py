@@ -7,15 +7,11 @@ from .job import SimJob
 
 
 class SimMachine(sim.Component):
-    def __init__(self, machine: Machine, env: sim.Environment, x: float, y: float):
-        super().__init__(env=env)
-
+    def setup(self, machine: Machine, x: float, y: float):
         self.machine = machine
 
-        self.env = env
-
         # Track state
-        self.state = sim.State("State", value='waiting')
+        self.state = sim.State("State", value='waiting', env=self.env)
 
         # Remember currently mounted tool
         self.tool_type: ToolType = None
@@ -32,13 +28,13 @@ class SimMachine(sim.Component):
         for tool_type in self.tool_types:
             # Initialize the remaining life units for the respective tool type
             self.remaining_life_units[tool_type] = tool_type.total_life_units
-            self.remaining_life_units_t[tool_type] = env.now()
+            self.remaining_life_units_t[tool_type] = self.env.now()
             self.remaining_life_units_next[tool_type] = tool_type.total_life_units
-            self.remaining_life_units_next_t[tool_type] = env.now()
+            self.remaining_life_units_next_t[tool_type] = self.env.now()
 
         # Job stores
-        self.store_in = sim.Store(f"{machine.name} in")
-        self.store_out = sim.Store(f"{machine.name} out")
+        self.store_in = sim.Store(f"{machine.name} in", env=self.env)
+        self.store_out = sim.Store(f"{machine.name} out", env=self.env)
 
         # Vertical box
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.20, color="green", x=x, y=y + 0.00, z=1.80)

@@ -8,9 +8,7 @@ from .mainrobot import SimMainRobot
 
 
 class SimLayout(sim.Component):
-    def __init__(self, layout: Layout, scenario: Scenario, env: sim.Environment):
-        super().__init__(env=env)
-
+    def setup(self, layout: Layout, scenario: Scenario):
         self.layout = layout
 
         # Grid
@@ -19,10 +17,10 @@ class SimLayout(sim.Component):
         # Start and end storage boxes
         y = 2 + len(layout.corridors) / 1.15
         # ... start
-        self.store_start = sim.Store("start")
+        self.store_start = sim.Store("start", env=self.env)
         sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="yellow", x=0, y=y, z=0.5)
         # ... end
-        self.store_end = sim.Store("end")
+        self.store_end = sim.Store("end", env=self.env)
         sim.Animate3dBox(x_len=3, y_len=1, z_len=1, color="yellow", x=0, y=-y, z=0.5)
 
         # Start and end vertical boxes
@@ -37,11 +35,11 @@ class SimLayout(sim.Component):
         corridor_num = 0
         for corridor in layout.corridors:
             y = (corridor_num + 0.5 - len(layout.corridors) / 2) * 2
-            self.sim_corridors.append(SimCorridor(corridor, env, y))
+            self.sim_corridors.append(SimCorridor(corridor=corridor, y=y, env=self.env))
             corridor_num = corridor_num + 1
 
         # Main robot
-        self.sim_main_robot = SimMainRobot(layout, scenario, env, self.store_start, self.store_end, self.sim_corridors, 0, 2.5)
+        self.sim_main_robot = SimMainRobot(layout=layout, scenario=scenario, store_start=self.store_start, store_end=self.store_end, sim_corridors=self.sim_corridors, y=0, z=2.5, env=self.env)
     
     def robotCount(self):
         cnt = 1

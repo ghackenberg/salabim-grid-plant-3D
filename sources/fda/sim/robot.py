@@ -4,26 +4,22 @@ import matplotlib.pyplot as plt
 from ..util import toString
 
 class SimRobot(sim.Component):
-    def __init__(self, label: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
-        super().__init__(env=env)
-
+    def setup(self, label: str, indent: int, x: float, y: float, z: float, color: str):
         self.label = label
         self.indent = indent
-
-        self.env = env
 
         self.x = x
         self.y = y
         self.z = z
-        self.t = env.now()
+        self.t = self.env.now()
 
         self.next_x = x
         self.next_y = y
         self.next_z = z
-        self.next_t = env.now()
+        self.next_t = self.env.now()
 
-        self.state_move = sim.State("Move", value="waiting")
-        self.state_load = sim.State("Load", value="empty")
+        self.state_move = sim.State("Move", value="waiting", env=self.env)
+        self.state_load = sim.State("Load", value="empty", env=self.env)
 
         sim.Animate3dBox(x_len=0.5, y_len=0.5, z_len=0.5, color=color, edge_color='white', x=self.x_func, y=self.y_func, z=self.z_func)
 
