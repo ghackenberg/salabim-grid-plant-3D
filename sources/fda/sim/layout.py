@@ -87,7 +87,7 @@ class SimLayout(sim.Component):
         bar_width = 0.15
         
         # Main robot subplot
-        plt.subplot(1, 3, 1)
+        plt.subplot(2, 3, (1, 4))
         col = 1
         plt.bar(col * bar_width, self.sim_main_robot.utilization() * 100, width=bar_width, label='Main robot')
         col = col + 1
@@ -98,7 +98,7 @@ class SimLayout(sim.Component):
         plt.legend()
 
         # Corridor robot submit
-        plt.subplot(1, 3, 2)
+        plt.subplot(2, 3, (2, 3))
         col = 1
         for sim_corridor in self.sim_corridors:
             plt.bar(col * bar_width, sim_corridor.robotUtilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
@@ -110,7 +110,7 @@ class SimLayout(sim.Component):
         plt.legend()
 
         # Machines subplot
-        plt.subplot(1, 3, 3)
+        plt.subplot(2, 3, (5, 6))
         col = 1
         for sim_corridor in self.sim_corridors:
             plt.bar(col * bar_width, sim_corridor.machineUtilization() * 100, width=bar_width, label=sim_corridor.corridor.name)
