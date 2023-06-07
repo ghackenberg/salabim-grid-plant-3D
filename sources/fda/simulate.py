@@ -1,9 +1,8 @@
 import salabim as sim
 
-from .sim import *
-from .model import *
 from .sim.layout import SimLayout
 from .sim.scenario import SimScenario
+from .model import Layout, Scenario
 
 
 def simulate(layout: Layout, scenario: Scenario, animate=False):
