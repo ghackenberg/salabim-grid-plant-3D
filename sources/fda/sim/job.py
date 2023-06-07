@@ -8,7 +8,7 @@ from ..util import toString
 
 class SimJob(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, store_start: sim.Store, *args, **kwargs):
-        sim.Component.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.layout = layout
         self.scenario = scenario

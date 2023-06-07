@@ -9,7 +9,7 @@ from .mainrobot import SimMainRobot
 
 class SimLayout(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, *args, **kwargs):
-        sim.Component.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.layout = layout
 

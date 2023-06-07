@@ -9,7 +9,7 @@ from .job import SimJob
 
 class SimMainRobot(SimRobot):
     def __init__(self, layout: Layout, scenario: Scenario, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float, *args, **kwargs):
-        SimRobot.__init__(self, "Main robot", 0, 0, y, z, "red", *args, **kwargs)
+        super().__init__("Main robot", 0, 0, y, z, "red", *args, **kwargs)
 
         self.layout = layout
         self.scenario = scenario

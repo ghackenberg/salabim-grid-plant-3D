@@ -7,7 +7,7 @@ from .order import SimOrder
 
 class SimScenario(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, store_start: sim.Store, *args, **kwargs):
-        sim.Component.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.scenario = scenario
         

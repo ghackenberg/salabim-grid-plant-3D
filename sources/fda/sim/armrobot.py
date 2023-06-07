@@ -8,7 +8,7 @@ from .job import SimJob
 
 class SimArmRobot(SimRobot):
     def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float, *args, **kwargs):
-        SimRobot.__init__(self, f"Arm {direction} robot", 2, dx, y, 2.5, "green", *args, **kwargs)
+        super().__init__(f"Arm {direction} robot", 2, dx, y, 2.5, "green", *args, **kwargs)
 
         self.corridor = corridor
         self.machines = machines

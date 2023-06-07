@@ -9,7 +9,7 @@ from .armrobot import SimArmRobot
 
 class SimArm(sim.Component):
     def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float, *args, **kwargs):
-        sim.Component.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.corridor = corridor
         self.machines = machines

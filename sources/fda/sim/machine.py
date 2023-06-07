@@ -8,7 +8,7 @@ from .job import SimJob
 
 class SimMachine(sim.Component):
     def __init__(self, machine: Machine, x: float, y: float, *args, **kwargs):
-        sim.Component.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.machine = machine
 
