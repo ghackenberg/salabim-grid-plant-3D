@@ -7,12 +7,14 @@ from .job import SimJob
 
 
 class SimOrder(sim.Component):
-    def setup(self, layout: Layout, scenario: Scenario, order: Order, store_start: sim.Store):
+    def __init__(self, layout: Layout, scenario: Scenario, order: Order, store_start: sim.Store, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.order = order
         
         self.sim_jobs: list[SimJob] = []
         for i in range(order.quantity):
-            sim_job = SimJob(layout=layout, scenario=scenario, order=order, number=i, store_start=store_start, env=self.env)
+            sim_job = SimJob(layout, scenario, order, i, store_start, env=self.env)
             self.sim_jobs.append(sim_job)
 
     def printStatistics(self):

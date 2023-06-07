@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 from ..util import toString
 
 class SimRobot(sim.Component):
-    def setup(self, label: str, indent: int, x: float, y: float, z: float, color: str):
+    def __init__(self, label: str, indent: int, x: float, y: float, z: float, color: str, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.label = label
         self.indent = indent
 

@@ -6,7 +6,9 @@ from .arm import SimArm
 
 
 class SimCorridor(sim.Component):
-    def setup(self, corridor: Corridor, y: float):
+    def __init__(self, corridor: Corridor, y: float, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.corridor = corridor
 
         # Machines
@@ -23,8 +25,8 @@ class SimCorridor(sim.Component):
         self.store_right = store_right
 
         # Left and right arms
-        self.sim_arm_left = SimArm(corridor=corridor, machines=machines_left, direction="left", store_in=store_left, store_out_1=store_right, store_out_2=store_main, dx=+1, y=y, env=self.env)
-        self.sim_arm_right = SimArm(corridor=corridor, machines=machines_right, direction="right", store_in=store_right, store_out_1=store_left, store_out_2=store_main, dx=-1, y=y, env=self.env)
+        self.sim_arm_left = SimArm(corridor, machines_left, "left", store_left, store_right, store_main, +1, y, env=self.env)
+        self.sim_arm_right = SimArm(corridor, machines_right, "right", store_right, store_left, store_main, -1, y, env=self.env)
 
         # Corridor storage vertical box
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)

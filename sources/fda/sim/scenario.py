@@ -6,12 +6,14 @@ from ..model import Layout, Scenario
 from .order import SimOrder
 
 class SimScenario(sim.Component):
-    def setup(self, layout: Layout, scenario: Scenario, store_start: sim.Store):
+    def __init__(self, layout: Layout, scenario: Scenario, store_start: sim.Store, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.scenario = scenario
         
         self.sim_orders: list[SimOrder] = []
         for order in scenario.orders:
-            sim_order = SimOrder(layout=layout, scenario=scenario, order=order, store_start=store_start, env=self.env)
+            sim_order = SimOrder(layout, scenario, order, store_start, env=self.env)
             self.sim_orders.append(sim_order)
     
     def printStatistics(self):

@@ -31,8 +31,8 @@ def simulate(layout: Layout, scenario: Scenario, animate=False):
 
     # Create components
     print("Creating simulation components")
-    sim_layout = SimLayout(layout=layout, scenario=scenario, env=env)
-    sim_scenario = SimScenario(layout=layout, scenario=scenario, store_start=sim_layout.store_start, env=env)
+    sim_layout = SimLayout(layout, scenario, env=env)
+    sim_scenario = SimScenario(layout, scenario, sim_layout.store_start, env=env)
     print("Simulation components created")
 
     # Perform simulation

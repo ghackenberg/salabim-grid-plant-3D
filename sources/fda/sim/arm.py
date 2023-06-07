@@ -8,7 +8,9 @@ from .armrobot import SimArmRobot
 
 
 class SimArm(sim.Component):
-    def setup(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float):
+    def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.corridor = corridor
         self.machines = machines
         
@@ -23,13 +25,13 @@ class SimArm(sim.Component):
         machine_num = 0
         for machine in machines:
             machine_x = (3 + machine_num * 2) * dx
-            sim_machine = SimMachine(machine=machine, x=machine_x, y=y, env=self.env)
+            sim_machine = SimMachine(machine, machine_x, y, env=self.env)
             self.sim_machines.append(sim_machine)
             machine_num = machine_num + 1
 
         # Transversal robot
         if len(machines) != 0:
-            self.sim_arm_robot = SimArmRobot(corridor=corridor, machines=machines, direction=direction, store_in=store_in, store_out_arm=store_out_1, store_out_main=store_out_2, sim_machines=self.sim_machines, dx=dx, y=y, env=self.env)
+            self.sim_arm_robot = SimArmRobot(corridor, machines, direction, store_in, store_out_1, store_out_2, self.sim_machines, dx, y, env=self.env)
 
         # Arm horizontal box
         if len(machines) != 0:

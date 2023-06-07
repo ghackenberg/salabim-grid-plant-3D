@@ -8,7 +8,9 @@ from .mainrobot import SimMainRobot
 
 
 class SimLayout(sim.Component):
-    def setup(self, layout: Layout, scenario: Scenario):
+    def __init__(self, layout: Layout, scenario: Scenario, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.layout = layout
 
         # Grid
@@ -35,11 +37,11 @@ class SimLayout(sim.Component):
         corridor_num = 0
         for corridor in layout.corridors:
             y = (corridor_num + 0.5 - len(layout.corridors) / 2) * 2
-            self.sim_corridors.append(SimCorridor(corridor=corridor, y=y, env=self.env))
+            self.sim_corridors.append(SimCorridor(corridor, y, env=self.env))
             corridor_num = corridor_num + 1
 
         # Main robot
-        self.sim_main_robot = SimMainRobot(layout=layout, scenario=scenario, store_start=self.store_start, store_end=self.store_end, sim_corridors=self.sim_corridors, y=0, z=2.5, env=self.env)
+        self.sim_main_robot = SimMainRobot(layout, scenario, self.store_start, self.store_end, self.sim_corridors, 0, 2.5, env=self.env)
     
     def robotCount(self):
         cnt = 1

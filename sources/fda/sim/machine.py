@@ -7,7 +7,9 @@ from .job import SimJob
 
 
 class SimMachine(sim.Component):
-    def setup(self, machine: Machine, x: float, y: float):
+    def __init__(self, machine: Machine, x: float, y: float, *args, **kwargs):
+        sim.Component.__init__(self, *args, **kwargs)
+
         self.machine = machine
 
         # Track state
