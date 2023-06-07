@@ -4,12 +4,15 @@ matplotlib
 
 # Simulation support
 salabim
+
 # ... 3D animation support
 pyopengl
 pyopengl_accelerate
+
 # ... OBJ Wavefront support
 pywavefront
 pyglet
+
 # ... Video production support
 opencv-python
 numpy
