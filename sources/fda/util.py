@@ -10,7 +10,10 @@ def toString(state: sim.State):
     output = ""
     for value in state.value.values():
         duration = state.value.value_duration(value)
-        percentage = duration / total
+        if total > 0:
+            percentage = duration / total
+        else:
+            percentage = 1
         output = f"{output}{', ' if output != '' else ''}{value}={'{:.1f}'.format(percentage * 100)}%"
     # Return output
     return output
