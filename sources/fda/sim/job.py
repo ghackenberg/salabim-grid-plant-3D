@@ -34,8 +34,12 @@ class SimJob(sim.Component):
         self.state = sim.State("State", value=value)
 
     def process(self):
+        # Debug output
+        print(f"[t={self.env.now()}] Scheduling order {self.order.name} job {self.number}")
         # Put into start store
         yield self.to_store(self.store_start, self)
+        # Debug output
+        print(f"[t={self.env.now()}] Order {self.order.name} job {self.number} scheduled")
     
     def printStatistics(self):
         output = toString(self.state)

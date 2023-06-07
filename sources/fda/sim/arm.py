@@ -33,7 +33,7 @@ class SimArm(sim.Component):
 
         # Transversal robot
         if len(machines) != 0:
-            self.sim_arm_robot = SimArmRobot(corridor, machines, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
+            self.sim_arm_robot = SimArmRobot(corridor, machines, direction, env, store_in, store_out_1, store_out_2, self.sim_machines, dx, y)
 
         # Arm horizontal box
         if len(machines) != 0:

@@ -7,11 +7,13 @@ from .machine import SimMachine
 from .job import SimJob
 
 class SimArmRobot(SimRobot):
-    def __init__(self, corridor: Corridor, machines: list[Machine],  env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):
-        super().__init__("Arm robot", 2, env, dx, y, 2.5, "green")
+    def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, env: sim.Environment, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float):
+        super().__init__(f"Arm {direction} robot", 2, env, dx, y, 2.5, "green")
 
         self.corridor = corridor
         self.machines = machines
+
+        self.direction = direction
 
         self.store_in = store_in
         self.store_out_arm = store_out_arm
@@ -22,8 +24,13 @@ class SimArmRobot(SimRobot):
         self.sim_machines = sim_machines
 
     def process(self):
+        # Debug output
+        print(f"[t={self.env.now()}] Starting {self.corridor.name} arm {self.direction} robot")
+
         speed = 1
         while True:
+            # Debug output
+            print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot waiting for job")
             # Pick from storage
             job: SimJob = yield self.from_store(self.store_in)
             # Move down
@@ -40,6 +47,8 @@ class SimArmRobot(SimRobot):
                 machine_num = self.machines.index(machine)
                 # Get stores
                 sim_machine = self.sim_machines[machine_num]
+                # Debug output
+                print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot moving to {sim_machine.machine.name}")
                 # Calculate machine position
                 x = (3 + machine_num * 2) * self.dx
                 # Check if we are at the machine
@@ -54,6 +63,8 @@ class SimArmRobot(SimRobot):
                 self.state_load.set("empty")
                 # Move up
                 yield from self.move_z(2.5, speed)
+                # Debug output
+                print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot waiting for job")
                 # Wait for hand over
                 job: SimJob = yield self.from_store(sim_machine.store_out)
                 # Move down
@@ -64,6 +75,8 @@ class SimArmRobot(SimRobot):
                 sim_machine.state.set("waiting")
                 # Move up
                 yield from self.move_z(2.5, speed)
+            # Debug output
+            print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot moving to corridor storage")
             # Check if we are not at inventory
             if self.x != self.dx:
                 # Move back to inventory
@@ -81,3 +94,6 @@ class SimArmRobot(SimRobot):
             self.state_load.set("empty")
             # Move up
             yield from self.move_z(2.5, speed)
+
+        # Debug output
+        print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot finished")

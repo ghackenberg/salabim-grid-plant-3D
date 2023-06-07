@@ -20,6 +20,9 @@ class SimMainRobot(SimRobot):
         self.sim_corridors = sim_corridors
 
     def process(self) :
+        # Debug output
+        print(f"[t={self.env.now()}] Starting main robot")
+
         # duration of movement between stores
         speed = 1
         # numbers of t_corridors in a certain layout
@@ -28,12 +31,16 @@ class SimMainRobot(SimRobot):
         y_stock = 2 + corridor_count / 1.15
 
         while True:
+            # Debug output
+            print(f"[t={self.env.now()}] Moving main robot to start storage")
             # Move to RM inventory
             yield from self.move_y(-y_stock, speed)
-            # Move down
-            yield from self.move_z(1.25, speed)
+            # Debug output
+            print(f"[t={self.env.now()}] Main robot waiting for job")
             # Pick next job
             job: SimJob = yield self.from_store(self.store_start)
+            # Move down
+            yield from self.move_z(1.25, speed)
             # Update state
             self.state_load.set("loaded")
             # Move up
@@ -46,6 +53,8 @@ class SimMainRobot(SimRobot):
                 corridor_num = self.layout.corridors.index(machine.corridor)
                 # Get sim corridor
                 sim_corridor = self.sim_corridors[corridor_num]
+                # Debug output
+                print(f"[t={self.env.now()}] Moving main robot to {sim_corridor.corridor.name} storage")
                 # Compute corridor position
                 y = (corridor_num + 0.5 - corridor_count / 2) * 2
                 # Check if we need to move to the corridor
@@ -65,6 +74,8 @@ class SimMainRobot(SimRobot):
                 self.state_load.set("empty")
                 # Move up
                 yield from self.move_z(2.5, speed)
+                # Debug output
+                print(f"[t={self.env.now()}] Main robot waiting for job")
                 # Take from corridor store
                 job: SimJob = yield self.from_store(sim_corridor.store_main)
                 # Move down
@@ -73,6 +84,8 @@ class SimMainRobot(SimRobot):
                 self.state_load.set("loaded")
                 # Move up
                 yield from self.move_z(2.5, speed)
+            # Debug output
+            print(f"[t={self.env.now()}] Moving main robot to end storage")
             # Move to FP inventory
             yield from self.move_y(y_stock, speed)
             # Move down
@@ -83,3 +96,6 @@ class SimMainRobot(SimRobot):
             self.state_load.set("empty")
             # Move up
             yield from self.move_z(2.5, speed)
+
+        # Debug output
+        print(f"[t={self.env.now()}] Main robot finished")
