@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 from ..util import toString
 
 class SimRobot(sim.Component):
-    def __init__(self, name: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
-        super().__init__(name)
+    def __init__(self, label: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
+        super().__init__()
 
+        self.label = label
         self.indent = indent
 
         self.env = env
@@ -91,7 +92,7 @@ class SimRobot(sim.Component):
         indent = ""
         for i in range(self.indent):
             indent = f"{indent}   "
-        print(f"{indent} - {self.name()} ({move_output}) ({load_output})")
+        print(f"{indent} - {self.label} ({move_output}) ({load_output})")
     
     def plot(self, legend = False):        
         categories = ['Loaded', 'Empty', 'Waiting', 'Moving_x', 'Moving_y', 'Moving_z']
@@ -117,7 +118,7 @@ class SimRobot(sim.Component):
         # Labels
         plt.xlabel('Robot Load and Move State')
         plt.ylabel('State Duration')
-        plt.title(self.name())
+        plt.title(self.label)
 
         # Legend
         if legend:
