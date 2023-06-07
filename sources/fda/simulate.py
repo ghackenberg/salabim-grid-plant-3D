@@ -8,6 +8,7 @@ from .sim.scenario import SimScenario
 
 def simulate(layout: Layout, scenario: Scenario, animate=False):
     # Create environment
+    print("Creating simulation environment")
     env = sim.Environment(time_unit='hours')
 
     # Enable animation (if requested)
@@ -27,13 +28,18 @@ def simulate(layout: Layout, scenario: Scenario, animate=False):
         env.view(x_eye=0, y_eye=15, z_eye=5)
         # Enable 2D/3D animation
         env.animation_parameters(animate=True, animate3d=True, show_fps=True)
+    print("Simulation environment created")
 
     # Create components
+    print("Creating simulation components")
     sim_layout = SimLayout(layout, scenario, env)
     sim_scenario = SimScenario(layout, scenario, env, sim_layout.store_start)
+    print("Simulation components created")
 
     # Perform simulation
+    print("Starting simulation run")
     env.run()
+    print("Simulation run finished")
 
     # Print statistics
     sim_scenario.printStatistics()
