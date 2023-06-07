@@ -8,7 +8,7 @@ from ..util import toString
 
 class SimJob(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, env: sim.Environment, store_start: sim.Store):
-        super().__init__()
+        super().__init__(env=env)
 
         self.env = env
 

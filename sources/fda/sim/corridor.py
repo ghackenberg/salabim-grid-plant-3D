@@ -7,7 +7,7 @@ from .arm import SimArm
 
 class SimCorridor(sim.Component):
     def __init__(self, corridor: Corridor, env: sim.Environment, y: float):
-        super().__init__()
+        super().__init__(env=env)
 
         self.corridor = corridor
 

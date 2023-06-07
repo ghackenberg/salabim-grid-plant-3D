@@ -5,7 +5,7 @@ from ..util import toString
 
 class SimRobot(sim.Component):
     def __init__(self, label: str, indent: int, env: sim.Environment, x: float, y: float, z: float, color: str):
-        super().__init__()
+        super().__init__(env=env)
 
         self.label = label
         self.indent = indent

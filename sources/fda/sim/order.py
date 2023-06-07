@@ -8,7 +8,7 @@ from .job import SimJob
 
 class SimOrder(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, env: sim.Environment, store_start: sim.Store):
-        super().__init__()
+        super().__init__(env=env)
 
         self.order = order
         
