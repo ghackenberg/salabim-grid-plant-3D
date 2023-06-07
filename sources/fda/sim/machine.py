@@ -155,7 +155,12 @@ class SimMachine(sim.Component):
         working = self.state.value.value_duration('working')
         returning = self.state.value.value_duration('returning')
 
-        return working / (waiting + mounting + unmounting + working + returning)
+        total = waiting + mounting + unmounting + working + returning
+
+        if total > 0:
+            return working / total
+        else:
+            return 1
     
     def printStatistics(self):
         print(f"       - {self.machine.name} (utilization = {'{:.1f}'.format(self.utilization() * 100)}%)")

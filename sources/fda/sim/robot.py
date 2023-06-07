@@ -84,7 +84,12 @@ class SimRobot(sim.Component):
 
         moving = moving_x + moving_y + moving_z
 
-        return moving / (moving + waiting)
+        total = moving + waiting
+
+        if total > 0:
+            return moving / total
+        else:
+            return 1
     
     def printStatistics(self):
         move_output = toString(self.state_move)
