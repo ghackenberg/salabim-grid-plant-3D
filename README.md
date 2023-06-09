@@ -1,4 +1,4 @@
-# Factory Design Automation
+# GridPlant
 
 In this project we study techniques for reducing the effort of modeling and analyzing factory layouts.
 To achieve this goal, we develop an easy-to-use configurator and simulator for a particular class of factories.
