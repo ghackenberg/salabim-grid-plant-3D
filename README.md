@@ -1,6 +1,6 @@
 # GridPlant
 
-In this project we study techniques for reducing the effort of factory layout planning and optimal job shop scheduling.
+In this project we study techniques for reducing the effort of factory layout planning (FLP) and optimal job shop scheduling (JSS).
 To achieve this goal, we develop an easy-to-use configurator and simulator for a particular class of factories.
 More precisely, we concentrate on flexible manufacturing systems, which can be adapted to a variety of products and processes.
 We assume that the material flow between the work stations of the factory is handled completely by gantry robots.
