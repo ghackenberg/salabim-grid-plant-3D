@@ -11,7 +11,7 @@ Here are some screenshots of our software tool:
 
 ### 🖼️ 3D animation
 
-Our software is based on Salabim, a Python framework for Discrete Event Simulation (DES).
+Our software is based on [Salabim](https://www.salabim.org/), a Python framework for Discrete Event Simulation (DES).
 DES is a standard tool for factory layout planning and performance evaluation.
 Salabim comes with an integrated 3D animation engine, which supports both primitive shapes and Computer-Aided Design (CAD) models in OBJ Wavefront format.
 
