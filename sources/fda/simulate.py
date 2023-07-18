@@ -5,7 +5,7 @@ from .sim.scenario import SimScenario
 from .model import Layout, Scenario
 
 
-def simulate(layout: Layout, scenario: Scenario, animate=False):
+def simulate(layout: Layout, scenario: Scenario, animate=True):
     # Create environment
     print("Creating simulation environment")
     env = sim.Environment(time_unit='hours')

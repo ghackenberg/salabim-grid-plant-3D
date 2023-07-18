@@ -22,7 +22,7 @@ class SimOrder(sim.Component):
         for sim_job in self.sim_jobs:
             sim_job.printStatistics()
     
-    def plot(self, legend = False):
+    def plot(self, legend=True):
         # Collect categories
         categories = []
         for job in self.sim_jobs:

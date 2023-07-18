@@ -31,13 +31,12 @@ s3 = Scenario('Scenario 3')
 
 # Create orders
 # ... scenario 1
-Order("Order 1.1", 2, 11, 30, pt2, s1)
-Order("Order 1.2", 3, 15, 30, pt1, s1)
+Order("Order 1.2", 1, 15, 30, pt2, s1)
 # ... scenario 2
-Order("Order 2.1", 10, 20, 30, pt2, s2)
+Order("Order 2.1", 2, 20, 30, pt2, s2)
 # ... scenario 3
-Order("Order 3.1", 10, 11, 12, pt4, s3)
-Order("Order 3.2", 10, 25, 26, pt1, s3)
+Order("Order 3.1", 1, 11, 12, pt2, s3)
+Order("Order 3.2", 1, 25, 26, pt4, s3)
 
 # Create layouts
 l1 = Layout('Layout 1', 10, 5)
@@ -49,10 +48,10 @@ l3 = Layout('Layout 3', 5, 1)
 # ... layout 1
 c1_1 = Corridor("Corridor 1.1", 200, 2, 3, l1)
 c1_2 = Corridor("Corridor 1.2", 300, 2, 3, l1)
-c1_3 = Corridor("Corridor 1.3", 150, 2, 3, l1)
 # ... layout 2
 c2_1 = Corridor("Corridor 2.1", 150, 2, 3, l2)
 c2_2 = Corridor("Corridor 2.2", 150, 2, 3, l2)
+c2_3 = Corridor("Corridor 2.3", 150, 2, 3, l2)
 # ... layout 3
 c3_1 = Corridor("Corridor 3.1", 200, 2, 3, l3)
 c3_2 = Corridor("Corridor 3.2", 150, 2, 3, l3)
@@ -61,19 +60,23 @@ c3_3 = Corridor("Corridor 3.3", 130, 2, 3, l3)
 # Create machines
 
 # ... layout 1 / corridor 1
-Machine('Machine 1.1.1', mt2, c1_1, True)
-Machine('Machine 1.1.2', mt4, c1_1, True)
-Machine('Machine 1.1.3', mt3, c1_1, False)
+Machine('Machine 1.1.1', mt4, c1_1, True)
+Machine('Machine 1.1.2', mt3, c1_1, False)
 # ... layout 1 / corridor 2
 Machine('Machine 1.2.1', mt1, c1_2, True)
-Machine('Machine 1.2.2', mt3, c1_2, False)
-# ... layout 1 / corridor 3
-Machine('Machine 1.3.1', mt1, c1_3, False)
+Machine('Machine 1.2.2', mt2, c1_2, False)
 
 # ... layout 2 / corridor 1
 Machine('Machine 2.1.1', mt3, c2_1, True)
+Machine('Machine 2.1.2', mt1, c2_2, True)
+Machine('Machine 2.1.3', mt2, c2_1, False)
 # ... layout 2 / corridor 2
 Machine('Machine 2.2.1', mt4, c2_2, False)
+Machine('Machine 2.2.2', mt1, c2_2, True)
+Machine('Machine 2.2.3', mt2, c2_2, False)
+# ... layout 2 / corridor 3
+Machine('Machine 2.3.1', mt4, c2_3, False)
+Machine('Machine 2.3.2', mt3, c2_3, True)
 
 # ... layout 3 / corridor 1
 Machine('Machine 3.1.1', mt3, c3_1, True)
@@ -89,4 +92,4 @@ Machine('Machine 3.3.1', mt1, c3_3, True)
 Machine('Machine 3.3.2', mt2, c3_3, True)
 
 # Simulate
-simulate(l3, s1)
+simulate(l2, s3)
