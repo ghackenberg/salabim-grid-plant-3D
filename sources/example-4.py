@@ -44,4 +44,4 @@ for i in range(NUM_CORRIDORS):
         Machine(f'Machine 1.{i + 1}.{j + 1}.right', mt1, CORRIDORS[i], False)
 
 # Simulate
-simulate(l1, scenario1)
+simulate(l1, scenario1, True)

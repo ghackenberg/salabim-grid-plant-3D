@@ -35,4 +35,4 @@ Machine('Machine 1.1.1', mt1, c1_1, True)
 Machine('Machine 1.1.2', mt2, c1_1, False)
 
 # Simulate
-simulate(l1, s1)
+simulate(l1, s1, True)
