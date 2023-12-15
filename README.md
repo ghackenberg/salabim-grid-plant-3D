@@ -5,11 +5,17 @@ To achieve this goal, we develop an easy-to-use configurator and simulator for a
 More precisely, we concentrate on flexible manufacturing systems, which can be adapted to a variety of products and processes.
 We assume that the material flow between the work stations of the factory is handled completely by gantry robots.
 
-## Screenshots
+## 🖼️ Screenshots
 
 Here are some screenshots of our software tool:
 
-### 🖼️ 3D animation
+- **3D animation** of the factory components including robots and machines
+- **Performance evaluation** of the factory layout in a given order scenario
+- **Graph visualization** of the underlying factory configuration data model
+
+In the following, we explain the software outputs in more detail.
+
+### 3D animation
 
 Our software is based on [Salabim](https://www.salabim.org/), a Python framework for Discrete Event Simulation (DES).
 DES is a standard tool for factory layout planning and performance evaluation.
@@ -17,7 +23,7 @@ Salabim comes with an integrated 3D animation engine, which supports both primit
 
 ![Salabim screenshot](./screenshots/salabim.png)
 
-### 🖼️ Performance evaluation
+### Performance evaluation
 
 The goal of Discrete Event Simulation (DES) is to evaluate the performance of your factory layout plan early in the planning process.
 Performance evaluation typically concentrates on the utilization of resources such as workers, machines, and storage areas.
@@ -65,15 +71,24 @@ Note that simulation experiments can be carried out without the optional softwar
 * *Graph visualization support (optional)*
   * NetworkX
 
-## Examples
+## 👨‍💻 Examples
+
+When performing a simulation study, we suggest working in four phases:
+
+1. **Basic configuration** defines the products as well as the processes to product them.
+2. **Scenario configuration** defines the situations, in which the factory must operate.
+3. **Layout configuration** defines the number and arrangement of the factory resources.
+4. **Performance evaluation** simulates the performance of the layout in a given scenario.
+
+In the following, we describe each phase in more  detail.
+
+### **Phase 1:** Basic configuration
 
 **Step 1:** Import the Factory Design Automation (FDA) library.
 
 ```python
 from fda import *
 ```
-
-### 👨‍💻 Basic configuration
 
 **Step 2:** Define your product, tool, and machine types.
 
@@ -99,7 +114,7 @@ mt1 = MachineType(...)
 o1 = Operation(..., mt1, tt1, pt1, pt2)
 ```
 
-### 👨‍💻 Scenario configuraton
+### **Phase 2:** Scenario configuration
 
 **Step 4:** Define your scenarios including orders for product types (see *Basic Configuration*)
 
@@ -110,7 +125,7 @@ s1 = Scenario(...)
 o1 = Order(..., pt1, s1)
 ```
 
-### 👨‍💻 Layout configuration
+### **Phase 3:** Layout configuration
 
 **Step 5:** Define your factory layouts including corridors, and machines (i.e. instances of machine types).
 
@@ -123,7 +138,7 @@ c1 = Corridor(..., l1)
 m1 = Machine(..., mt1, c1, ...)
 ```
 
-### 👨‍💻 Performance evaluation
+### **Phase 4:** Performance evaluation
 
 **Step 6:** Evaluate the performance of a layout variant in a given scenario.
 
@@ -132,11 +147,11 @@ m1 = Machine(..., mt1, c1, ...)
 simulate(l1, s1)
 ```
 
-## Models
+## 📈 Models
 
 Here are some models explaining our overall idea:
 
-### 📈 Class model
+### Class model
 
 The class model describes the core entities, which are implemented in our factory design software.
 The entities include product types, which represent everything from raw material to end product.
@@ -145,7 +160,7 @@ On top you define layouts and scenarios.
 
 ![Class model](./models/class-model.png)
 
-### 📈 Object model
+### Object model
 
 The object model describes a sample use case.
 The use case is concerned with producing metal gears from raw metal disks.
