@@ -10,30 +10,35 @@ class RobotOne(Robot):
         joint_angles_c = [0, -45, -90]
         # Process loop
         while True:
-            # Motion sequence
+            # Move
             self.move_to(joint_angles_b, 2)
+            # Pick
+            self.state.set("pick")
+            self.hold(1)
+            # Create and attach
+            product = Product(position = self)
+            # Move
             self.move_to(joint_angles_c, 4)
+            # Place
+            self.state.set("place")
+            self.to_store(machine1.store_in, product)
+            # Move
             self.move_to(joint_angles_a, 2)
-            # Pick
-            print(f"[{self.env.now()}] Roboter holt Produkt")
-            self.state.set("pick")
-            self.hold(1)
-            # Place
-            print(f"[{self.env.now()}] Roboter übergibt Produkt an Maschine")
-            self.state.set("place")
-            self.to_store(machine1.store_in, Product(position = self))
             # Idle
-            print(f"[{self.env.now()}] Roboter wartet auf Produkt von Maschine")
             self.state.set("idle")
-            self.from_store(machine1.store_out)
-            # Pick
-            print(f"[{self.env.now()}] Roboter nimmt Produkt von Maschine")
-            self.state.set("pick")
-            self.hold(1)
+            product = self.from_store(machine1.store_out)
+            # Move
+            self.move_to(joint_angles_c, 2)
+            # Attach
+            if isinstance(product, Product):
+                product.position = self
+            # Move
+            self.move_to(joint_angles_b, 4)
             # Place
-            print(f"[{self.env.now()}] Roboter gibt Produkt")
             self.state.set("place")
             self.hold(1)
+            # Delete
+            product.position = Vector(-100, -100)
 
 class RobotTwo(Robot):
     def process(self):
