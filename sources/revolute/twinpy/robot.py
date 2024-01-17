@@ -1,16 +1,11 @@
 import math
-import random
 import salabim as sim
 
-class Product(sim.Component):
-    def process(self):
-        pass
-
-class AbstractRobot(sim.Component):
+class Robot(sim.Component):
     def setup(self, base_position: list[float], base_angle: float):
         # State
         self.state = sim.State("state", value = "idle")
-
+        
         # Frame
         self.base_position = base_position
         self.base_angle = base_angle
@@ -195,128 +190,3 @@ class AbstractRobot(sim.Component):
 
         # Update state
         self.state.set("idle")
-
-class ConcreteRobotOne(AbstractRobot):
-    def process(self):
-        # Define target positions
-        joint_angles_a = [0, 0, 0]
-        joint_angles_b = [0, 45, 90]
-        joint_angles_c = [0, -45, -90]
-
-        # Process loop
-        while True:
-            # Motion sequence
-            self.move_to(joint_angles_b, random.randint(1, 4))
-            self.move_to(joint_angles_c, random.randint(1, 8))
-            self.move_to(joint_angles_a, random.randint(1, 4))
-
-            print(f"[{self.env.now()}] Roboter holt Produkt")
-            self.state.set("pick")
-            self.hold(1)
-            
-            print(f"[{self.env.now()}] Roboter übergibt Produkt an Maschine")
-            self.state.set("place")
-            self.to_store(robot_to_machine, Product())
-            
-            print(f"[{self.env.now()}] Roboter wartet auf Produkt von Maschine")
-            self.state.set("idle")
-            self.from_store(machine_to_robot)
-            
-            print(f"[{self.env.now()}] Roboter nimmt Produkt von Maschine")
-            self.state.set("pick")
-            self.hold(1)
-            
-            print(f"[{self.env.now()}] Roboter gibt Produkt")
-            self.state.set("place")
-            self.hold(1)
-
-class ConcreteRobotTwo(AbstractRobot):
-    def process(self):
-        # Define target positions
-        joint_angles_a = [0, 0, 0]
-        joint_angles_b = [0, 45, 90]
-        joint_angles_c = [0, -45, -90]
-        # Process loop
-        while True:
-            # Motion sequence
-            self.move_to(joint_angles_b, random.randint(1, 4))
-            self.move_to(joint_angles_c, random.randint(1, 8))
-            self.move_to(joint_angles_a, random.randint(1, 4))
-
-class Machine(sim.Component):
-    def setup(self):
-        # Define state
-        self.state = sim.State("state", "idle")
-
-    def process(self):
-        while True:
-            print(f"[{self.env.now()}] Maschine wartet auf Produkt von Roboter")
-            self.state.set("idle")
-            product = self.from_store(robot_to_machine)
-
-            print(f"[{self.env.now()}] Maschine bearbeitet Produkt")
-            self.state.set("work")
-            self.hold(2)
-
-            print(f"[{self.env.now()}] Maschine übergibt Produkt an Roboter")
-            self.to_store(machine_to_robot, product)
-
-# Create simulation environment
-env = sim.Environment()
-env.modelname("Robotereinsatzplanung")
-
-# Setup 2D or 3D animation
-if True:
-    # Animation (2D)
-    env.animate(True)
-    # Window
-    env.width(800)
-    env.height(600)
-    env.position((100, 100))
-    # Objects
-    sim.AnimateRectangle(
-        spec = (0, 0, 800, 100),
-        text = "Floor",
-        fillcolor = "lightgray",
-        textcolor = "black",
-        fontsize = 20
-    )
-    sim.AnimateRectangle(
-        spec = (0, 500, 800, 600),
-        text = "Ceiling",
-        fillcolor = "lightgray",
-        textcolor = "black",
-        fontsize = 20
-    )
-else:
-    # Animation (3D)
-    env.animate3d(True)
-    # Window
-    env.width3d(800)
-    nv.height3d(600)
-    env.position3d((100, 100))
-    # Objects
-    sim.Animate3dGrid(x_range=range(-2, 2, 1), y_range=range(-2, 2, 1))
-
-# Define robots
-ConcreteRobotOne(base_position = [200, 100], base_angle = 0)
-ConcreteRobotTwo(base_position = [400, 100], base_angle = 0)
-ConcreteRobotTwo(base_position = [600, 100], base_angle = 0)
-ConcreteRobotTwo(base_position = [200, 500], base_angle = 180)
-ConcreteRobotTwo(base_position = [400, 500], base_angle = 180)
-ConcreteRobotTwo(base_position = [600, 500], base_angle = 180)
-# Define machines
-Machine()
-# Define stores
-robot_to_machine = sim.Store()
-machine_to_robot = sim.Store()
-
-# Start simulation with/without video production
-if True:
-    # Video production disabled
-    env.run(sim.inf)
-else:
-    # Video production enabled
-    env.video("test.mp4")
-    env.run(till = 30)
-    env.video_close()
