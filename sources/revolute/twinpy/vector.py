@@ -5,11 +5,23 @@ class Vector:
         self.x = x
         self.y = y
     
+    def add(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        else:
+            return self
+    
     def substract(self, other):
         if isinstance(other, Vector):
             return Vector(self.x - other.x, self.y - other.y)
         else:
             return self
+    
+    def mulitply(self, scalar: float):
+        return Vector(self.x * scalar, self.y * scalar)
+    
+    def divide(self, scalar: float):
+        return Vector(self.x / scalar, self.y / scalar)
     
     def dot(self, other):
         if isinstance(other, Vector):
@@ -19,3 +31,6 @@ class Vector:
     
     def length(self):
         return math.sqrt(self.dot(self))
+    
+    def normalize(self):
+        return self.divide(self.length())
