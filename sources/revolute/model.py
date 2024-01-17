@@ -16,7 +16,7 @@ class RobotOne(Robot):
             self.state.set("pick")
             self.hold(1)
             # Create and attach
-            product = Product(position = self)
+            product = Product(position_controller = self)
             # Move
             self.move_to(joint_angles_c, 4)
             # Place
@@ -31,14 +31,14 @@ class RobotOne(Robot):
             self.move_to(joint_angles_c, 2)
             # Attach
             if isinstance(product, Product):
-                product.position = self
+                product.position_controller = self
             # Move
             self.move_to(joint_angles_b, 4)
             # Place
             self.state.set("place")
             self.hold(1)
             # Delete
-            product.position = Vector(-100, -100)
+            self.to_store(conveyor1.store_in, product)
 
 class RobotTwo(Robot):
     def process(self):

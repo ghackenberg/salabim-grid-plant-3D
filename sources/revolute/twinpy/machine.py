@@ -18,11 +18,13 @@ class Machine(sim.Component):
         while True:
             # Idle
             self.state.set("idle")
+            # Take
             product = self.from_store(self.store_in)
+            # Attach
             if isinstance(product, Product):
-                product.position = self
+                product.position_controller = self
             # Work
             self.state.set("work")
             self.hold(2)
-            # Done
+            # Give
             self.to_store(self.store_out, product)

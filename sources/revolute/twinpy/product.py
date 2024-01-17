@@ -1,9 +1,9 @@
 import salabim as sim
 
 class Product(sim.Component):
-    def setup(self, position):
+    def setup(self, position_controller):
         # Position
-        self.position = position
+        self.position_controller = position_controller
         # State
         self.state = sim.State("state")
         # Rectangle
@@ -21,18 +21,18 @@ class Product(sim.Component):
         from .robot import Robot
         from .vector import Vector
 
-        if isinstance(self.position, Robot):
-            x = self.position.calculate_joint_circle_x(3, time)
-            y = self.position.calculate_joint_circle_y(3, time)
-        elif isinstance(self.position, Machine):
-            x = self.position.position.x
-            y = self.position.position.y
-        elif isinstance(self.position, Conveyor):
-            x = self.position.source_position.x
-            y = self.position.source_position.y
-        elif isinstance(self.position, Vector):
-            x = self.position.x
-            y = self.position.y
+        if isinstance(self.position_controller, Robot):
+            x = self.position_controller.calculate_joint_circle_x(3, time)
+            y = self.position_controller.calculate_joint_circle_y(3, time)
+        elif isinstance(self.position_controller, Machine):
+            x = self.position_controller.position.x
+            y = self.position_controller.position.y
+        elif isinstance(self.position_controller, Conveyor):
+            x = self.position_controller.source_position.x
+            y = self.position_controller.source_position.y
+        elif isinstance(self.position_controller, Vector):
+            x = self.position_controller.x
+            y = self.position_controller.y
         return [x - 10, y - 10, x + 10, y + 10]
 
     def process(self):
