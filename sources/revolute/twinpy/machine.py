@@ -1,8 +1,9 @@
 import salabim as sim
 
-from .vector import Vector
-
 class Machine(sim.Component):
+    
+    from .vector import Vector
+
     def setup(self, position: Vector):
         self.position = position
         # Define state
@@ -12,12 +13,15 @@ class Machine(sim.Component):
         self.store_out = sim.Store(name = "out", capacity = 1)
 
     def process(self):
+        from .product import Product
         # Process loop
         while True:
             # Idle
             print(f"[{self.env.now()}] Maschine wartet auf Produkt von Roboter")
             self.state.set("idle")
             product = self.from_store(self.store_in)
+            if isinstance(product, Product):
+                product.position = self
             # Work
             print(f"[{self.env.now()}] Maschine bearbeitet Produkt")
             self.state.set("work")

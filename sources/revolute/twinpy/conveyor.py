@@ -1,8 +1,9 @@
 import salabim as sim
 
-from .vector import Vector
-
 class Conveyor(sim.Component):
+
+    from .vector import Vector
+    
     def setup(self, source_position: Vector, target_position: Vector):
         # Positions
         self.source_position = source_position

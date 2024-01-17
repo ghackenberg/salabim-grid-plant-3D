@@ -4,6 +4,7 @@ import salabim as sim
 from .vector import Vector
 
 class Robot(sim.Component):
+
     def setup(self, base_position: Vector, base_angle: float):
         # State
         self.state = sim.State("state", value = "idle")
