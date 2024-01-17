@@ -1,9 +1,16 @@
 import salabim as sim
 
+from .vector import Vector
+
 class Conveyor(sim.Component):
-    def setup(self, spec: list[float]):
-        # States
-        self.speed = sim.State(name = "speed", value = 1)
+    def setup(self, source_position: Vector, target_position: Vector):
+        # Positions
+        self.source_position = source_position
+        self.target_position = target_position
+
+        # Distance
+        self.distance = 0
+        self.distance_time = self.env.now()
 
         # Stores
         self.store_in = sim.Store(name = "in", capacity = 1)
@@ -11,7 +18,7 @@ class Conveyor(sim.Component):
 
         # Line
         self.line = sim.AnimateLine(
-            spec = spec,
+            spec = [source_position.x, source_position.y, target_position.x, target_position.y],
             linecolor = "black",
             linewidth = 2
         )

@@ -1,7 +1,10 @@
 import salabim as sim
 
+from .vector import Vector
+
 class Machine(sim.Component):
-    def setup(self):
+    def setup(self, position: Vector):
+        self.position = position
         # Define state
         self.state = sim.State(name = "state", value = "idle")
         # Define stores

@@ -21,7 +21,7 @@ class RobotOne(Robot):
             # Place
             print(f"[{self.env.now()}] Roboter übergibt Produkt an Maschine")
             self.state.set("place")
-            self.to_store(machine1.store_in, Product())
+            self.to_store(machine1.store_in, Product(position = self))
             # Idle
             print(f"[{self.env.now()}] Roboter wartet auf Produkt von Maschine")
             self.state.set("idle")
@@ -86,18 +86,19 @@ else:
     sim.Animate3dGrid(x_range=range(-2, 2, 1), y_range=range(-2, 2, 1))
 
 # Define conveyors
-conveyor1 = Conveyor(spec = [100, 300, 350, 300])
-conveyor2 = Conveyor(spec = [450, 300, 700, 300])
+conveyor1 = Conveyor(source_position = Vector(100, 300), target_position = Vector(350, 300))
+conveyor2 = Conveyor(source_position = Vector(450, 300), target_position = Vector(700, 300))
 # Define machines
-machine1 = Machine()
-machine2 = Machine()
+machine1 = Machine(position = Vector( 50, 300))
+machine2 = Machine(position = Vector(400, 300))
+machine3 = Machine(position = Vector(750, 300))
 # Define robots
-robot1 = RobotOne(base_position = [200, 100], base_angle = 0)
-robot2 = RobotTwo(base_position = [400, 100], base_angle = 0)
-robot3 = RobotTwo(base_position = [600, 100], base_angle = 0)
-robot4 = RobotTwo(base_position = [200, 500], base_angle = 180)
-robot5 = RobotTwo(base_position = [400, 500], base_angle = 180)
-robot6 = RobotTwo(base_position = [600, 500], base_angle = 180)
+robot1 = RobotOne(base_position = Vector(200, 100), base_angle = 0)
+robot2 = RobotTwo(base_position = Vector(400, 100), base_angle = 0)
+robot3 = RobotTwo(base_position = Vector(600, 100), base_angle = 0)
+robot4 = RobotTwo(base_position = Vector(200, 500), base_angle = 180)
+robot5 = RobotTwo(base_position = Vector(400, 500), base_angle = 180)
+robot6 = RobotTwo(base_position = Vector(600, 500), base_angle = 180)
 
 # Start simulation with/without video production
 if True:
