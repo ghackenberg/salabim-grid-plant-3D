@@ -1,7 +1,7 @@
 import salabim as sim
 
 class Product(sim.Component):
-    def setup(self, position_controller):
+    def setup(self, position_controller, color = "red"):
         # Position
         self.position_controller = position_controller
         # State
@@ -10,7 +10,7 @@ class Product(sim.Component):
         self.rectangle = sim.AnimateRectangle(
             spec = lambda t: self.calculate_rectangle_spec(t),
             text = "P",
-            fillcolor = "red",
+            fillcolor = color,
             textcolor = "white"
         )
     

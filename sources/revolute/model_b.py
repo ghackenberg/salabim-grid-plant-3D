@@ -1,12 +1,15 @@
+import random
 import salabim as sim
 
 from twinpy import *
 
+colors = ["red", "orange", "green", "tomato", "olive", "gold", "indigo", "pink", "purple", "orchid", "teal", "brown"]
+
 class RobotA(Robot):
     def process(self):
         # Define target positions
-        joint_angles_a = [0, 0, 0]
-        joint_angles_b = [0, 45, 90]
+        joint_angles_a = [0,   0,   0]
+        joint_angles_b = [0, +45, +90]
         joint_angles_c = [0, -45, -90]
         # Process loop
         while True:
@@ -16,7 +19,7 @@ class RobotA(Robot):
             self.state.set("pick")
             self.hold(1)
             # Create and attach
-            product = Product(position_controller = self)
+            product = Product(position_controller = self, color = colors[random.randint(0, len(colors) - 1)])
             # Move
             self.move_to(joint_angles_a, 2)
             # Idle
@@ -35,8 +38,8 @@ class RobotA(Robot):
 class RobotB(Robot):
     def process(self):
         # Define target positions
-        joint_angles_a = [0, 0, 0]
-        joint_angles_b = [0, 45, 90]
+        joint_angles_a = [0,   0,   0]
+        joint_angles_b = [0, +45, +90]
         joint_angles_c = [0, -45, -90]
         # Process loop
         while True:
@@ -69,8 +72,8 @@ class RobotB(Robot):
 class RobotC(Robot):
     def process(self):
         # Define target positions
-        joint_angles_a = [0, 0, 0]
-        joint_angles_b = [0, 45, 90]
+        joint_angles_a = [0,   0,   0]
+        joint_angles_b = [0, +45, +90]
         joint_angles_c = [0, -45, -90]
         # Process loop
         while True:
