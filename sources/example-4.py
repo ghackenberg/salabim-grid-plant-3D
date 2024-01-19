@@ -1,4 +1,4 @@
-from fda import *
+from salabim_grid_plant import *
 
 # Layout parameters
 NUM_CORRIDORS = 8

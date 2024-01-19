@@ -1,4 +1,4 @@
-from fda import *
+from salabim_grid_plant import *
 
 # Create machine types
 mt1 = MachineType('Machine type 1')
