@@ -1,4 +1,4 @@
-from salabim_grid_plant import *
+from salabim_grid_plant_3D import *
 
 # Layout parameters
 NUM_CORRIDORS = 8
