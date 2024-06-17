@@ -4,6 +4,7 @@ matplotlib
 
 # Simulation support
 salabim
+greenlet
 
 # ... 3D animation support
 pyopengl

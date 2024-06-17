@@ -6,6 +6,9 @@ from .model import Layout, Scenario
 
 
 def simulate(layout: Layout, scenario: Scenario, animate=True):
+    # Turn on yieldless mode
+    sim.yieldless(False)
+
     # Create environment
     print("Creating simulation environment")
     env = sim.Environment(time_unit='hours')
