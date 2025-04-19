@@ -5,7 +5,7 @@ from .sim.scenario import SimScenario
 from .model import Layout, Scenario
 
 
-def simulate(layout: Layout, scenario: Scenario, animate=True):
+def simulate(layout: Layout, scenario: Scenario, animate=True, till=sim.inf):
     # Turn on yieldless mode
     sim.yieldless(False)
 
@@ -40,7 +40,7 @@ def simulate(layout: Layout, scenario: Scenario, animate=True):
 
     # Perform simulation
     print("Starting simulation run")
-    env.run()
+    env.run(till=till)
     print("Simulation run finished")
 
     # Print statistics
