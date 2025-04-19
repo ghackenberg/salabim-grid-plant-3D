@@ -30,7 +30,7 @@ class SimLayout(sim.Component):
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=-y, z=1.625)
 
         # Main horizontal box
-        sim.Animate3dBox(x_len=0.25, y_len=y*2.07, z_len=0.25, color="red", x=0, y=0, z=2.5)
+        sim.Animate3dBox(x_len=0.25, y_len=y*2+0.25, z_len=0.25, color="red", x=0, y=0, z=2.5)
 
         # Corridors
         self.sim_corridors: list[SimCorridor] = []
