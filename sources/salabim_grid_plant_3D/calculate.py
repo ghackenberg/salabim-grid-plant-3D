@@ -1,6 +1,6 @@
-from .model import ProductType, Operation, Layout, Machine
+from .model import ProductType, OperationType, Layout, Machine
 
-def calculateMachineSequencesFromOperationSequence(process: list[Operation], layout: Layout) -> list[list[Machine]]:
+def calculateMachineSequencesFromOperationSequence(process: list[OperationType], layout: Layout) -> list[list[Machine]]:
     if len(process) > 0:
         result: list[list[Machine]] = []
         processStep = process.pop(0)
@@ -26,7 +26,7 @@ def calculateMachineSequences(objectType: ProductType, layout: Layout):
 
 
 def calculateOperationSequences(objectType: ProductType):
-    result: list[list[Operation]] = []
+    result: list[list[OperationType]] = []
     for operationType in objectType.producing_operations:
         prefixes = calculateOperationSequences(operationType.consumes_product_type)
         if not prefixes:

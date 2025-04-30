@@ -6,7 +6,7 @@ class ToolType:
         self.unmount_time = unmount_time
         self.total_life_units = total_life_units
         # Remember relations
-        self.operations: list[Operation] = []
+        self.operations: list[OperationType] = []
         # Remember instance
         TOOL_TYPES.append(self)
 
@@ -23,7 +23,7 @@ class MachineType:
         self.name = name
         # Remember relations
         self.machines: list[Machine] = []  # connection with machine class, define
-        self.operations: list[Operation] = []
+        self.operations: list[OperationType] = []
         # Remember instance
         MACHINE_TYPES.append(self)  # append the machinetype (itself) in the global list
 
@@ -50,8 +50,8 @@ class ProductType:
         self.depth = depth
         self.weight = weight
         # Remember relations
-        self.consuming_operations: list[Operation] = []
-        self.producing_operations: list[Operation] = []
+        self.consuming_operations: list[OperationType] = []
+        self.producing_operations: list[OperationType] = []
         self.orders: list[Order] = []
         # Remember instance
         PRODUCT_TYPES.append(self)
@@ -63,7 +63,7 @@ class ProductType:
 PRODUCT_TYPES: list[ProductType] = []
 
 
-class Operation:
+class OperationType:
     def __init__(self, name: str, duration: int, consumes_life_units: int, defect_probability: float,
                  machine_type: MachineType, tool_type: ToolType, consumes_product_type: ProductType,
                  produces_product_type: ProductType) -> None:
@@ -88,7 +88,7 @@ class Operation:
         return f"{self.name}"
 
 
-OPERATIONS: list[Operation] = []
+OPERATIONS: list[OperationType] = []
 
 
 class Scenario:

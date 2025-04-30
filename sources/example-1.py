@@ -17,9 +17,9 @@ pt3 = ProductType('Product type 3', 14, 15, 15, 6)
 pt4 = ProductType('Product type 4', 33, 12, 22, 17)
 
 # Create process steps
-Operation('Operation 1', 1, 5, 0.15,mt1, tt1, pt1, pt2)
-Operation('Operation 2', 1, 4, 0.20, mt2, tt2, pt4, pt1)
-Operation('Operation 3', 1, 6, 0.11, mt3, tt3, pt3, pt4)
+OperationType('Operation 1', 1, 5, 0.15,mt1, tt1, pt1, pt2)
+OperationType('Operation 2', 1, 4, 0.20, mt2, tt2, pt4, pt1)
+OperationType('Operation 3', 1, 6, 0.11, mt3, tt3, pt3, pt4)
 
 # Create scenarios
 s1 = Scenario('Scenario 1')
