@@ -1,7 +1,7 @@
 from .Configuration import *
 from .Simulation import *
+from .Visualization import *
 
-from .visualize import *
 from .calculate import *
 from .simulate import *
 from .export import *

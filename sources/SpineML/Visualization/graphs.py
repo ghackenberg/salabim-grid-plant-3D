@@ -1,7 +1,7 @@
 import networkx
 import matplotlib.pyplot as plt
 
-from .Configuration import MACHINE_TYPES, TOOL_TYPES, PRODUCT_TYPES, OPERATION_TYPES, SCENARIOS, ORDERS, LAYOUTS, CORRIDORS, MACHINES
+from ..Configuration import MACHINE_TYPES, TOOL_TYPES, PRODUCT_TYPES, OPERATION_TYPES, SCENARIOS, ORDERS, LAYOUTS, CORRIDORS, MACHINES
 
 def toNetworkXBasic():
     graph = networkx.DiGraph()

@@ -43,5 +43,8 @@ for i in range(NUM_CORRIDORS):
     for j in range(NUM_MACHINES_RIGHT):
         Machine(f'Machine 1.{i + 1}.{j + 1}.right', mt1, CORRIDORS[i], False)
 
+# Visualize
+visualizeRoute(l1, None)
+
 # Simulate
 simulate(l1, scenario1, True)

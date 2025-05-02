@@ -73,5 +73,8 @@ Machine('Machine 3.2.1', mt3, c3_2, True)
 # ... layout 3 / corridor 3
 Machine('Machine 3.3.1', mt2, c3_3, True)
 
+# Visualize
+visualizeRoute(l1, None)
+
 # Simulate
 simulate(l1, s1)
