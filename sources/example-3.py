@@ -32,13 +32,13 @@ s3 = Scenario('Scenario 3')
 
 # Create orders
 # ... scenario 1
-Order("Order 1.1", 30, 11, 20, pt6, s1)
-Order("Order 1.2", 40, 15, 30, pt2, s1)
+o1_1 = Order("Order 1.1", 30, 11, 20, pt6, s1)
+o1_2 = Order("Order 1.2", 40, 15, 30, pt2, s1)
 # ... scenario 2
-Order("Order 2.1", 400, 25, 30, pt2, s2)
+o2_1 = Order("Order 2.1", 400, 25, 30, pt2, s2)
 # ... scenario 3
-Order("Order 3.1", 500, 15, 20, pt4, s3)
-Order("Order 3.2", 300, 25, 30, pt5, s3)
+o3_1 = Order("Order 3.1", 500, 15, 20, pt4, s3)
+o3_2 = Order("Order 3.2", 300, 25, 30, pt5, s3)
 
 # Create layouts
 l1 = Layout('Layout 1', 10, 5)
@@ -91,6 +91,8 @@ Machine('Machine 3.2.3', mt2, c3_2, False)
 # ... layout 3 / corridor 4
 Machine('Machine 3.4.1', mt3, c3_4, True)
 
+# Visualize
+visualizeRoute(l1, o1_1)
 
 # Simulate
 simulate(l3, s1)

@@ -26,8 +26,8 @@ o2 = OperationType('Operation 2', 1, 4, 0.20, mt1, tt2, pt1, pt3)
 scenario1 = Scenario('Scenario 1')
 
 # Create orders
-o1 = Order(1, 10, 11, 20, pt2, scenario1)
-o2 = Order(2, 10, 11, 20, pt3, scenario1)
+o1_1 = Order("Order 1.1", 10, 11, 20, pt2, scenario1)
+o1_2 = Order("Order 1.2", 10, 11, 20, pt3, scenario1)
 
 # Create layouts
 l1 = Layout('Layout 1', 10, 5)
@@ -44,7 +44,7 @@ for i in range(NUM_CORRIDORS):
         Machine(f'Machine 1.{i + 1}.{j + 1}.right', mt1, CORRIDORS[i], False)
 
 # Visualize
-visualizeRoute(l1, None)
+visualizeRoute(l1, o1_1)
 
 # Simulate
 simulate(l1, scenario1, True)

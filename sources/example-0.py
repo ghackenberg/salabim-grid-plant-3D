@@ -21,8 +21,8 @@ OperationType('Operation 2', 1, 10, 0.20, mt2, tt2, pt1, pt3)
 s1 = Scenario('Scenario 1')
 
 # Create orders
-o1 = Order("Order 1.1", 5, 11, 20, pt2, s1)
-o2 = Order("Order 1.2", 5, 11, 20, pt3, s1)
+o1_1 = Order("Order 1.1", 5, 11, 20, pt2, s1)
+o1_2 = Order("Order 1.2", 5, 11, 20, pt3, s1)
 
 # Create layouts
 l1 = Layout('Layout 1', 10, 5)
@@ -35,6 +35,6 @@ Machine('Machine 1.1.1', mt1, c1_1, True)
 Machine('Machine 1.1.2', mt2, c1_1, False)
 
 # Simulate
-visualizeRoute(l1, o1)
+visualizeRoute(l1, o1_1)
 
 simulate(l1, s1, True)
