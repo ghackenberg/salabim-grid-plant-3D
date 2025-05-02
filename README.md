@@ -1,4 +1,4 @@
-# GridPlant
+# SpineML
 
 In this project we study techniques for reducing the effort of factory layout planning (FLP) and optimal job shop scheduling (JSS).
 To achieve this goal, we develop an easy-to-use configurator and simulator for a particular class of factories.
@@ -87,7 +87,7 @@ In the following, we describe each phase in more  detail.
 **Step 1:** Import the Factory Design Automation (FDA) library.
 
 ```python
-from fda import *
+from SpineML import *
 ```
 
 **Step 2:** Define your product, tool, and machine types.
@@ -111,7 +111,7 @@ mt1 = MachineType(...)
 
 ```python
 # Produce PT2 from PT1 on MT1 with TT1
-o1 = Operation(..., mt1, tt1, pt1, pt2)
+ot1 = OperationType(..., mt1, tt1, pt1, pt2)
 ```
 
 ### **Phase 2:** Scenario configuration
