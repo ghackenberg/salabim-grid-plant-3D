@@ -151,26 +151,21 @@ simulate(l1, s1)
 
 Here are some models explaining our overall idea:
 
-### Class model
+### Configuration model
 
-The class model describes the core entities, which are implemented in our factory design software.
-The entities include product types, which represent everything from raw material to end product.
-Then, the entities include tool and machine types as well as available manufacturing operations.
-On top you define layouts and scenarios.
+The configuration model contains the ***design-time* object model** of the application.
+The model comprises three submodels, namely a **definition model**, a **solution model**, and an **evaluation model**.
+The definition model includes the product type, machine type, tool type, and operation type classes.
+The solution model includes the layout, corridor, and machine classes.
+The evaluation model includes the scenario and order classes.
 
-![Class model](./models/class-model.png)
+![Class model](./models/configuration-model-full.png)
 
-### Object model
+### Simulation model
 
-The object model describes a sample use case.
-The use case is concerned with producing metal gears from raw metal disks.
-The use case includes milling and grinding as possible operations.
-Furthermore, the use case includes two different types machining centers, on which these operations can be executed as well as different order scenarios.
+The simulation model contains the ***run-time* object model** of the application, which is based on the configuration model as well as the [Salabim](https://www.salabim.org/) package.
+The simulation scenario, order, and order job classes represent the evaluation model elements at run-time.
+The simulation layout, corridor, corridor arm, robot main, roboto corridor arm, and machine classes represent the solution model elements at run-time.
+The simulation tool class represents a definition model element at run-time.
 
-#### First object model
-
-![Object model 1](./models/object-model-1.png)
-
-#### Second object model
-
-![Object model 2](./models/object-model-2.png)
+![Class model](./models/simulation-model-full.png)

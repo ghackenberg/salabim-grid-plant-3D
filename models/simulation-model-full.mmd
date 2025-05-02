@@ -1,16 +1,34 @@
 classDiagram
 
-    namespace SimulationModel {
+    namespace Salabim {
 
-        class SimStore {
+        class Store {
             +capacity: int
         }
-        class SimJob {
+
+    }
+
+    namespace SimulationModel {
+
+        class SimScenario {
+
+        }
+        class SimOrder {
+
+        }
+        class SimOrderJob {
             +number: int
         }
         class SimRobot {
+            <<abstract>>
             +state: string
             +position: double
+        }
+        class SimRobotMain {
+
+        }
+        class SimRobotCorridorArm {
+
         }
         class SimMachine {
             +state: string
@@ -19,8 +37,13 @@ classDiagram
             +life_time: int
         }
         class SimCorridor {
+
+        }
+        class SimCorridorArm {
+
         }
         class SimLayout {
+
         }
 
     }
@@ -31,33 +54,56 @@ classDiagram
             +quantity: int
         }
         class ProductType {
+
         }
         class ToolType {
+
+        }
+        class MachineType {
+
         }
 
     }
 
-    SimLayout o--> SimRobot: main
+    SimScenario o-->"many" SimOrder
+    SimOrder o-->"many" SimOrderJob
 
-    SimCorridor o--> SimRobot: left/right
+    Store ..>"many" SimOrderJob: stores
 
-    SimStore <.. SimRobot: pick/place
+    SimLayout o-->"one" SimRobotMain
+    SimLayout o-->"many" SimCorridor
+
+    SimCorridor o-->"one" SimCorridorArm: left
+    SimCorridor o-->"one" SimCorridorArm: right
+
+    SimCorridorArm o-->"one" SimRobotCorridorArm
+    SimCorridorArm o-->"many" SimMachine
+
+    Store <.. SimRobot: pick from / place in
+
+    SimRobotMain <|-- SimRobot
+    SimRobotCorridorArm <|-- SimRobot
     
-    SimRobot ..>"one" SimJob: carries
+    SimRobot ..>"one" SimOrderJob: carries
 
-    SimStore ..>"many" SimJob: stores
-    SimStore <--o SimMachine: in/out
-    SimStore <--o SimCorridor: left/right/main
-    SimStore "two"<--o SimLayout: front/back
+    Store "one"<--o SimMachine: in
+    Store "one"<--o SimMachine: out
+    Store "one"<--o SimCorridor
+    Store "one"<--o SimCorridorArm
+    Store "one"<--o SimLayout: front
+    Store "one"<--o SimLayout: back
 
-    SimMachine ..>"one" SimJob: processes
+    SimMachine ..>"one" SimOrderJob: processes
     SimMachine o-->"many" SimTool: contains
     SimMachine ..>"one" SimTool: mounts
 
-    SimJob "many"<--o Order: starts
-    SimJob ..> ProductType: current/target
+    SimOrder ..>"one" Order
+    SimOrderJob ..> ProductType: current
+    SimOrderJob ..> ProductType: target
 
     SimTool ..>"one" ToolType
+
+    SimMachine ..> MachineType
 
 
     style OperationType fill:lightgreen,stroke:green
@@ -72,11 +118,14 @@ classDiagram
     style Corridor fill:lightblue,stroke:blue
     style Machine fill:lightblue,stroke:blue
 
-
+    style SimScenario fill:orange,stroke:red
+    style SimOrder fill:yellow,stroke:orange
+    style SimOrderJob fill:yellow,stroke:orange
     style SimRobot fill:yellow,stroke:orange
-    style SimJob fill:yellow,stroke:orange
+    style SimRobotMain fill:yellow,stroke:orange
+    style SimRobotCorridorArm fill:yellow,stroke:orange
     style SimMachine fill:yellow,stroke:orange
     style SimTool fill:yellow,stroke:orange
-    style SimStore fill:yellow,stroke:orange
     style SimCorridor fill:yellow,stroke:orange
-    style SimLayout fill:yellow,stroke:orange
+    style SimCorridorArm fill:yellow,stroke:orange
+    style SimLayout fill:orange,stroke:red
