@@ -19,9 +19,15 @@ def calculateMachineSequences(objectType: ProductType, layout: Layout):
     result: list[list[Machine]] = []
     processes = calculateOperationSequences(objectType)
     for process in processes:
-        processRoutes = calculateMachineSequencesFromOperationSequence(process, layout)
-        for processRoute in processRoutes:
-            result.append(processRoute)
+        routes = calculateMachineSequencesFromOperationSequence(process, layout)
+        for route in routes:
+            exists = False
+            for other_route in result:
+                if all(x == y for x, y in zip(route, other_route)):
+                    exists = True
+                    break
+            if not exists:
+                result.append(route)
     return result
 
 

@@ -8,7 +8,7 @@ from ..calculate import calculateMachineSequences
 canvas_width = 800
 canvas_height = 600
 
-padding = 100
+padding = 50
 
 unit = 10
 
@@ -115,11 +115,11 @@ def visualizeRoute(layout: Layout, order: Order) -> None:
         x0 = canvas_width / 2
         y0 = padding
 
-        width = unit / 2 * (num_routes - i) / num_routes
+        width = (unit / 2 - 1) * (num_routes - i) / num_routes + 1
 
         b = ("%02x" % 0)
         g = ("%02x" % 0)
-        r = ("%02x" % int(i /  (num_routes - 1) * 255))
+        r = ("%02x" % int(i / num_routes * 255))
 
         color = '#' + r + g + b
 
