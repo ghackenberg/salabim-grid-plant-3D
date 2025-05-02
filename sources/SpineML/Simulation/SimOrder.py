@@ -1,10 +1,9 @@
 import salabim as sim
 import matplotlib.pyplot as plt
 
-from ..model import Layout, Scenario, Order
+from ..Configuration import Layout, Scenario, Order
 
-from .job import SimJob
-
+from .SimOrderJob import SimOrderJob
 
 class SimOrder(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, store_start: sim.Store, *args, **kwargs):
@@ -12,9 +11,9 @@ class SimOrder(sim.Component):
 
         self.order = order
         
-        self.sim_jobs: list[SimJob] = []
+        self.sim_jobs: list[SimOrderJob] = []
         for i in range(order.quantity):
-            sim_job = SimJob(layout, scenario, order, i, store_start, env=self.env)
+            sim_job = SimOrderJob(layout, scenario, order, i, store_start, env=self.env)
             self.sim_jobs.append(sim_job)
 
     def printStatistics(self):

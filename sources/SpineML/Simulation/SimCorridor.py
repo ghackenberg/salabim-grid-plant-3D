@@ -1,9 +1,8 @@
 import salabim as sim
 
-from ..model import Corridor
+from ..Configuration import Corridor
 
-from .arm import SimArm
-
+from .SimCorridorArm import SimCorridorArm
 
 class SimCorridor(sim.Component):
     def __init__(self, corridor: Corridor, y: float, *args, **kwargs):
@@ -25,8 +24,8 @@ class SimCorridor(sim.Component):
         self.store_right = store_right
 
         # Left and right arms
-        self.sim_arm_left = SimArm(corridor, machines_left, "left", store_left, store_right, store_main, +1, y, env=self.env)
-        self.sim_arm_right = SimArm(corridor, machines_right, "right", store_right, store_left, store_main, -1, y, env=self.env)
+        self.sim_arm_left = SimCorridorArm(corridor, machines_left, "left", store_left, store_right, store_main, +1, y, env=self.env)
+        self.sim_arm_right = SimCorridorArm(corridor, machines_right, "right", store_right, store_left, store_main, -1, y, env=self.env)
 
         # Corridor storage vertical box
         sim.Animate3dBox(x_len=0.25, y_len=0.25, z_len=1.5, color="red", x=0, y=y, z=1.625)

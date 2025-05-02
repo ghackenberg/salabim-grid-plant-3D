@@ -1,4 +1,6 @@
-from .model import *
+from .Configuration import *
+from .Simulation import *
+
 from .visualize import *
 from .calculate import *
 from .simulate import *

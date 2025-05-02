@@ -1,9 +1,9 @@
 import salabim as sim
 import matplotlib.pyplot as plt
 
-from ..model import Layout, Scenario
+from ..Configuration import Layout, Scenario
 
-from .order import SimOrder
+from .SimOrder import SimOrder
 
 class SimScenario(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, store_start: sim.Store, *args, **kwargs):

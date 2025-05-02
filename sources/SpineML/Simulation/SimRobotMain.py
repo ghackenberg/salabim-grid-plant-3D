@@ -1,13 +1,12 @@
 import salabim as sim
 
-from ..model import Layout, Scenario
+from ..Configuration import Layout, Scenario
 
-from .corridor import SimCorridor
-from .robot import SimRobot
-from .job import SimJob
+from .SimCorridor import SimCorridor
+from .SimRobot import SimRobot
+from .SimOrderJob import SimOrderJob
 
-
-class SimMainRobot(SimRobot):
+class SimRobotMain(SimRobot):
     def __init__(self, layout: Layout, scenario: Scenario, store_start: sim.Store, store_end: sim.Store, sim_corridors: list[SimCorridor], y: float, z: float, *args, **kwargs):
         super().__init__("Main robot", 0, 0, y, z, "red", *args, **kwargs)
 
@@ -38,7 +37,7 @@ class SimMainRobot(SimRobot):
             # Debug output
             print(f"[t={self.env.now()}] Main robot waiting for job")
             # Pick next job
-            job: SimJob = yield self.from_store(self.store_start)
+            job: SimOrderJob = yield self.from_store(self.store_start)
             # Move down
             yield from self.move_z(1.25, speed)
             # Update state
@@ -77,7 +76,7 @@ class SimMainRobot(SimRobot):
                 # Debug output
                 print(f"[t={self.env.now()}] Main robot waiting for job")
                 # Take from corridor store
-                job: SimJob = yield self.from_store(sim_corridor.store_main)
+                job: SimOrderJob = yield self.from_store(sim_corridor.store_main)
                 # Move down
                 yield from self.move_z(1.25, speed)
                 # Update state

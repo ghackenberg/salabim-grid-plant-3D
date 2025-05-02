@@ -1,4 +1,4 @@
-from .model import ProductType, OperationType, Layout, Machine
+from .Configuration import ProductType, OperationType, Layout, Machine
 
 def calculateMachineSequencesFromOperationSequence(process: list[OperationType], layout: Layout) -> list[list[Machine]]:
     if len(process) > 0:
@@ -36,4 +36,3 @@ def calculateOperationSequences(objectType: ProductType):
                 prefix.append(operationType)
                 result.append(prefix)
     return result
-

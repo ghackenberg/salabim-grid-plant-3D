@@ -1,12 +1,12 @@
 import salabim as sim
 import random
 
+from ..Configuration import Layout, Scenario, Order
+
 from ..calculate import calculateOperationSequences, calculateMachineSequencesFromOperationSequence
-from ..model import Layout, Scenario, Order
 from ..util import toString
 
-
-class SimJob(sim.Component):
+class SimOrderJob(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, order: Order, number: int, store_start: sim.Store, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

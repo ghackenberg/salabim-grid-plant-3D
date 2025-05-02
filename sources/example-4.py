@@ -1,4 +1,4 @@
-from salabim_grid_plant_3D import *
+from SpineML import *
 
 # Layout parameters
 NUM_CORRIDORS = 8

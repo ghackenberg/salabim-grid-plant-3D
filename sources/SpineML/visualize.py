@@ -1,7 +1,7 @@
 import networkx
 import matplotlib.pyplot as plt
 
-from .model import MACHINE_TYPES, TOOL_TYPES, PRODUCT_TYPES, OPERATIONS, SCENARIOS, ORDERS, LAYOUTS, CORRIDORS, MACHINES
+from .Configuration import MACHINE_TYPES, TOOL_TYPES, PRODUCT_TYPES, OPERATION_TYPES, SCENARIOS, ORDERS, LAYOUTS, CORRIDORS, MACHINES
 
 def toNetworkXBasic():
     graph = networkx.DiGraph()
@@ -17,7 +17,7 @@ def toNetworkXBasic():
     for productType in PRODUCT_TYPES:
         graph.add_node(productType.name)
         node_color.append("#0000ff")
-    for processStep in OPERATIONS:
+    for processStep in OPERATION_TYPES:
         graph.add_node(processStep.name)
         graph.add_edge(processStep.machine_type.name, processStep.name)
         graph.add_edge(processStep.tool_type.name, processStep.name)
@@ -38,7 +38,7 @@ def toNetworkXMinimal():
     for productType in PRODUCT_TYPES:
         graph.add_node(productType.name)
         node_color.append("#0000ff")
-    for processStep in OPERATIONS:
+    for processStep in OPERATION_TYPES:
         graph.add_node(processStep.name)
 
         graph.add_edge(processStep.consumes_product_type.name, processStep.name)
@@ -63,7 +63,7 @@ def toNetworkX():
     for productType in PRODUCT_TYPES:
         graph.add_node(productType.name)
         node_color.append("#0000ff")
-    for processStep in OPERATIONS:
+    for processStep in OPERATION_TYPES:
         graph.add_node(processStep.name)
         node_color.append("#880000")
         graph.add_edge(processStep.name, processStep.machine_type.name)

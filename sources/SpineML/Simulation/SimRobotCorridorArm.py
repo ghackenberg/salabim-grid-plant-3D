@@ -1,12 +1,12 @@
 import salabim as sim
 
-from ..model import Corridor, Machine
+from ..Configuration import Corridor, Machine
 
-from .robot import SimRobot
-from .machine import SimMachine
-from .job import SimJob
+from .SimRobot import SimRobot
+from .SimMachine import SimMachine
+from .SimOrderJob import SimOrderJob
 
-class SimArmRobot(SimRobot):
+class SimRobotCorridorArm(SimRobot):
     def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_arm: sim.Store, store_out_main: sim.Store, sim_machines: list[SimMachine], dx: float, y: float, *args, **kwargs):
         super().__init__(f"Arm {direction} robot", 2, dx, y, 2.5, "green", *args, **kwargs)
 
@@ -32,7 +32,7 @@ class SimArmRobot(SimRobot):
             # Debug output
             print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot waiting for job")
             # Pick from storage
-            job: SimJob = yield self.from_store(self.store_in)
+            job: SimOrderJob = yield self.from_store(self.store_in)
             # Move down
             yield from self.move_z(1.25, speed)
             # Update state
@@ -66,7 +66,7 @@ class SimArmRobot(SimRobot):
                 # Debug output
                 print(f"[t={self.env.now()}] {self.corridor.name} arm {self.direction} robot waiting for job")
                 # Wait for hand over
-                job: SimJob = yield self.from_store(sim_machine.store_out)
+                job: SimOrderJob = yield self.from_store(sim_machine.store_out)
                 # Move down
                 yield from self.move_z(1.5, speed)
                 # Upadte state

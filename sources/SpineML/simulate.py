@@ -1,9 +1,7 @@
 import salabim as sim
 
-from .sim.layout import SimLayout
-from .sim.scenario import SimScenario
-from .model import Layout, Scenario
-
+from .Configuration import Layout, Scenario
+from .Simulation import SimLayout, SimScenario
 
 def simulate(layout: Layout, scenario: Scenario, animate=True, till=sim.inf):
     # Turn on yieldless mode

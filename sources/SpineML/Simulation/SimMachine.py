@@ -1,10 +1,9 @@
 import salabim as sim
 import matplotlib.pyplot as plt
 
-from ..model import Machine, ToolType
+from ..Configuration import Machine, ToolType
 
-from .job import SimJob
-
+from .SimOrderJob import SimOrderJob
 
 class SimMachine(sim.Component):
     def __init__(self, machine: Machine, x: float, y: float, *args, **kwargs):
@@ -92,7 +91,7 @@ class SimMachine(sim.Component):
     def process(self):
         while True:
             # Take next job from store
-            job: SimJob = yield self.from_store(self.store_in)
+            job: SimOrderJob = yield self.from_store(self.store_in)
             # Retrieve next process step to perform
             operation = job.operation_sequence.pop(0)
             duration = operation.duration

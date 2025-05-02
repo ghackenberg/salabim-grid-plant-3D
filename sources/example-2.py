@@ -1,4 +1,4 @@
-from salabim_grid_plant_3D import *
+from SpineML import *
 
 # Create machine types
 mt1 = MachineType('Machine type 1')

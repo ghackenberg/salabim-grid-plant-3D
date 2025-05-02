@@ -1,11 +1,10 @@
 import salabim as sim
 import matplotlib.pyplot as plt
 
-from ..model import Layout, Scenario
+from ..Configuration import Layout, Scenario
 
-from .corridor import SimCorridor
-from .mainrobot import SimMainRobot
-
+from .SimCorridor import SimCorridor
+from .SimRobotMain import SimRobotMain
 
 class SimLayout(sim.Component):
     def __init__(self, layout: Layout, scenario: Scenario, *args, **kwargs):
@@ -41,7 +40,7 @@ class SimLayout(sim.Component):
             corridor_num = corridor_num + 1
 
         # Main robot
-        self.sim_main_robot = SimMainRobot(layout, scenario, self.store_start, self.store_end, self.sim_corridors, 0, 2.5, env=self.env)
+        self.sim_main_robot = SimRobotMain(layout, scenario, self.store_start, self.store_end, self.sim_corridors, 0, 2.5, env=self.env)
     
     def robotCount(self):
         cnt = 1

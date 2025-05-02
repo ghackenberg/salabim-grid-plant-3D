@@ -1,13 +1,11 @@
 import salabim as sim
-import matplotlib.pyplot as plt
 
-from ..model import Corridor, Machine
+from ..Configuration import Corridor, Machine
 
-from .machine import SimMachine
-from .armrobot import SimArmRobot
+from .SimMachine import SimMachine
+from .SimRobotCorridorArm import SimRobotCorridorArm
 
-
-class SimArm(sim.Component):
+class SimCorridorArm(sim.Component):
     def __init__(self, corridor: Corridor, machines: list[Machine], direction: str, store_in: sim.Store, store_out_1: sim.Store, store_out_2: sim.Store, dx: float, y: float, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -31,7 +29,7 @@ class SimArm(sim.Component):
 
         # Transversal robot
         if len(machines) != 0:
-            self.sim_arm_robot = SimArmRobot(corridor, machines, direction, store_in, store_out_1, store_out_2, self.sim_machines, dx, y, env=self.env)
+            self.sim_arm_robot = SimRobotCorridorArm(corridor, machines, direction, store_in, store_out_1, store_out_2, self.sim_machines, dx, y, env=self.env)
 
         # Arm horizontal box
         if len(machines) != 0:
