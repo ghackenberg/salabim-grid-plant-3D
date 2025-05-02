@@ -12,6 +12,7 @@ Here are some screenshots of our software tool:
 - **3D animation** of the factory components including robots and machines
 - **Performance evaluation** of the factory layout in a given order scenario
 - **Graph visualization** of the underlying factory configuration data model
+- **Route visualization** for a given job and a given factory layout
 
 In the following, we explain the software outputs in more detail.
 
