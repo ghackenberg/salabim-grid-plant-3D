@@ -43,11 +43,21 @@ The performance data can be visualized using bar charts.
 
 ### 🖼️ Graph visualization
 
-Finally, we support basic graph visualizations for debugging your factory configuration models.
+Furthermore, we support basic graph visualizations for debugging your factory configuration models.
 The following graph visualization displays the product types and manufacturing operations of a configuration model.
 Product types represent everything from raw material to end products, while operations consume and product them.
 
 ![NetworkX screenshot](./screenshots/networkx.png)
+
+### 🖼️ Route visualization
+
+Finally, we provide a visualization of all possible routes through a given layout for a given job.
+Note that for a given job at first only the source and the target product type are known.
+From this information, the possible sequence of operation types is computed leading from source to target product type.
+Finally, from all possible sequences of operation types the possible sequences of machine types can be computed performing these operations.
+The goal of optimization is to determine the best sequence of machines for a given job at a given time.
+
+![Tkinter screenshot](./screenshots/routes.png)
 
 ## Requirements
 
