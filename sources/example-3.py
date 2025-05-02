@@ -95,4 +95,4 @@ Machine('Machine 3.4.1', mt3, c3_4, True)
 visualizeRoute(l1, o1_1)
 
 # Simulate
-simulate(l3, s1)
+simulate(l1, s1)
